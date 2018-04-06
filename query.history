@@ -1,0 +1,5 @@
+CREATE USER 'e-hotels'@'localhost' IDENTIFIED BY 'KostasMitroglou11';
+
+CREATE DATABASE ehotels;
+
+GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
