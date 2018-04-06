@@ -13,6 +13,7 @@ use \models\Config as Config;
 # Controllers
 use \controllers\hotelController as hotelController;
 
+# Initialize app
 $app = new \OnePHP\App();
 $config = new Config();
 
