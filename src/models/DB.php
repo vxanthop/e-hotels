@@ -5,6 +5,7 @@ namespace models;
 use \models\Config as Config;
 
 class DB {
+
 	private static $_connection;
 	private static $_instance; // The single instance
 	private static $_host;
@@ -40,4 +41,15 @@ class DB {
 		$mysqli = self::$_connection;
 		return $mysqli->query($sql);
 	}
+
+	public static function getCollection($query, $model) {
+        $res = [];
+        if($query) {
+	        while($row = $query->fetch_object($model)) {
+	            $res[] = $row;
+	        }
+	    }
+        return $res;
+	}
+
 }
