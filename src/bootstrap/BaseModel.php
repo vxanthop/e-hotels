@@ -7,7 +7,7 @@ use \models\Types as Types;
 class BaseModel {
 
     private $data = [];
-    protected $mapper = [];
+    protected $mapper;
 
     /*  mysqli_fetch_object first assigns the properties by using __set
         and then calls the constructor. When the object is constructed,
