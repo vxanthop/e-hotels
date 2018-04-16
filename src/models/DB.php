@@ -38,11 +38,11 @@ class DB {
 
 	private static function getClassFromBacktrace() {
 		$trace = debug_backtrace();
-		if(!isset($trace[1]['class']) || !class_exists($trace[1]['class'])) {
+		if(!isset($trace[2]['class']) || !class_exists($trace[2]['class'])) {
 			trigger_error("Could not guess caller class from the backtrace. Try passing it explicitly as an argument.", E_USER_ERROR);
 			return NULL;
 		}
-		return $trace[1]['class'];
+		return $trace[2]['class'];
 	}
 
 	public static function query($sql) {
