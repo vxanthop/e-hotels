@@ -28,7 +28,7 @@ $app->get('/users', function () use ($app) {
 
     ], 200);
 
-})
+});
 ```
 
 What is essentially happening here is that the app will fetch a users array from the `UserController::index()` method. Afterwards, the array will be passed to the `user_listing.php` view and will be available to it as the `$users` variable. The app will finally show the view to the user with the `Response` method and will return a `200 (OK)` HTTP status code.
@@ -52,14 +52,14 @@ $app->get('/user/:name', function ($name) use ($app) {
 
     ], 200);
 
-})
+});
 ```
 
 Thus, a request to `/user/nelson-mandela` will trigger a `UserController::getByName('nelson-mandela')` call that will hopefully return the data of the user with name `nelson-mandela` either through a database or in any other way we choose to implement our `getByName` controller action.
 
 ### POST requests
 
-A user submits a form to change his password. Let's suppose that the form is submitted via a `POST` request to `/change-password`. An example of a routing directive that forward this request to the `UserController::changePassword()` method is shown below:
+A user submits a form to change his password. Let's suppose that the form is submitted via a `POST` request to `/change-password`. An example of a routing directive that forwards this request to the `UserController::changePassword()` method is shown below:
 
 ```php
 // index.php
@@ -83,7 +83,7 @@ $app->post('/change-password', function () use ($app) {
         ];
     }
 
-})
+});
 ```
 
 The data submitted through the form is available in the `$_POST` superglobal ([read more](https://www.w3schools.com/php/php_forms.asp)).
