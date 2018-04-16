@@ -42,7 +42,15 @@ class DB {
 		return $mysqli->query($sql);
 	}
 
-	public static function getCollection($query, $model) {
+	public static function getCollection($query, $model = NULL) {
+		if(is_null($model)) {
+			$trace = debug_backtrace();
+			if(!isset($trace[1]['class']) || !class_exists($trace[1]['class'])) {
+				trigger_error("Could not guess caller class from the backtrace. Try passing it explicitly as an argument.", E_USER_ERROR);
+			} else {
+				$model = $trace[1]['class'];
+			}
+		}
         $res = [];
         if($query) {
 	        while($row = $query->fetch_object($model)) {
