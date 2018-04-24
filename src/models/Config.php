@@ -6,11 +6,14 @@ class Config {
 
 	private static $settings;
 
-	public function __construct() {
-		self::$settings = include ROOT_PATH . 'settings.php';
-	}
+    private static function init() {
+        if(!self::$settings) {
+            self::$settings = include ROOT_PATH . 'settings.php';
+        }
+    }
 
-	public function get($attr) {
+	public static function get($attr) {
+        self::init();
 		return self::$settings[$attr] ?? null;
 	}
 
