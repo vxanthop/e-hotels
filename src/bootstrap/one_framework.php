@@ -168,6 +168,7 @@ class App extends CoreFramework{
         define('APP_DIR', $this->getRootDir() .'/../'); //if your project is in src/ like in documentation, if not correct this
         define('VIEW_DIR', APP_DIR .'views/');
         define('CONTROLLER_DIR', APP_DIR .'controllers/');
+        define('VIEWS_LAYOUT_ROUTE', APP_DIR .'views/layouts/');
         define('VIEWS_ROUTE', APP_DIR .'views/');//deprecated since 0.4
         define('CONTROLLERS_ROUTE', APP_DIR .'controllers/');//deprecated since 0.4
 
@@ -298,7 +299,11 @@ class App extends CoreFramework{
         }
         //pass to the view
         if (!$asText){
-            $view = new View(VIEWS_ROUTE.$filename, $vars, $this);
+            if(isset($vars['_layout'])) {
+                $view = new View(VIEWS_ROUTE.$filename, $vars, $this, VIEWS_LAYOUT_ROUTE.$vars['_layout']);
+            } else {
+                $view = new View(VIEWS_ROUTE.$filename, $vars, $this);
+            }
             $view->load();
         }
         else echo $filename;
@@ -495,16 +500,18 @@ class View
     protected $data;
     protected $framework;
     protected $src;
+    protected $layout;
 
     /**
      * @param $src Source file to load
      * @param array $vars Associative key , values
      * @param null $framework isntance
      */
-    public function __construct($src, array $vars = array(), App $framework = null){
+    public function __construct($src, array $vars = array(), App $framework = null, $layout = ''){
         $this->data = $vars;
         $this->framework = $framework;
         $this->src = $src;
+        $this->layout = $layout;
     }
 
     /**
@@ -516,13 +523,23 @@ class View
         $data = $this->data; //deprecated, vars are passed directly since version 0.0.4
         extract($this->data, EXTR_OVERWRITE);//set global all variables to the view
 
-        if (file_exists($this->src))
+        if (file_exists($this->src)) {
+            $block = array();
+            ob_start();
             include_once($this->src); //scoped to this class
-        else{
+            $output = ob_get_clean();
+            if(!empty($this->layout) && file_exists($this->layout)) {
+                $block['content'] = $output;
+                ob_start();
+                include_once($this->layout);
+                $output = ob_get_clean();
+            }
+            echo $output;
+        } else {
             if($this->framework ){
                 if($app->getEnvironment() == ENV_DEV)
                     return $app->error("View filename '{$this->src}' NOT found in '". VIEWS_ROUTE."'.<br/>
-                     Maybe you need to change the App::APP_DIR or App::VIEW_DIR Constant to your current folder structure.",2);
+                     Maybe you need to change txhe App::APP_DIR or App::VIEW_DIR Constant to your current folder structure.",2);
                 else
                     return $app->error('',2);
             }
