@@ -8,7 +8,7 @@ define('ROOT_PATH', dirname(__FILE__) . '/');
 
 
 # Controllers
-use \controllers\hotelController as hotelController;
+use \controllers\homeController as homeController;
 
 # Initialize app
 $app = new \OnePHP\App();
@@ -18,7 +18,11 @@ $app = new \OnePHP\App();
 # Routes
 $app->get('/', function () use ($app) {
 
-	return $app->ResponseHTML(hotelController::index(), 200);
+	$data = homeController::index();
+	return $app->Response('home.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
 
 });
 

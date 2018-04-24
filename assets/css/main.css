@@ -1,0 +1,82 @@
+/* General */
+html, body {
+    font-family: Nunito, sans-serif;
+    font-size: 17px;
+}
+
+/* Navigation menu */
+.navbar {
+    font-size: 1.1rem;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #E7E7E7;
+    font-weight: normal;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #FFFFFF;
+}
+
+/* Home page */
+section.hero {
+    background: url('/assets/images/hero.jpg');
+    background-size: cover;
+    background-position: bottom center;
+    height: 720px;
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section.hero h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.25em;
+    margin-bottom: .4em;
+    color: rgb(255, 255, 255);
+    text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.5),
+                 0px 8px 13px rgba(0, 0, 0, 0.3),
+                 0px 18px 23px rgba(0, 0, 0, 0.2);
+}
+
+section.hero .hero-search {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    background-clip: padding-box;
+    border: 1px solid #CED4DA;
+    color: #292929;
+    transition: box-shadow .5s, border .5s;
+}
+
+section.hero .hero-search:focus {
+    border: 1px solid #ACB2B8;
+    box-shadow: inset 0 0 20px 2px rgba(0, 0, 0, .2);
+    outline: none;
+}
+
+section.offers {
+    background-image: url("/assets/images/offers-pattern.png");
+    background-color: #444444;
+    padding: 2rem 0;
+    font-size: 1.25rem;
+}
+
+section.offers h3 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: .5em;
+    color: white;
+    font-weight: bold;
+}
