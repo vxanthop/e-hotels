@@ -16,3 +16,12 @@ CREATE TABLE Hotel_Room (
     Price int(10) NOT NULL,
     PRIMARY KEY (Room_ID, Emp_IRS, Hotel_ID, Cust_IRS)
 );
+
+CREATE TABLE Hotel_Amenities (
+    Room_ID int(4) NOT NULL,
+    Emp_IRS int(17) NOT NULL,
+    Hotel_ID int(10) NOT NULL,
+    Cust_IRS int(17) NOT NULL, 
+    amenity varchar(42) NOT NULL,
+    FOREIGN KEY (Room_ID, Emp_IRS, Hotel_ID, Cust_IRS) REFERENCES Hotel_Room(Room_ID, Emp_IRS, Hotel_ID, Cust_IRS)
+);
