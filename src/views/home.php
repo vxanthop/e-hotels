@@ -1,7 +1,23 @@
         <section class="hero">
             <div class="container">
                 <h2><?= $description; ?></h2>
-                <input type="search" class="hero-search" autofocus placeholder="Search..." />
+                <form action="/search" method="POST" class="hero-search-container">
+                    <input type="search" name="city" class="hero-search" autofocus placeholder="Search destination..." />
+                    <div class="form-row mt-4">
+                        <div class="col col-3">
+                            <input type="text" name="startDate" class="form-control" placeholder="Enter start date..." />
+                        </div>
+                        <div class="col col-3">
+                            <input type="text" name="endDate" class="form-control" placeholder="Enter end date..." />
+                        </div>
+                        <div class="col col-3">
+                            <input type="number" name="capacity" class="form-control" min="1" max="10" placeholder="Enter capacity..." />
+                        </div>
+                        <div class="col col-3">
+                            <input type="submit" name="submit" class="form-control btn btn-primary" value="Search" />
+                        </div>
+                    </div>
+                </form>
             </div>
         </section>
         <section class="offers">
