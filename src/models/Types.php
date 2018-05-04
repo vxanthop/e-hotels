@@ -13,7 +13,7 @@ class Types {
             'float' => 'floatval',
             'json' => 'json_decode',
             'boolean' => function ($value) {
-                return $value == 'true';
+                return !!$value;
             }
         ];
         $this->converter = $converters[$type];
