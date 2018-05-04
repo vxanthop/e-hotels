@@ -1,0 +1,25 @@
+CREATE USER 'e-hotels'@'localhost' IDENTIFIED BY 'KostasMitroglou11';
+
+CREATE DATABASE ehotels;
+
+GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
+
+CREATE TABLE Hotel_Room (
+    Room_ID smallint(4) UNSIGNED NOT NULL,
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    Cust_IRS bigint(11) UNSIGNED ZEROFILL,
+    Emp_IRS bigint(11) UNSIGNED ZEROFILL,
+    Capacity tinyint(2) UNSIGNED NOT NULL,
+    View boolean DEFAULT 0,
+    Expandable varchar(15) DEFAULT '',
+    Repairs_need boolean DEFAULT 0,
+    Price decimal(5, 2) UNSIGNED NOT NULL,
+    PRIMARY KEY (Room_ID, Hotel_ID)
+);
+
+CREATE TABLE Hotel_Amenities (
+    Room_ID smallint(4) UNSIGNED NOT NULL,
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    amenity varchar(42) NOT NULL,
+    FOREIGN KEY (Room_ID, Hotel_ID) REFERENCES Hotel_Room(Room_ID, Hotel_ID)
+);
