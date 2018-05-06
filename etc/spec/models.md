@@ -5,7 +5,7 @@
 Models are either [_utility_](#utility-classes) classes or [_entity_](#entity-classes) classes.
 
 ### Utility classes
-They provide global functionality to the app, like requesting data from a database or converting Greek text to Latin characters or performing arithmetic operations with Dates etc.
+They provide global functionality to the app, like requesting data from a database or converting Greek text to Latin characters or performing arithmetic operations with Datesetc.
 
 * **Config**: Reads the `/settings.php` file and returns configuration parameters with the `get` method.
     * `get($param)` Returns the value of the configuration parameter with key `$param`.
@@ -17,9 +17,44 @@ They provide global functionality to the app, like requesting data from a databa
 ### Entity classes
 Entity classes represent the "real-life" objects of the app, such as a Person or a Transaction etc. All entity classes inherit from the `Model` class, which is documented [here](model.md). The entity classes used in this app are the following:
 
+* [HotelGroup](#hotelgroup)
+* [Hotel](#hotel)
 * [Room](#room)
 * [Amenity](#amenity)
+* [City](#city)
 * ...
+
+#### HotelGroup
+Each Hotel is contained in a Hotel Group.
+##### Properties
+* `hotel_group_id`: The primary key of the Hotel Group
+* `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`)
+* `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group
+* `phone_number`: The phone number of the Hotel Group
+* `email_address`: The email adress of the Hotel Group
+
+##### Methods
+* `all()`: Returns an array of the basic information about the Hotel Group (`hotel_group_id`, `numer_of_hotels`, `address`)
+* `email_getter()`: Returns the email address of the Hotel Group
+* `phone_getter()`: Returns the phone number of the Hotel Group
+* `hasHotels()`: Returns an array of Hotel IDs from the Hotels contained in the Hotel Group
+
+
+#### Hotel
+Each Hotel contains Rooms and Employees that work in it.
+##### Properties
+* `hotel_id`: A number uniquely identifying the Hotel
+* `stars`: A number in the range [0, 5] descibing the rating of the Hotel
+* `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`)
+* `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel
+* `phone_number`: The phone number of the Hotel
+* `email_address`: The email adress of the Hotel
+
+##### Methods
+* `all()`: Returns an array of the basic information about the Hotel (`hotel_id`, `stars`, `address`, `number_of_rooms`)
+* `email_getter()`: Returns the email address of the Hotel Group
+* `phone_getter()`: Returns the phone number of the Hotel Group
+
 
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
@@ -52,5 +87,14 @@ _Note:_ The primary key of an Amenity entry is the tuple (`room_id`, `hotel_id`,
 ##### Methods:
 * `all()`: Returns an array of strings representing all the various amenities available among all hotels and rooms.
 * `ofRoom($key)`: Returns an array of Amenity objects that represent all amenities of the Room with key `$key`.
+
+#### City
+Each Hotel, HotelGroup is located in a city
+##### Properties
+* `city_name`: The name of the city
+* `hotels_in_city`: An array containing all the hotels located in the city
+
+##### Methods
+* `all()`: Returns an array of tuples containing all the cities along with the number of hotels located in each city.
 
 #### ...
