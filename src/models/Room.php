@@ -4,11 +4,9 @@ namespace models;
 
 class Room extends Model {
 
-    public $key, $customer_id, $employee_id, $capacity, $view, $expandable, $repairs_need, $price, $amenities;
+    public $key, $capacity, $view, $expandable, $repairs_need, $price, $amenities;
 
     protected $mapper = [
-        'Cust_IRS' => ['customer_id', 'int'],
-        'Emp_IRS' => ['employee_id', 'int'],
         'Capacity' => ['capacity', 'int'],
         'View' => ['view', 'boolean'],
         'Expandable' => 'expandable',

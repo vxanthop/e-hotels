@@ -7,8 +7,6 @@ GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
 CREATE TABLE Hotel_Room (
     Room_ID smallint(4) UNSIGNED NOT NULL,
     Hotel_ID int(10) UNSIGNED NOT NULL,
-    Cust_IRS bigint(11) UNSIGNED ZEROFILL,
-    Emp_IRS bigint(11) UNSIGNED ZEROFILL,
     Capacity tinyint(2) UNSIGNED NOT NULL,
     View boolean DEFAULT 0,
     Expandable varchar(15) DEFAULT '',
