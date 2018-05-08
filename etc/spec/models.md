@@ -19,26 +19,28 @@ Entity classes represent the "real-life" objects of the app, such as a Person or
 
 * [HotelGroup](#hotelgroup)
 * [Hotel](#hotel)
+* [Employee](#employee)
+* [Customer](#customer)
 * [Room](#room)
 * [Amenity](#amenity)
 * [City](#city)
 * ...
 
 #### HotelGroup
-Each Hotel is contained in a Hotel Group.
+Each Hotel Group contains one or more Hotels. 
 ##### Properties
 * `hotel_group_id`: The primary key of the Hotel Group
 * `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group
-* `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`)
+* `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`) (computed)
 * `email_addresses`: The email addresses of the Hotel Group (computed)
 * `phone_numbers`: The phone numbers of the Hotel Group (computed)
 * `hotels`:  An array of Hotel objects representing the hotels contained in the Hotel Group (computed)
 
 ##### Methods
-* `all()`: Returns an array of the basic information about the Hotel Group (`hotel_group_id`, `numer_of_hotels`, `address`)
+* `all()`: Returns an array of all Hotel Groups
 * `address_getter()`
 * `email_addresses_getter()`
-* `phone_addresses_getter()`
+* `phone_numbers_getter()`
 * `hotels_getter()`
 
 
@@ -51,13 +53,49 @@ Each Hotel contains Rooms and Employees that work in it.
 * `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`) (computed)
 * `email_addresses`: The email addresses of the Hotel (computed)
 * `phone_numbers`: The phone numbers of the Hotel (computed)
+* `manager` : An Employee serving as manager of the Hotel (computed)
 
 ##### Methods
-* `all()`: Returns an array of the basic information about the Hotel (`hotel_id`, `stars`, `address`, `number_of_rooms`)
+* `ofHotelGroup()` : Returns the Hotel Group containing the Hotel
 * `address_getter()`
 * `email_addresses_getter()`
-* `phone_addresses_getter()`
+* `phone_numbers_getter()`
+* `manager_getter`
 
+
+#### Employee
+Each Employee works in a Hotel.
+##### Properties
+* `IRS_number` : The internal revenue service number uniquely identifying an Employee
+* `SSN` : The social security number of the Employee
+* `first_name` : The first name of the Employee
+* `last_name` : The last name of the Employee
+* `current_job`: The current job of the Employee (computed)
+* `address`: An array containing all information about the address of the Employee (`street`, `number`, `postal_code`, `city`) (computed)
+*
+
+##### Methods
+* `all()` : Returns an array of all Employees
+* `address_getter()`
+* `current_job_getter()`
+
+
+#### Customer
+Each customer rents a Room and is involved in a Transcation.
+##### Properties
+* `IRS_number` : The internal revenue service number uniquely identifying a Customer
+* `SSN` : The social security number of the Customer
+* `first_name` : The first name of the Customer
+* `last_name` : The last name of the Customer
+* `address`: An array containing all information about the address of the Customer (`street`, `number`, `postal_code`, `city`) (computed)
+* `first_registration`: Records the first registration the Customer made to the system (computed)
+* ...
+
+##### Methods
+* `all()` : Returns an array of all Customers
+* `address_getter()`
+* `first_registration_getter()`
+* ...
 
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
@@ -78,7 +116,10 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
 
 ##### Methods:
 * `all()`: Returns an array of all the Rooms available along with their properties.
+* `reserve($IRS_number)`: Is executed when a customer with key `$IRS_number` reserves the room
+* `check-in()` : Is executed when the customer that rented the room checks in
 * `amenities_getter()`
+
 
 
 #### Amenity
