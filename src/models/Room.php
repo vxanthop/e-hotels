@@ -4,9 +4,11 @@ namespace models;
 
 class Room extends Model {
 
-    public $key, $capacity, $view, $expandable, $repairs_need, $price, $amenities;
+    public $room_id, $hotel_id, $capacity, $view, $expandable, $repairs_need, $price;
 
     protected $mapper = [
+        'Room_ID' => ['room_id', 'int'],
+        'Hotel_ID' => ['hotel_id', 'int'],
         'Capacity' => ['capacity', 'int'],
         'View' => ['view', 'boolean'],
         'Expandable' => 'expandable',
@@ -16,17 +18,11 @@ class Room extends Model {
     
     public static function all() {
         $query = DB::query("SELECT * FROM Hotel_Room");
-        $rooms = DB::getCollection($query);
-
-        foreach($rooms as $room) {
-            $room->key = [
-                'room_id' => $room->Room_ID,
-                'hotel_id' => $room->Hotel_ID
-            ];
-
-            $room->amenities = Amenity::ofRoom($room->key);
-        }
-
-        return $rooms;
+        return DB::getCollection($query);
     }
+
+    public function amenities_getter() {
+        return $this->amenities = Amenity::ofRoom($room_id, $hotel_id);
+    }
+
 }

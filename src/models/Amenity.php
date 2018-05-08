@@ -15,10 +15,10 @@ class Amenity extends Model {
         @input: A key array that contains the primary keys of a Room entry
         @output: An array of Amenity objects that represent the amenities available in the specified Room
     */
-    public static function ofRoom($key) {
+    public static function ofRoom($room_id, $hotel_id) {
         $query = DB::query('SELECT amenity FROM Hotel_Amenities WHERE
-            Room_ID = ' . $key['room_id'] . '
-        AND Hotel_ID = ' . $key['hotel_id']);
+            Room_ID = ' . $room_id . '
+        AND Hotel_ID = ' . $hotel_id);
 
         return DB::getCollection($query);
     }

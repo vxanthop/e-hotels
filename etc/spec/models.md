@@ -30,8 +30,8 @@ Each Hotel is contained in a Hotel Group.
 * `hotel_group_id`: The primary key of the Hotel Group
 * `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group
 * `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`)
-* `phone_numbers`: The phone numbers of the Hotel Group (computed)
 * `email_addresses`: The email addresses of the Hotel Group (computed)
+* `phone_numbers`: The phone numbers of the Hotel Group (computed)
 * `hotels`:  An array of Hotel objects representing the hotels contained in the Hotel Group (computed)
 
 ##### Methods
@@ -46,11 +46,11 @@ Each Hotel is contained in a Hotel Group.
 Each Hotel contains Rooms and Employees that work in it.
 ##### Properties
 * `hotel_id`: A number uniquely identifying the Hotel
-* `stars`: A number in the range [0, 5] descibing the rating of the Hotel
+* `stars`: A number in the range [0, 5] describing the rating of the Hotel
 * `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel
 * `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`) (computed)
-* `phone_numbers`: The phone numbers of the Hotel (computed)
 * `email_addresses`: The email addresses of the Hotel (computed)
+* `phone_numbers`: The phone numbers of the Hotel (computed)
 
 ##### Methods
 * `all()`: Returns an array of the basic information about the Hotel (`hotel_id`, `stars`, `address`, `number_of_rooms`)
@@ -62,7 +62,7 @@ Each Hotel contains Rooms and Employees that work in it.
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
 ##### Properties:
-* `room_id`: A number associated to a Room. This need not be unique within the whole table of Rooms, because the primary key of Room consists of both `room_ID` and `hotel_id`.
+* `room_id`: A number associated to a Room. This need not be unique within the whole table of Rooms, because the primary key of Room consists of both `room_id` and `hotel_id`.
 * `hotel_id`: The primary key of the hotel to which this room belongs.
 * `customer_id`: The SSN of the customer that has rented this Room.
 * `employee_id`: The SSN of the employee that is responsible for renting and checking in the Room.
@@ -74,9 +74,11 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
     - `''`
 * `repairs_need`: A boolean value indicating whether or not the Room needs any repairs.
 * `price`: A float number with precision of 2 digits that describes the renting cost of the Room per night.
+* `amenities`: A list of strings representing the amenities of the Room (computed)
 
 ##### Methods:
 * `all()`: Returns an array of all the Rooms available along with their properties.
+* `amenities_getter()`
 
 
 #### Amenity
@@ -89,12 +91,12 @@ Each Room has a list of Amenities, such as Wi-Fi, A/C etc.
 _Note:_ The primary key of an Amenity entry is the tuple (`room_id`, `hotel_id`, `amenity`).
 
 ##### Methods:
-* `all()`: Returns an array of strings representing all the various amenities available among all hotels and rooms.
-* `ofRoom($key)`: Returns an array of Amenity objects that represent all amenities of the Room with key `$key`.
+* `all()`: Returns an array of strings representing all the distinct amenities available among all hotels and rooms.
+* `ofRoom($room_id, $hotel_id)`: Returns an array of Amenity objects that represent all amenities of the Room with key (`$room_id`, `$hotel_id`).
 
 
 #### City
-Each Hotel, HotelGroup is located in a city
+Each Hotel, HotelGroup is located in a city.
 ##### Properties
 * `city_name`: The name of the city
 * `hotels_in_city`: The number of hotels located in the city (computed)
