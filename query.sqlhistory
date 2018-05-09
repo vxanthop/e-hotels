@@ -69,7 +69,7 @@ CREATE TABLE Hotel_group_Phone_Number (
     PRIMARY KEY (Hotel_group_ID, Phone_Number)
 );
 
-CREATE TABLE WORKS (
+CREATE TABLE Works (
     Employee_IRS int(9) UNSIGNED NOT NULL REFERENCES Employee(Employee_IRS),
     Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
     Start_Date date NOT NULL,
