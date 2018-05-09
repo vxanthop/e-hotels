@@ -19,45 +19,84 @@ Entity classes represent the "real-life" objects of the app, such as a Person or
 
 * [HotelGroup](#hotelgroup)
 * [Hotel](#hotel)
+* [Employee](#employee)
+* [Customer](#customer)
+* [Transaction](#transaction)
 * [Room](#room)
 * [Amenity](#amenity)
 * [City](#city)
-* ...
 
 #### HotelGroup
-Each Hotel is contained in a Hotel Group.
+Each Hotel Group contains one or more Hotels. 
 ##### Properties
-* `hotel_group_id`: The primary key of the Hotel Group
-* `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group
-* `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`)
-* `email_addresses`: The email addresses of the Hotel Group (computed)
-* `phone_numbers`: The phone numbers of the Hotel Group (computed)
-* `hotels`:  An array of Hotel objects representing the hotels contained in the Hotel Group (computed)
+* `hotel_group_id`: The primary key of the Hotel Group.
+* `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group.
+* `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`). (computed)
+* `email_addresses`: The email addresses of the Hotel Group. (computed)
+* `phone_numbers`: The phone numbers of the Hotel Group. (computed)
+* `hotels`:  An array of Hotel objects representing the hotels contained in the Hotel Group. (computed)
 
 ##### Methods
-* `all()`: Returns an array of the basic information about the Hotel Group (`hotel_group_id`, `numer_of_hotels`, `address`)
+* `all()`: Returns an array of all Hotel Groups
 * `address_getter()`
 * `email_addresses_getter()`
-* `phone_addresses_getter()`
+* `phone_numbers_getter()`
 * `hotels_getter()`
 
 
 #### Hotel
 Each Hotel contains Rooms and Employees that work in it.
 ##### Properties
-* `hotel_id`: A number uniquely identifying the Hotel
-* `stars`: A number in the range [0, 5] describing the rating of the Hotel
-* `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel
-* `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`) (computed)
-* `email_addresses`: The email addresses of the Hotel (computed)
-* `phone_numbers`: The phone numbers of the Hotel (computed)
+* `hotel_id`: A number uniquely identifying the Hotel.
+* `stars`: A number in the range [0, 5] describing the rating of the Hotel.
+* `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel.
+* `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`). (computed)
+* `email_addresses`: The email addresses of the Hotel. (computed)
+* `phone_numbers`: The phone numbers of the Hotel. (computed)
+* `manager`: An Employee serving as manager of the Hotel. (computed)
 
 ##### Methods
-* `all()`: Returns an array of the basic information about the Hotel (`hotel_id`, `stars`, `address`, `number_of_rooms`)
+* `ofHotelGroup($hotel_group_id)`: Returns all Hotels of Hotel Group with key `$hotel_group_id`.
 * `address_getter()`
 * `email_addresses_getter()`
-* `phone_addresses_getter()`
+* `phone_numbers_getter()`
+* `manager_getter`
 
+
+#### Employee
+Each Employee works in a Hotel.
+##### Properties
+* `emp_IRS`: The internal revenue service number uniquely identifying an Employee.
+* `SSN`: The social security number of the Employee.
+* `first_name`: The first name of the Employee.
+* `last_name`: The last name of the Employee.
+* `current_job`: The current job of the Employee. (computed)
+* `address`: An array containing all information about the address of the Employee (`street`, `number`, `postal_code`, `city`). (computed)
+*
+
+##### Methods
+* `all()`: Returns an array of all Employees.
+* `address_getter()`
+* `current_job_getter()`
+
+
+#### Customer
+Each customer rents a Room and is involved in a Transcation.
+##### Properties
+* `emp_IRS`
+* `cust_IRS`: The internal revenue service number uniquely identifying a Customer.
+* `SSN`: The social security number of the Customer.
+* `first_name`: The first name of the Customer.
+* `last_name`: The last name of the Customer.
+* `address`: An array containing all information about the address of the Customer (`street`, `number`, `postal_code`, `city`). (computed)
+* `first_registration`: Records the first registration the Customer made to the system. (computed)
+* ...
+
+##### Methods
+* `all()`: Returns an array of all Customers.
+* `address_getter()`
+* `first_registration_getter()`
+* ...
 
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
@@ -74,11 +113,32 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
     - `''`
 * `repairs_need`: A boolean value indicating whether or not the Room needs any repairs.
 * `price`: A float number with precision of 2 digits that describes the renting cost of the Room per night.
-* `amenities`: A list of strings representing the amenities of the Room (computed)
+* `amenities`: A list of strings representing the amenities of the Room. (computed)
 
 ##### Methods:
 * `all()`: Returns an array of all the Rooms available along with their properties.
+* `reserve($cust_IRS, $start_date, $finish_date)`: Is executed when a customer with key `$cust_IRS` reserves the room for the dates specified by `$start_date`, `$finish_date`.
+* `check_in()`: Is executed when the customer that rented the room checks in.
 * `amenities_getter()`
+
+
+#### Transaction
+
+##### Properties
+* `transaction_id`: A number associated to a Transaction.
+* `cust_IRS`: The IRS number of the customer associated with the Transaction.
+* `emp_IRS`:  The IRS number of the employee associated with the Transaction.
+* `room_id`: The id of the room associated with the Transaction. 
+* `hotel_id`: The hotel where the room is contained.
+* `payment_amount`: The amount that the customer has to pay.
+* `payment_method`: A string that describes the way the customer can pay the needed amount. Possible values are:
+    - `'cash'`
+    - `'credit_card'`
+    - `'debit_card'`
+    - `'invoice'`
+
+##### Methods
+* `all()`: Returns an array with all the transactions.
 
 
 #### Amenity
@@ -90,6 +150,7 @@ Each Room has a list of Amenities, such as Wi-Fi, A/C etc.
 
 _Note:_ The primary key of an Amenity entry is the tuple (`room_id`, `hotel_id`, `amenity`).
 
+
 ##### Methods:
 * `all()`: Returns an array of strings representing all the distinct amenities available among all hotels and rooms.
 * `ofRoom($room_id, $hotel_id)`: Returns an array of Amenity objects that represent all amenities of the Room with key (`$room_id`, `$hotel_id`).
@@ -98,12 +159,10 @@ _Note:_ The primary key of an Amenity entry is the tuple (`room_id`, `hotel_id`,
 #### City
 Each Hotel, HotelGroup is located in a city.
 ##### Properties
-* `city_name`: The name of the city
-* `hotels_in_city`: The number of hotels located in the city (computed)
+* `city_name`: The name of the city.
+* `hotels_in_city`: The number of hotels located in the city. (computed)
+
 
 ##### Methods
 * `all()`: Returns an array of tuples containing all the cities along with the number of hotels located in each city.
 * `hotels_in_city_getter()`
-
-
-#### ...
