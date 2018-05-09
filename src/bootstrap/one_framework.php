@@ -524,7 +524,7 @@ class View
         extract($this->data, EXTR_OVERWRITE);//set global all variables to the view
 
         if (file_exists($this->src)) {
-            $block = ['title' => '', 'content' => ''];
+            $block = ['title' => '', 'content' => '', 'scripts' => '', 'stylesheets' => []];
             ob_start();
             include_once($this->src); //scoped to this class
             $output = ob_get_clean();

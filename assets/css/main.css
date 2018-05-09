@@ -1,7 +1,32 @@
 /* General */
 html, body {
+    background: #F9F9F9;
     font-family: Nunito, sans-serif;
     font-size: 17px;
+}
+
+/* Datepickers */
+.input-daterange {
+    align-items: start;
+}
+
+/* noUISlider range container */
+.nouislider-container {
+    padding: 0 5px;
+}
+
+html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
+    width: 10px;
+    right: -5px;
+    cursor: ew-resize;
+}
+
+.noUi-base {
+    cursor: pointer;
+}
+
+.noUi-handle::before, .noUi-handle::after {
+    display: none;
 }
 
 /* Navigation menu */
@@ -46,13 +71,13 @@ section.hero h2 {
                  0px 18px 23px rgba(0, 0, 0, 0.2);
 }
 
-section.hero .hero-search-container {
+section.hero .hero-searchbox-container {
     width: 100%;
     max-width: 720px;
     margin: 0 auto;
 }
 
-section.hero .hero-search {
+section.hero .hero-searchbox {
     display: block;
     width: 100%;
     padding: .5rem 1rem;
@@ -64,13 +89,13 @@ section.hero .hero-search {
     transition: box-shadow .5s, border .5s;
 }
 
-section.hero .hero-search:focus {
+section.hero .hero-searchbox:focus {
     border: 1px solid #ACB2B8;
     box-shadow: inset 0 0 20px 2px rgba(0, 0, 0, .2);
     outline: none;
 }
 
-section.hero .hero-search-container .btn {
+section.hero .hero-searchbox-container .btn, section.search-results .results-searchbox-container .btn {
     vertical-align: top;
 }
 
@@ -87,4 +112,77 @@ section.offers h3 {
     margin-bottom: .5em;
     color: white;
     font-weight: bold;
+}
+
+section.general {
+    padding: 2rem 0;
+}
+
+section.search-results .aside-container {
+    padding-right: 0;
+}
+
+section.search-results aside {
+    padding: 1rem;
+    border: 1px solid #dadcdf;
+    background-color: #ebebeb;
+    border-radius: .25rem;
+}
+
+section.search-results aside h4 {
+    font-weight: bold;
+}
+
+section.search-results aside .search-filters .filter-title {
+    margin: 2rem 0 .5rem;
+}
+
+section.search-results aside .search-filters .filter.collapsible {
+    padding: .5rem 0 .25rem 2rem;
+}
+
+section.search-results aside .search-filters .filter-title > a {
+    color: inherit;
+    text-decoration: none;
+}
+
+section.search-results aside .search-filters .filter-title > a .collapse-arrow::before {
+    content: "\25BE";
+    padding-right: .5rem;
+}
+
+section.search-results aside .search-filters .filter-title > a.collapsed .collapse-arrow::before {
+    content: "\25B8";
+    padding-right: .5rem;
+}
+
+section.search-results aside .search-filters label {
+    display: block;
+    cursor: pointer;
+}
+
+section.search-results aside .search-filters label :checked ~ span {
+    font-weight: bold;
+}
+
+section.search-results .results-searchbox-container {
+    font-size: 1.75rem;
+}
+
+section.search-results .results-searchbox {
+    display: block;
+    width: 100%;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    background-clip: padding-box;
+    border: 1px solid #CED4DA;
+    color: #292929;
+    transition: box-shadow .5s, border .5s;
+}
+
+section.search-results .results-searchbox:focus {
+    border: 1px solid #ACB2B8;
+    box-shadow: inset 0 0 10px 2px rgba(0, 0, 0, .1);
+    outline: none;
 }

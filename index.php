@@ -26,12 +26,6 @@ $app->get('/', function () use ($app) {
 
 });
 
-$app->post('/search', function () use ($app) {
-
-	var_dump($_POST);
-
-});
-
 
 
 # Launch app
