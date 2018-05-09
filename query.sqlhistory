@@ -12,6 +12,7 @@ CREATE TABLE Hotel_Room (
     Expandable varchar(15) DEFAULT '',
     Repairs_need boolean DEFAULT 0,
     Price decimal(5, 2) UNSIGNED NOT NULL,
+    img_src varchar(255),
     PRIMARY KEY (Room_ID, Hotel_ID)
 );
 
@@ -31,6 +32,8 @@ CREATE TABLE Hotel (
     Address_City varchar(42) NOT NULL,
     Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
     Number_of_rooms smallint(4) UNSIGNED NOT NULL,
+    img_src varchar(255),
+    Hotel_Name varchar(42) NOT NULL,
     Hotel_group_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel_group(Hotel_group_ID),
     PRIMARY KEY (Hotel_ID)
 );
@@ -54,6 +57,8 @@ CREATE TABLE Hotel_group (
     Address_Number smallint(4) UNSIGNED NOT NULL,
     Address_City varchar(42) NOT NULL,
     Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
+    Hotel_group_Name varchar(42) NOT NULL,
+    img_src varchar(255),
     PRIMARY KEY (Hotel_group_ID)
 );
 
