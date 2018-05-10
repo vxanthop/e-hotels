@@ -4,25 +4,31 @@ namespace models;
 
 class HotelGroup extends Model {
 
-    public $hotel_group_id, $number_of_hotels;
+    public $id, $name, $img_src, $number_of_hotels;
 
     protected $mapper = [
-        'Hotel_Group_ID' => ['hotel_group_id', 'int'],
-        'Number_of_Hotels' => ['number_of_hotels', 'int']
+        'Hotel_group_ID' => ['hotel_group_id', 'int'],
+        'Number_of_hotels' => ['number_of_hotels', 'int'],
+        'Hotel_group_Name' => 'name',
     ];
+
+    public static function all() {
+        $query = DB::query('SELECT * FROM Hotel_group');
+        return DB::getCollection($query);
+    }
 
     public function address_getter() {
         return $this->address = [
             'street' => $this->Address_Street,
-            'number' => $this->Address_Number,
-            'postal_code' => $this->Address_Postal_code,
+            'number' => intval($this->Address_Number),
+            'postal_code' => intval($this->Address_Postal_Code),
             'city' => $this->Address_City
         ];
     }
 
     public function email_addresses_getter() {
-        $query = DB::query('SELECT Email_Address FROM Hotel_Group_Email_Address WHERE
-            Hotel_Group_ID = ' . $this->hotel_id);
+        $query = DB::query('SELECT Email_Address FROM Hotel_group_Email_Address WHERE
+            Hotel_group_ID = ' . $this->id);
         
         $this->email_addresses = [];
         while($row = $query->fetch_assoc()) {
@@ -33,12 +39,12 @@ class HotelGroup extends Model {
     }
 
     public function phone_numbers_getter() {
-        $query = DB::query('SELECT Phone_Number FROM Hotel_Group_Numbers WHERE
-            Hotel_Group_ID = ' . $this->hotel_group_id);
+        $query = DB::query('SELECT Phone_Number FROM Hotel_group_Phone_Number WHERE
+            Hotel_group_ID = ' . $this->id);
         
         $this->phone_numbers = [];
         while($row = $query->fetch_assoc()) {
-            $this->phone_numbers[] = $row['Phone_Number'];
+            $this->phone_numbers[] = intval($row['Phone_Number']);
         }
 
         return $this->phone_numbers;
