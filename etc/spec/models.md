@@ -70,10 +70,8 @@ Each Employee works in a Hotel.
 * `last_name`: The last name of the Employee.
 * `current_job`: The current job of the Employee. (computed)
 * `address`: An array containing all information about the address of the Employee (`street`, `number`, `postal_code`, `city`). (computed)
-*
 
 ##### Methods
-* `all()`: Returns an array of all Employees.
 * `address_getter()`
 * `current_job_getter()`
 
@@ -89,7 +87,6 @@ Each customer rents a Room and is involved in a Transcation.
 * `first_registration`: Records the first registration the Customer made to the system.z
 
 ##### Methods
-* `all()`: Returns an array of all Customers.
 * `address_getter()`
 
 #### Room
