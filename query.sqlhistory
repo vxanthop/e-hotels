@@ -20,7 +20,7 @@ CREATE TABLE Hotel_Amenities (
     Room_ID smallint(4) UNSIGNED NOT NULL,
     Hotel_ID int(10) UNSIGNED NOT NULL,
     amenity varchar(42) NOT NULL,
-    FOREIGN KEY (Room_ID, Hotel_ID) REFERENCES Hotel_Room(Room_ID, Hotel_ID)
+    FOREIGN KEY (Room_ID, Hotel_ID) REFERENCES Hotel_Room(Room_ID, Hotel_ID),
     PRIMARY KEY (Room_ID, Hotel_ID, amenity)
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE Hotel_Phone_Number (
 
 CREATE TABLE Hotel_Email_Address (
     Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Email_Address varchar(42) NOT NULL
+    Email_Address varchar(42) NOT NULL,
     PRIMARY KEY (Hotel_ID, Email_Address)
 );
 
@@ -64,7 +64,7 @@ CREATE TABLE Hotel_group (
 
 CREATE TABLE Hotel_group_Email_Address (
     Hotel_group_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel_group(Hotel_group_ID),
-    Email_Address varchar(42) NOT NULL
+    Email_Address varchar(42) NOT NULL,
     PRIMARY KEY (Hotel_group_ID, Email_Address)
 );
 
