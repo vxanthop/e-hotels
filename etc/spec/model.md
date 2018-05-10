@@ -6,6 +6,7 @@ Entity classes represent the "real-life" objects of the app, such as a Person or
 
 * [Auto-properties](#auto-properties)
 * [Mapper](#mapper)
+* [DB queries](#db-queries)
 * [Computed properties](#computed-properties)
 
 ### Auto-properties
@@ -71,6 +72,63 @@ class User extends Model {
 ```
 
 The key of each mapper entry represents the MySQL field name. The value can be a string -the property name- or an array with 2 elements, the property name and the property type (`int`, `string`, `float`, `boolean` or `json`). Field names not included in the mapper will be assigned as they are, e.g. the `username` field will be automatically assigned to the `$username` property.
+
+### DB queries
+
+Each entity model inheriting from Model will have the following methods available:
+* `getOne($find)`: Searches the database to find entries that match `$find`. `$find` is an associative array with entries of the format `property => value`. Both schema field names and model property names can be used in place of `property`.
+    ```php
+    $user = User::getOne(['first' => 'John', 'last' => 'Doe']);
+    echo $user->username;
+    /* Prints: john_doe */
+    ```
+* `create($keys)`: Inserts an entry with key-value pairs given by `$keys`, in the same format as described above for `$find`. Returns 1 on success, 0 on failure.
+    ```php
+    echo User::create([
+        'first' => 'John',
+        'last' => 'Doe',
+        'username' => 'john_doe',
+        'birthyear' => 1984
+    ]);
+    /* Prints: 1 */
+
+    echo User::create([
+        'fullname' => 'John Doe',
+        'birthyear' => 1984
+    ]);
+    /* Prints: 0 (no fullname field exists in schema and username is not specified) */
+    ```
+* `update($find, $replace)`: Searches the database to find entries that match `$find`. All entries matched will have their fields updated, as determined by `$replace`. `$replace` has the same format as `$find`.
+    ```php
+    /* Updates all users with first name 'John' and set their birthyear to 2000 */
+    echo User::update(['first' => 'John'], ['birthyear' => 2000]);
+    /* Prints: 1 */
+    ```
+* `delete($find)`: Searches the database to find entries that match `$find` and deletes them. Returns the number of deleted entries.
+    ```php
+    /* Deletes all users with last name 'Doe' */
+    echo User::delete(['last' => 'Doe']);
+    /* Prints: 1 */
+    ```
+
+In order for the above methods to function properly, each entity model needs to have a protected static `$table` variable defined and its value should be the name of the database table associated with the model. For example:
+
+```php
+// models/User.php
+
+class User extends Model {
+
+    public $first, $last, $username, $birthyear;
+
+    protected static $table = 'Users';
+    protected static $mapper = [
+        'first_name' => 'first',
+        'last_name' => 'last',
+        'birthyear' => ['birthyear', 'int'],
+    ];
+
+}
+```
 
 ### Computed properties
 
