@@ -96,7 +96,9 @@ Each entity model inheriting from Model will have the following methods availabl
         'fullname' => 'John Doe',
         'birthyear' => 1984
     ]);
-    /* Prints: 0 (no fullname field exists in schema and username is not specified) */
+    /* Prints: 0
+     * (no fullname field exists in schema and username is not specified)
+     */
     ```
 * `update($find, $replace)`: Searches the database to find entries that match `$find`. All entries matched will have their fields updated, as determined by `$replace`. `$replace` has the same format as `$find`.
     ```php

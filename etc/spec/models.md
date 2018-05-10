@@ -2,7 +2,7 @@
 
 # Models
 
-Models are either [_utility_](#utility-classes) classes or [_entity_](#entity-classes) classes.
+Models are either [_utility_](#utility-classes) classes or [_entity_](#entity-classes) classes. All entity classes inherit from the [`Model`](model.md) class.
 
 ### Utility classes
 They provide global functionality to the app, like requesting data from a database or converting Greek text to Latin characters or performing arithmetic operations with Datesetc.
@@ -15,7 +15,7 @@ They provide global functionality to the app, like requesting data from a databa
     * `getOne($query, $model = NULL)` Fetches the first result from a `SELECT` query and converts it to an object of the `$model` class. If no `$model` parameter has been given, it tries to guess it from the backtrace.
 
 ### Entity classes
-Entity classes represent the "real-life" objects of the app, such as a Person or a Transaction etc. All entity classes inherit from the `Model` class, which is documented [here](model.md). The entity classes used in this app are the following:
+Entity classes represent the "real-life" objects of the app, such as a Person or a Transaction etc. The entity classes used in this app are the following:
 
 * [HotelGroup](#hotelgroup)
 * [Hotel](#hotel)
