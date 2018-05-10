@@ -8,15 +8,22 @@ For example, a `/users` request may be handled by the `UserController::index()` 
 
 The controllers used in this app are the following:
 
-* [HotelController](#hotelcontroller)
 * [ReservationController](#reservationcontroller)
 * ...
 
 
-### HotelController
-_Insert here description and specs of the Hotel controller._
-
 ### ReservationController
-_Insert here description and specs of the Reservation controller._
+Handles all requests regarding the confirmation and the storage of a Reservation of a Hotel Room.
+
+#### Methods
+
+* `prepare($data)`: `/reserve/prepare`
+    `$data` contains the information of the customer IRS number, the (`room_id`, `hotel_id`) key pair that identifies the room to be reserved, the start date and the end date of the reservation.
+    The method is responsible to confirm that the customer is already registered, otherwise it should redirect him to the user registration page. Also, confirmation is needed that the room exists and is available for the designated period, otherwise the user should be redirected to an error page.
+    If both prerequisites are met, the controller should display a page where the room information, the user's data, the reservation dates and a confirmation button are presented. If the user clicks the confirmation button, he should be redirected to the `create` method's URL.
+* `create($data)`: `/reserve/create`
+    `$data` is the same as above. The method needs to call the appropriate Model methods to store the Registration in the database. Upon completion, the user will be redirected to the `view` method's URL.
+* `view($)`: `/reserve/view/$`
+    Finds the reservation that is identified by `$` and displays its information to the user.
 
 ### ...
