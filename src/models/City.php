@@ -6,7 +6,7 @@ class City extends Model {
 
     public $city_name;
 
-    protected $mapper = [
+    protected static $mapper = [
         'Address_City' => 'city_name'
     ];
     
