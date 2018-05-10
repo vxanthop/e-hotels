@@ -6,7 +6,7 @@ class Customer extends Model {
 
     public $cust_IRS, $SSN, $first_name, $last_name, $first_registration;
     
-    protected $mapper = [
+    protected static $mapper = [
         'Customer_IRS' => ['cust_IRS', 'int'],
         'Social_Security_Number' => ['SSN', 'int'],
         'Last_name' => ['last_name', 'strg'],
