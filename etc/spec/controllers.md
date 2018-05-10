@@ -8,12 +8,12 @@ For example, a `/users` request may be handled by the `UserController::index()` 
 
 The controllers used in this app are the following:
 
-* [ReservationController](#reservationcontroller)
-* [CustomerController](#customercontroller)
+* [reservationController](#reservationcontroller)
+* [customerController](#customercontroller)
 * ...
 
 
-### ReservationController
+### reservationController
 Handles all requests regarding the confirmation and the storage of a Reservation of a Hotel Room.
 
 #### Methods
@@ -28,13 +28,15 @@ Handles all requests regarding the confirmation and the storage of a Reservation
     Finds the reservation that is identified by `$` and displays its information to the user.
 
 
-### CustomerController
+### customerController
 Handles all requests regarding the registration, the update and the removal of users.
 
 #### Methods
 
 * `register($irs = NULL)`: `/customer/register`  
-    If `$irs` is provided, the method checks if customer with IRS = `$irs` exists. If so, the user is redirected to an error page. If not, it displays a form which enables the creation of a customer by filling the required fields. If no `$irs` is provided, then the same form is displayed with an extra field for the IRS number. Submission of the form should redirect the user to `/customer/create`.
+    * If `$irs` is provided, the method checks if customer with `$irs` as IRS number exists. If so, the user is redirected to an error page. If not, it displays a form which enables the creation of a customer by filling the required fields.
+    * If no `$irs` is provided, then the same form is displayed with an extra field for the IRS number.
+    * Submission of the form should redirect the user to `/customer/create`.
 * `registerSubmit($data)`: `/customer/registerSubmit`  
     Validates `$data` and passes them to the necessary model methods in order to create a new customer entry in the database. On success, the user should be redirected to `/customer/view/$irs`. On failure, the user should be redirected to an error page.
 * `view($irs)`: `/customer/view/$irs`  
