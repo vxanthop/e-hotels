@@ -52,7 +52,7 @@ CREATE TABLE Hotel_Email_Address (
 
 CREATE TABLE Hotel_group (
     Hotel_group_ID int(10) UNSIGNED NOT NULL,
-    Number_of_rooms smallint(4) UNSIGNED NOT NULL,
+    Number_of_hotels smallint(4) UNSIGNED NOT NULL,
     Address_Street varchar(42) NOT NULL,
     Address_Number smallint(4) UNSIGNED NOT NULL,
     Address_City varchar(42) NOT NULL,
