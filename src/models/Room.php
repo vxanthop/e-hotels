@@ -6,7 +6,7 @@ class Room extends Model {
 
     public $room_id, $hotel_id, $capacity, $view, $expandable, $repairs_need, $price, $img_src;
 
-    protected $mapper = [
+    protected static $mapper = [
         'Room_ID' => ['room_id', 'int'],
         'Hotel_ID' => ['hotel_id', 'int'],
         'Capacity' => ['capacity', 'int'],
@@ -61,7 +61,7 @@ class Room extends Model {
             $irs[] = intval($row['Customer_IRS']);
         }
         if(count($irs) == 1) {
-            return Customer::getOne($irs[0]);
+            return Customer::getOne(['id' => $irs[0]]);
         } else {
             return NULL;
         }

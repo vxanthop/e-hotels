@@ -6,7 +6,7 @@ class HotelGroup extends Model {
 
     public $id, $name, $img_src, $number_of_hotels;
 
-    protected $mapper = [
+    protected static $mapper = [
         'Hotel_group_ID' => ['hotel_group_id', 'int'],
         'Number_of_hotels' => ['number_of_hotels', 'int'],
         'Hotel_group_Name' => 'name',

@@ -6,7 +6,7 @@ class Amenity extends Model {
 
     public $amenity, $room_id, $hotel_id;
 
-    protected $mapper = [
+    protected static $mapper = [
         'Room_ID' => ['room_id', 'int'],
         'Hotel_ID' => ['hotel_id', 'int'],
     ];
