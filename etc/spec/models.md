@@ -112,12 +112,14 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
 * `repairs_need`: A boolean value indicating whether or not the Room needs any repairs.
 * `price`: A float number with precision of 2 digits that describes the renting cost of the Room per night.
 * `amenities`: A list of strings representing the amenities of the Room. (computed)
+* `current_customer`: A Customer object representing the customer that is currently renting the room. If none is found, it is NULL.
 
 ##### Methods:
 * `all()`: Returns an array of all the Rooms available along with their properties.
 * `reserve($cust_IRS, $start_date, $finish_date)`: Is executed when a customer with key `$cust_IRS` reserves the room for the dates specified by `$start_date`, `$finish_date`.
 * `check_in()`: Is executed when the customer that rented the room checks in.
 * `amenities_getter()`
+* `current_customer_getter()`
 
 
 #### Transaction
