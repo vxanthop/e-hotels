@@ -13,6 +13,14 @@ class Hotel extends Model {
         'Hotel_group_ID' => ['hotel_group_id', 'int']
     ];
 
+    public static function ofHotelGroup($hotel_group_id) {
+        $query = DB::query('SELECT * FROM Hotel WHERE
+            Hotel_group_ID = ' . $hotel_group_id 
+            );
+
+        return DB::getCollection($query);
+    }
+
     public function address_getter() {
         return $this->address = [
             'street' => $this->Address_Street,
@@ -44,6 +52,23 @@ class Hotel extends Model {
         }
 
         return $this->phone_numbers;
+    }
+
+    public function manager_getter() {
+        $query = DB::query('SELECT Employee_IRS FROM Works WHERE
+            Hotel_ID = ' . $this->hotel_id .'
+            AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())
+            AND Position = "manager"');
+        
+        $managers = [];
+        while($row = $query->fetch_assoc()) {
+            $managers[] = $row['Position'];
+        }
+        if(count($managers) == 1) {
+            return $managers[0];
+        } else {
+            die('This Hotel has '.count($managers).' Managers instead of 1.');
+        }
     }
 
 }
