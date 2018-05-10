@@ -2,8 +2,7 @@
 
 namespace controllers;
 
-use \models\Config as Config;
-use \models\DB as DB;
+use \models\HotelGroup as HotelGroup;
 
 class searchController {
 
@@ -24,12 +23,7 @@ class searchController {
             'rooms_start' => $vars['rooms_start'] ?? 1,
             'rooms_end' => $vars['rooms_end'] ?? 100,
             'amenities' => $vars['amenities'] ?? [],
-            'all_hotel_groups' => [
-                ['id' => 2391, 'name' => 'Mainos'],
-                ['id' => 1249, 'name' => 'Grande Bretagne'],
-                ['id' => 1104, 'name' => 'La Reine'],
-                ['id' => 1444, 'name' => 'Papadopoulos'],
-            ],
+            'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => ['A/C', 'Satellite TV', 'Barbecue', 'Bathtub', 'Parking'],
         ];
         /* If no hotel groups are selected, select all instead so that query makes sense */

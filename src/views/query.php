@@ -47,7 +47,7 @@
                                 </h6>
                                 <div class="collapse<?= count($hotel_groups) < count($all_hotel_groups) ? ' show' : '' ?> collapsible filter" id="hotel-group-filter">
                                 <?php foreach($all_hotel_groups as $group) { ?>
-                                    <label><input type="checkbox" name="hotel_groups[]" value="<?= $group['id'] ?>"<?= in_array($group['id'], $hotel_groups) ? " checked" : "" ?> > <span><?= $group['name'] ?></span></label>
+                                    <label><input type="checkbox" name="hotel_groups[]" value="<?= $group->id ?>"<?= in_array($group->id, $hotel_groups) ? " checked" : "" ?> > <span><?= $group->name ?></span></label>
                                 <?php } ?>
                                     <div class="btn-group" role="group">
                                         <button id="allGroupsBtn" type="button" class="btn btn-secondary">All</button>
