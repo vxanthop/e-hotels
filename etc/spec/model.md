@@ -52,7 +52,7 @@ Array
 
 ### Mapper
 
-Auto-properties by default will have a `string` type and their name will be the same as the field name. If you need to rename some properties or change their type, you should use a mapper. A mapper is an associative array that is assigned to the protected `$mapper` property in your Model, as shown in the following example:
+Auto-properties by default will have a `string` type and their name will be the same as the field name. If you need to rename some properties or change their type, you should use a mapper. A mapper is an associative array that is assigned to the protected static `$mapper` property in your Model, as shown in the following example:
 
 ```php
 // models/User.php
@@ -61,7 +61,7 @@ class User extends Model {
 
     public $first, $last, $username, $birthyear;
 
-    protected $mapper = [
+    protected static $mapper = [
         'first_name' => 'first',
         'last_name' => 'last',
         'birthyear' => ['birthyear', 'int'],
