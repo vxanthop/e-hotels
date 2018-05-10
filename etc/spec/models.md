@@ -34,14 +34,12 @@ Each Hotel Group contains one or more Hotels.
 * `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`). (computed)
 * `email_addresses`: The email addresses of the Hotel Group. (computed)
 * `phone_numbers`: The phone numbers of the Hotel Group. (computed)
-* `hotels`:  An array of Hotel objects representing the hotels contained in the Hotel Group. (computed)
 
 ##### Methods
 * `all()`: Returns an array of all Hotel Groups
 * `address_getter()`
 * `email_addresses_getter()`
 * `phone_numbers_getter()`
-* `hotels_getter()`
 
 
 #### Hotel
