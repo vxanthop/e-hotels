@@ -3,6 +3,7 @@
 namespace controllers;
 
 use \models\HotelGroup as HotelGroup;
+use \models\Amenity as Amenity;
 
 class searchController {
 
@@ -24,7 +25,7 @@ class searchController {
             'rooms_end' => $vars['rooms_end'] ?? 100,
             'amenities' => $vars['amenities'] ?? [],
             'all_hotel_groups' => HotelGroup::all(),
-            'all_amenities' => ['A/C', 'Satellite TV', 'Barbecue', 'Bathtub', 'Parking'],
+            'all_amenities' => Amenity::all(),
         ];
         /* If no hotel groups are selected, select all instead so that query makes sense */
         if(empty($data['hotel_groups'])) {
