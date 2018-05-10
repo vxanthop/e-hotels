@@ -7,9 +7,11 @@ Models are either [_utility_](#utility-classes) classes or [_entity_](#entity-cl
 ### Utility classes
 They provide global functionality to the app, like requesting data from a database or converting Greek text to Latin characters or performing arithmetic operations with Datesetc.
 
-* **Config**: Reads the `/settings.php` file and returns configuration parameters with the `get` method.
+* **Config**  
+    Reads the `/settings.php` file and returns configuration parameters with the `get` method.
     * `get($param)` Returns the value of the configuration parameter with key `$param`.
-* **DB**: Connects with the database and provides methods to fetch and process data from it.
+* **DB**  
+    Connects with the database and provides methods to fetch and process data from it.
     * `query($sql)` Executes the SQL query given by the string `$sql` and returns the results.
     * `getCollection($query, $model = NULL)` Converts the results of a `SELECT` query to an **array** of objects of the `$model` class. If no `$model` parameter has been given, it tries to guess it from the backtrace.
     * `getOne($query, $model = NULL)` Fetches the first result from a `SELECT` query and converts it to an object of the `$model` class. If no `$model` parameter has been given, it tries to guess it from the backtrace.
