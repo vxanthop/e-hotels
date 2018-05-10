@@ -24,7 +24,8 @@ class Employee extends Model {
 
     public function current_job_getter() {
         $query = DB::query('SELECT Position FROM Works WHERE
-            Employee_IRS = ' . $this->emp_IRS);
+            Employee_IRS = ' . $this->emp_IRS .'
+        AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
 
         $current_jobs = [];
         while($row = $query->fetch_assoc()) {
