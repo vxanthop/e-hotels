@@ -86,12 +86,11 @@ Each customer rents a Room and is involved in a Transcation.
 * `first_name`: The first name of the Customer.
 * `last_name`: The last name of the Customer.
 * `address`: An array containing all information about the address of the Customer (`street`, `number`, `postal_code`, `city`). (computed)
-* `first_registration`: Records the first registration the Customer made to the system. (computed)
+* `first_registration`: Records the first registration the Customer made to the system.z
 
 ##### Methods
 * `all()`: Returns an array of all Customers.
 * `address_getter()`
-* `first_registration_getter()`
 
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
