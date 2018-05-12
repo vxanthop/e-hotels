@@ -4,26 +4,22 @@ namespace models;
 
 class HotelGroup extends Model {
 
-    public $id, $name, $img_src, $number_of_hotels;
+    public $id, $address, $name, $img_src, $number_of_hotels;
 
+    protected static $table = 'Hotel_group';
     protected static $mapper = [
-        'Hotel_group_ID' => ['hotel_group_id', 'int'],
+        'Hotel_group_ID' => ['id', 'int'],
         'Number_of_hotels' => ['number_of_hotels', 'int'],
         'Hotel_group_Name' => 'name',
+        'Address_Street' => 'address[street]',
+        'Address_Number' => ['address[number]', 'int'],
+        'Address_City' => 'address[city]',
+        'Address_Postal_Code' => ['address[postal_code]', 'int'],
     ];
 
     public static function all() {
         $query = DB::query('SELECT * FROM Hotel_group');
         return DB::getCollection($query);
-    }
-
-    public function address_getter() {
-        return $this->address = [
-            'street' => $this->Address_Street,
-            'number' => intval($this->Address_Number),
-            'postal_code' => intval($this->Address_Postal_Code),
-            'city' => $this->Address_City
-        ];
     }
 
     public function email_addresses_getter() {

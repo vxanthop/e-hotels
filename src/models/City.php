@@ -5,10 +5,6 @@ namespace models;
 class City extends Model {
 
     public $city_name;
-
-    protected static $mapper = [
-        'Address_City' => 'city_name'
-    ];
     
     /*
         @input: None

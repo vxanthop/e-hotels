@@ -4,23 +4,19 @@ namespace models;
 
 class Customer extends Model {
 
-    public $cust_IRS, $SSN, $first_name, $last_name, $first_registration;
+    public $cust_IRS, $SSN, $first, $last, $first_registration;
     
+    protected static $table = 'Customer';
     protected static $mapper = [
         'Customer_IRS' => ['cust_IRS', 'int'],
-        'Social_Security_Number' => ['SSN', 'int'],
+        'Social_Security_Number' => 'SSN',
         'First_Name' => 'first_name',
         'Last_Name' => 'last_name',
-        'First_Registration' => 'first_registration'
+        'First_Registration' => 'first_registration',
+        'Address_Street' => 'address[street]',
+        'Address_Number' => ['address[number]', 'int'],
+        'Address_City' => 'address[city]',
+        'Address_Postal_Code' => ['address[postal_code]', 'int'],
     ];
-
-    public function address_getter() {
-        return $this->address = [
-            'street' => $this->Address_Street,
-            'number' => $this->Address_Number,
-            'postal_code' => $this->Address_Postal_code,
-            'city' => $this->Address_City
-        ];
-    }
 
 }

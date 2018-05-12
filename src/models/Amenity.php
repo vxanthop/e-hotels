@@ -6,6 +6,7 @@ class Amenity extends Model {
 
     public $amenity, $room_id, $hotel_id;
 
+    protected static $table = 'Room_Amenities';
     protected static $mapper = [
         'Room_ID' => ['room_id', 'int'],
         'Hotel_ID' => ['hotel_id', 'int'],
@@ -16,7 +17,7 @@ class Amenity extends Model {
         @output: An array of Amenity objects that represent the amenities available in the specified Room
     */
     public static function ofRoom($room_id, $hotel_id) {
-        $query = DB::query('SELECT amenity FROM Hotel_Amenities WHERE
+        $query = DB::query('SELECT amenity FROM Room_Amenities WHERE
             Room_ID = ' . $room_id . '
         AND Hotel_ID = ' . $hotel_id);
 
@@ -28,7 +29,7 @@ class Amenity extends Model {
         @output: An array of strings representing all the various amenities available among all hotels and rooms
     */
     public static function all(){
-        $query = DB::query('SELECT DISTINCT amenity FROM Hotel_Amenities');
+        $query = DB::query('SELECT DISTINCT amenity FROM Room_Amenities');
         $amenities = [];
         /*  For each result in the query, fetch_assoc() will return an associative array
             like ['amenity' => value]

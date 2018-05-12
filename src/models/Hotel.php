@@ -4,13 +4,18 @@ namespace models;
 
 class Hotel extends Model {
 
-    public $hotel_id, $hotel_group_id, $stars, $number_of_rooms;
+    public $id, $address, $hotel_group_id, $stars, $number_of_rooms;
 
+    protected static $table = 'Hotel';
     protected static $mapper = [
-        'Hotel_ID' => ['hotel_id', 'int'],
+        'Hotel_ID' => ['id', 'int'],
         'Stars' => ['stars', 'int'],
         'Number_of_rooms' => ['number_of_rooms', 'int'],
-        'Hotel_group_ID' => ['hotel_group_id', 'int']
+        'Hotel_group_ID' => ['hotel_group_id', 'int'],
+        'Address_Street' => 'address[street]',
+        'Address_Number' => ['address[number]', 'int'],
+        'Address_City' => 'address[city]',
+        'Address_Postal_Code' => ['address[postal_code]', 'int'],
     ];
 
     public static function ofHotelGroup($hotel_group_id) {
@@ -21,18 +26,9 @@ class Hotel extends Model {
         return DB::getCollection($query);
     }
 
-    public function address_getter() {
-        return $this->address = [
-            'street' => $this->Address_Street,
-            'number' => $this->Address_Number,
-            'postal_code' => $this->Address_Postal_code,
-            'city' => $this->Address_City
-        ];
-    }
-
     public function email_addresses_getter() {
         $query = DB::query('SELECT Email_Address FROM Hotel_Email_Address WHERE
-            Hotel_ID = ' . $this->hotel_id);
+            Hotel_ID = ' . $this->id);
         
         $this->email_addresses = [];
         while($row = $query->fetch_assoc()) {
@@ -43,8 +39,8 @@ class Hotel extends Model {
     }
 
     public function phone_numbers_getter() {
-        $query = DB::query('SELECT Phone_Number FROM Hotel_Phone_number WHERE
-            Hotel_ID = ' . $this->hotel_id);
+        $query = DB::query('SELECT Phone_Number FROM Hotel_Phone_Number WHERE
+            Hotel_ID = ' . $this->id);
         
         $this->phone_numbers = [];
         while($row = $query->fetch_assoc()) {
@@ -56,7 +52,7 @@ class Hotel extends Model {
 
     public function manager_getter() {
         $query = DB::query('SELECT Employee_IRS FROM Works WHERE
-            Hotel_ID = ' . $this->hotel_id .'
+            Hotel_ID = ' . $this->id .'
             AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())
             AND Position = "manager"');
         

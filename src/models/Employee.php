@@ -4,23 +4,19 @@ namespace models;
 
 class Employee extends Model {
 
-    public $emp_IRS, $SSN, $first_name, $last_name;
+    public $emp_IRS, $SSN, $first_name, $last_name, $address;
     
+    protected static $table = 'Employee';
     protected static $mapper = [
         'Employee_IRS' => ['emp_IRS', 'int'],
-        'Social_Security_Number' => ['SSN', 'int'],
+        'Social_Security_Number' => 'SSN',
         'First_Name' => 'first_name',
         'Last_Name' => 'last_name',
+        'Address_Street' => 'address[street]',
+        'Address_Number' => ['address[number]', 'int'],
+        'Address_City' => 'address[city]',
+        'Address_Postal_Code' => ['address[postal_code]', 'int'],
     ];
-
-    public function address_getter() {
-        return $this->address = [
-            'street' => $this->Address_Street,
-            'number' => $this->Address_Number,
-            'postal_code' => $this->Address_Postal_code,
-            'city' => $this->Address_City
-        ];
-    }
 
     public function current_job_getter() {
         $query = DB::query('SELECT Position FROM Works WHERE

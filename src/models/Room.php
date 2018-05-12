@@ -6,6 +6,7 @@ class Room extends Model {
 
     public $room_id, $hotel_id, $capacity, $view, $expandable, $repairs_need, $price, $img_src;
 
+    protected static $table = 'Hotel_Room';
     protected static $mapper = [
         'Room_ID' => ['room_id', 'int'],
         'Hotel_ID' => ['hotel_id', 'int'],
