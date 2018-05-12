@@ -4,55 +4,9 @@ CREATE DATABASE ehotels;
 
 GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
 
-CREATE TABLE Hotel_Room (
-    Room_ID smallint(4) UNSIGNED NOT NULL,
-    Hotel_ID int(10) UNSIGNED NOT NULL,
-    Capacity tinyint(2) UNSIGNED NOT NULL,
-    View boolean DEFAULT 0,
-    Expandable varchar(15) DEFAULT '',
-    Repairs_need boolean DEFAULT 0,
-    Price decimal(5, 2) UNSIGNED NOT NULL,
-    img_src varchar(255),
-    PRIMARY KEY (Room_ID, Hotel_ID)
-);
-
-CREATE TABLE Hotel_Amenities (
-    Room_ID smallint(4) UNSIGNED NOT NULL,
-    Hotel_ID int(10) UNSIGNED NOT NULL,
-    amenity varchar(42) NOT NULL,
-    FOREIGN KEY (Room_ID, Hotel_ID) REFERENCES Hotel_Room(Room_ID, Hotel_ID),
-    PRIMARY KEY (Room_ID, Hotel_ID, amenity)
-);
-
-CREATE TABLE Hotel (
-    Hotel_ID int(10) UNSIGNED NOT NULL,
-    Stars tinyint(1) UNSIGNED NOT NULL,
-    Address_Street varchar(42) NOT NULL,
-    Address_Number smallint(4) UNSIGNED NOT NULL,
-    Address_City varchar(42) NOT NULL,
-    Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
-    Number_of_rooms smallint(4) UNSIGNED NOT NULL,
-    img_src varchar(255),
-    Hotel_Name varchar(42) NOT NULL,
-    Hotel_group_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel_group(Hotel_group_ID),
-    PRIMARY KEY (Hotel_ID)
-);
-
-CREATE TABLE Hotel_Phone_Number (
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Phone_Number int(10) UNSIGNED NOT NULL,
-    PRIMARY KEY (Hotel_ID, Phone_Number)
-);
-
-CREATE TABLE Hotel_Email_Address (
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Email_Address varchar(42) NOT NULL,
-    PRIMARY KEY (Hotel_ID, Email_Address)
-);
-
 CREATE TABLE Hotel_group (
-    Hotel_group_ID int(10) UNSIGNED NOT NULL,
-    Number_of_hotels smallint(4) UNSIGNED NOT NULL,
+    Hotel_group_ID int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
+    Number_of_hotels smallint(4) UNSIGNED DEFAULT 0,
     Address_Street varchar(42) NOT NULL,
     Address_Number smallint(4) UNSIGNED NOT NULL,
     Address_City varchar(42) NOT NULL,
@@ -63,39 +17,51 @@ CREATE TABLE Hotel_group (
 );
 
 CREATE TABLE Hotel_group_Email_Address (
-    Hotel_group_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel_group(Hotel_group_ID),
+    Hotel_group_ID int(10) UNSIGNED NOT NULL,
     Email_Address varchar(42) NOT NULL,
+    FOREIGN KEY (Hotel_group_ID) REFERENCES Hotel_group(Hotel_group_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Hotel_group_ID, Email_Address)
 );
 
 CREATE TABLE Hotel_group_Phone_Number (
-    Hotel_group_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel_group(Hotel_group_ID),
+    Hotel_group_ID int(10) UNSIGNED NOT NULL,
     Phone_Number int(10) UNSIGNED NOT NULL,
+    FOREIGN KEY (Hotel_group_ID) REFERENCES Hotel_group(Hotel_group_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Hotel_group_ID, Phone_Number)
 );
 
-CREATE TABLE Works (
-    Employee_IRS int(9) UNSIGNED NOT NULL REFERENCES Employee(Employee_IRS),
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Start_Date date NOT NULL,
-    Finish_Date date,
-    Position varchar(42) NOT NULL,
-    PRIMARY KEY (Employee_IRS, Hotel_ID)
+CREATE TABLE Hotel (
+    Hotel_ID int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
+    Hotel_group_ID int(10) UNSIGNED NOT NULL,
+    Stars tinyint(1) UNSIGNED NOT NULL,
+    Address_Street varchar(42) NOT NULL,
+    Address_Number smallint(4) UNSIGNED NOT NULL,
+    Address_City varchar(42) NOT NULL,
+    Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
+    Number_of_rooms smallint(4) UNSIGNED DEFAULT 0,
+    img_src varchar(255),
+    Hotel_Name varchar(42) NOT NULL,
+    FOREIGN KEY (Hotel_group_ID) REFERENCES Hotel_group(Hotel_group_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Hotel_ID)
 );
 
-CREATE TABLE Reserves (
-    Customer_IRS int(9) UNSIGNED NOT NULL REFERENCES Customer(Customer_IRS),
-    Room_ID smallint(4) UNSIGNED NOT NULL REFERENCES Hotel_Room(Room_ID),
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Start_Date date NOT NULL,
-    Finish_Date date,
-    Paid boolean DEFAULT 0,
-    PRIMARY KEY (Customer_IRS, Room_ID,Hotel_ID)
+CREATE TABLE Hotel_Phone_Number (
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    Phone_Number int(10) UNSIGNED NOT NULL,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Hotel_ID, Phone_Number)
+);
+
+CREATE TABLE Hotel_Email_Address (
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    Email_Address varchar(42) NOT NULL,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Hotel_ID, Email_Address)
 );
 
 CREATE TABLE Employee (
-    Employee_IRS int(9) UNSIGNED NOT NULL,
-    Social_Security_Number bigint(11) UNSIGNED NOT NULL,
+    Employee_IRS int(9) ZEROFILL UNSIGNED NOT NULL,
+    Social_Security_Number bigint(11) ZEROFILL UNSIGNED UNIQUE NOT NULL CHECK(Social_Security_Number >= 01010000000),
     Last_Name varchar(42) NOT NULL,
     First_Name varchar(42) NOT NULL,
     Address_Street varchar(42) NOT NULL,
@@ -105,9 +71,44 @@ CREATE TABLE Employee (
     PRIMARY KEY (Employee_IRS)
 );
 
+CREATE INDEX employee_fullname
+ON Employee (Last_Name, First_Name);
+
+CREATE TABLE Works (
+    Employee_IRS int(9) UNSIGNED NOT NULL,
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    Start_Date date NOT NULL,
+    Finish_Date date,
+    Position varchar(42) NOT NULL,
+    FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Employee_IRS, Hotel_ID, Start_Date, Position)
+);
+
+CREATE TABLE Hotel_Room (
+    Room_ID smallint(4) UNSIGNED AUTO_INCREMENT NOT NULL,
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    Capacity tinyint(2) UNSIGNED NOT NULL,
+    View boolean DEFAULT 0,
+    Expandable varchar(15) DEFAULT '',
+    Repairs_need boolean DEFAULT 0,
+    Price decimal(5, 2) UNSIGNED NOT NULL,
+    img_src varchar(255),
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Room_ID, Hotel_ID)
+);
+
+CREATE TABLE Room_Amenities (
+    Room_ID smallint(4) UNSIGNED NOT NULL,
+    Hotel_ID int(10) UNSIGNED NOT NULL,
+    amenity varchar(42) NOT NULL,
+    FOREIGN KEY (Room_ID, Hotel_ID) REFERENCES Hotel_Room(Room_ID, Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (Room_ID, Hotel_ID, amenity)
+);
+
 CREATE TABLE Customer (
-    Customer_IRS int(9) UNSIGNED NOT NULL,
-    Social_Security_Number bigint(11) UNSIGNED NOT NULL,
+    Customer_IRS int(9) ZEROFILL UNSIGNED NOT NULL,
+    Social_Security_Number bigint(11) ZEROFILL UNSIGNED UNIQUE NOT NULL CHECK(Social_Security_Number >= 01010000000),
     Last_Name varchar(42) NOT NULL,
     First_Name varchar(42) NOT NULL,
     Address_Street varchar(42) NOT NULL,
@@ -118,24 +119,55 @@ CREATE TABLE Customer (
     PRIMARY KEY (Customer_IRS)
 );
 
-CREATE TABLE Rents (
-    Customer_IRS int(9) UNSIGNED NOT NULL REFERENCES Customer(Customer_IRS),
-    Room_ID smallint(4) UNSIGNED NOT NULL REFERENCES Hotel_Room(Room_ID),
-    Employee_IRS int(9) UNSIGNED NOT NULL REFERENCES Employee(Employee_IRS),
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Payment_Transaction_ID int(10) UNSIGNED NOT NULL REFERENCES Payment_Transaction(Payment_Transaction_ID),
+CREATE INDEX customer_fullname
+ON Customer (Last_Name, First_Name);
+
+CREATE TABLE Reserves (
+    Room_ID smallint(4) UNSIGNED,
+    Hotel_ID int(10) UNSIGNED,
+    Customer_IRS int(9) UNSIGNED NOT NULL,
     Start_Date date NOT NULL,
     Finish_Date date,
-    PRIMARY KEY (Customer_IRS, Room_ID, Employee_IRS, Hotel_ID, Payment_Transaction_ID)
+    Paid boolean DEFAULT 0,
+    UNIQUE (Room_ID, Hotel_ID, Start_Date),
+    FOREIGN KEY (Room_ID) REFERENCES Hotel_Room(Room_ID) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Customer_IRS) REFERENCES Customer(Customer_IRS) ON UPDATE CASCADE
 );
 
-CREATE TABLE Payment_Transaction (
-    Customer_IRS int(9) UNSIGNED NOT NULL REFERENCES Customer(Customer_IRS),
-    Room_ID smallint(4) UNSIGNED NOT NULL REFERENCES Hotel_Room(Room_ID),
-    Employee_IRS int(9) UNSIGNED NOT NULL REFERENCES Employee(Employee_IRS),
-    Hotel_ID int(10) UNSIGNED NOT NULL REFERENCES Hotel(Hotel_ID),
-    Payment_Transaction_ID int(10) UNSIGNED AUTO_INCREMENT UNIQUE,
-    Payment_Amount decimal(6,2) UNSIGNED NOT NULL,
-    Payment_Method varchar(6) NOT NULL, 
-    PRIMARY KEY (Customer_IRS, Room_ID, Employee_IRS, Hotel_ID, Payment_Transaction_ID)
+CREATE TABLE Rents (
+    Room_ID smallint(4) UNSIGNED,
+    Hotel_ID int(10) UNSIGNED,
+    Customer_IRS int(9) UNSIGNED NOT NULL,
+    Employee_IRS int(9) UNSIGNED NOT NULL,
+    Start_Date date NOT NULL,
+    Finish_Date date,
+    Rent_ID int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
+    UNIQUE (Room_ID, Hotel_ID, Start_Date),
+    FOREIGN KEY (Room_ID) REFERENCES Hotel_Room(Room_ID) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (Customer_IRS) REFERENCES Customer(Customer_IRS) ON UPDATE CASCADE,
+    FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE,
+    PRIMARY KEY (Rent_ID)
 );
+
+-- Rent-Transaction is a 1:1 relationship, so Rent_ID is both a foreign and a primary key in Payment_Transaction
+CREATE TABLE Payment_Transaction (
+    Rent_ID int(10) UNSIGNED NOT NULL,
+    Payment_Amount decimal(7, 2) UNSIGNED NOT NULL,
+    Payment_Method varchar(6) NOT NULL,
+    PRIMARY KEY (Rent_ID),
+    FOREIGN KEY (Rent_ID) REFERENCES Rents(Rent_ID) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TRIGGER first_registration BEFORE INSERT ON Customer
+    FOR EACH ROW
+        SET NEW.First_Registration = CURDATE();
+
+CREATE TRIGGER add_hotel AFTER INSERT ON Hotel
+    FOR EACH ROW
+        UPDATE Hotel_group SET Number_of_hotels = Number_of_hotels + 1 WHERE Hotel_group_ID = NEW.Hotel_group_ID;
+
+CREATE TRIGGER add_room AFTER INSERT ON Hotel_Room
+    FOR EACH ROW
+        UPDATE Hotel SET Number_of_rooms = Number_of_rooms + 1 WHERE Hotel_ID = NEW.Hotel_ID;
