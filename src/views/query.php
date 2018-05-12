@@ -35,13 +35,6 @@
                                 <?php } ?>
                                 </select>
 
-                                <h6 class="filter-title">Price €/night</h6>
-                                <div id="price-range" class="nouislider-container"></div>
-                                <div class="input-group mt-2">
-                                    <input id="priceStart" name="price_start" type="number" class="form-control" value="<?= $price_start ?>" min="1" max="300" />
-                                    <input id="priceEnd" name="price_end" type="number" class="form-control" value="<?= $price_end ?>" min="1" max="300" />
-                                </div>
-
                                 <h6 class="filter-title">
                                     <a href="#hotel-group-filter"<?= count($hotel_groups) < count($all_hotel_groups) ? '' : ' class="collapsed"' ?> data-toggle="collapse"><span class="collapse-arrow"></span>Hotel group</a>
                                 </h6>
@@ -86,8 +79,6 @@
         const allGroupsBtn = document.getElementById("allGroupsBtn"),
               clearGroupsBtn = document.getElementById("clearGroupsBtn"),
               hotelGroups = document.querySelectorAll("#hotel-group-filter input"),
-              priceRange = document.getElementById("price-range"),
-              priceIn = [document.getElementById("priceStart"), document.getElementById("priceEnd")],
               roomsRange = document.getElementById("rooms-range"),
               roomsIn = [document.getElementById("roomsStart"), document.getElementById("roomsEnd")]
         
@@ -96,26 +87,6 @@
         })
         clearGroupsBtn.addEventListener("click", function(){
             [...hotelGroups].forEach(el => {el.checked = false})
-        })
-
-        noUiSlider.create(priceRange, {
-            start: [' . $price_start . ', ' . $price_end . '],
-            step: 1,
-            connect: true,
-            range: {
-                min: [1],
-                "80%": [100],
-                max: [300]
-            }
-        })
-        priceRange.noUiSlider.on("update", function( values, handle ) {
-            priceIn[handle].value = Math.round(values[handle])
-        })
-        priceIn[0].addEventListener("change", function(){
-            priceRange.noUiSlider.set([this.value, null])
-        })
-        priceIn[1].addEventListener("change", function(){
-            priceRange.noUiSlider.set([null, this.value])
         })
 
         noUiSlider.create(roomsRange, {

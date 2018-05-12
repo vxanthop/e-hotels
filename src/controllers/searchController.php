@@ -19,8 +19,6 @@ class searchController {
             'capacity' => $vars['capacity'],
             'hotel_groups' => $vars['hotel_groups'] ?? [],
             'stars' => $vars['stars'] ?? 0,
-            'price_start' => $vars['price_start'] ?? 1,
-            'price_end' => $vars['price_end'] ?? 300,
             'rooms_start' => $vars['rooms_start'] ?? 1,
             'rooms_end' => $vars['rooms_end'] ?? 100,
             'amenities' => $vars['amenities'] ?? [],
@@ -31,7 +29,7 @@ class searchController {
         if(empty($data['hotel_groups'])) {
             $data['hotel_groups'] = [];
             foreach($data['all_hotel_groups'] as $group) {
-                $data['hotel_groups'][] = $group['id'];
+                $data['hotel_groups'][] = $group->id;
             }
         }
         return $data;
