@@ -59,11 +59,15 @@ $app->get('/admin/hotel-group/create', function () use ($app) {
 
 $app->post('/admin/hotel-group/createSubmit', function () use ($app) {
 
-	if(adminController::hotelGroupCreateSubmit($_POST)) {
+	$errors = adminController::hotelGroupCreateSubmit($_POST);
+	if(empty($errors)) {
 		header('Location: /admin');
 		die();
 	} else {
-		die('Could not create Hotel Group. Please try again.');
+		foreach($errors as $error) {
+			echo "$error<br>";
+		}
+		die();
 	}
 
 });
@@ -75,6 +79,21 @@ $app->get('/admin/hotel-group/view/:id', function ($id) use ($app) {
 		$data,
 		['_layout' => 'main.php']
 	));
+
+});
+
+$app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
+
+	$errors = adminController::hotelGroupDelete($id);
+	if(empty($errors)) {
+		header('Location: /admin');
+		die();
+	} else {
+		foreach($errors as $error) {
+			echo "$error<br>";
+		}
+		die();
+	}
 
 });
 

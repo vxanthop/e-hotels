@@ -32,6 +32,16 @@
                                 <input type="number" class="form-control" min="10000" max="999999" required id="postal" name="postal_code" />
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="phones">Phone numbers:</label>
+                            <input type="text" class="form-control" required id="phones" name="phones" />
+                            <small class="text-muted">Separated by comma</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">E-mail addresses:</label>
+                            <input type="text" class="form-control" required id="emails" name="emails" />
+                            <small class="text-muted">Separated by comma</small>
+                        </div>
                         <input type="submit" class="btn btn-primary" name="submit" value="Add" />
                     </form>
                 </div>
