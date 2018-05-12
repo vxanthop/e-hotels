@@ -46,4 +46,14 @@ class HotelGroup extends Model {
         return $this->phone_numbers;
     }
 
+    public function addEmail($email) {
+        return DB::query('INSERT INTO Hotel_group_Email_Address(Hotel_group_ID, Email_Address) VALUES
+        (' . $this->id . ', "' . $email . '")');
+    }
+
+    public function addPhone($phone) {
+        return DB::query('INSERT INTO Hotel_group_Phone_Number(Hotel_group_ID, Phone_Number) VALUES
+            (' . $this->id . ', ' . $phone . ')');
+    }
+
 }
