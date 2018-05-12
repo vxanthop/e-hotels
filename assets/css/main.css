@@ -48,6 +48,11 @@ html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
     color: #FFFFFF;
 }
 
+/* Clickable tables */
+table.table-clickable tbody tr {
+    cursor: pointer;
+}
+
 /* Home page */
 section.hero {
     background: url('/assets/images/hero.jpg');

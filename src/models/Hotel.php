@@ -4,11 +4,12 @@ namespace models;
 
 class Hotel extends Model {
 
-    public $id, $address, $hotel_group_id, $stars, $number_of_rooms;
+    public $id, $name, $address, $hotel_group_id, $stars, $number_of_rooms;
 
     protected static $table = 'Hotel';
     protected static $mapper = [
         'Hotel_ID' => ['id', 'int'],
+        'Hotel_Name' => 'name',
         'Stars' => ['stars', 'int'],
         'Number_of_rooms' => ['number_of_rooms', 'int'],
         'Hotel_group_ID' => ['hotel_group_id', 'int'],
