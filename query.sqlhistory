@@ -171,3 +171,11 @@ CREATE TRIGGER add_hotel AFTER INSERT ON Hotel
 CREATE TRIGGER add_room AFTER INSERT ON Hotel_Room
     FOR EACH ROW
         UPDATE Hotel SET Number_of_rooms = Number_of_rooms + 1 WHERE Hotel_ID = NEW.Hotel_ID;
+
+CREATE TRIGGER delete_hotel AFTER DELETE ON Hotel
+    FOR EACH ROW
+        UPDATE Hotel_group SET Number_of_hotels = Number_of_hotels - 1 WHERE Hotel_group_ID = OLD.Hotel_group_ID;
+
+CREATE TRIGGER delete_room AFTER DELETE ON Hotel_Room
+    FOR EACH ROW
+        UPDATE Hotel SET Number_of_rooms = Number_of_rooms - 1 WHERE Hotel_ID = OLD.Hotel_ID;
