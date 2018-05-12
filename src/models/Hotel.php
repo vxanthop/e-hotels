@@ -68,4 +68,14 @@ class Hotel extends Model {
         }
     }
 
+    public function addEmail($email) {
+        return DB::query('INSERT INTO Hotel_Email_Address(Hotel_ID, Email_Address) VALUES
+        (' . $this->id . ', "' . $email . '")');
+    }
+
+    public function addPhone($phone) {
+        return DB::query('INSERT INTO Hotel_Phone_Number(Hotel_ID, Phone_Number) VALUES
+            (' . $this->id . ', ' . $phone . ')');
+    }
+
 }
