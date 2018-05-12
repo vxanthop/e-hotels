@@ -51,6 +51,12 @@ class DB {
 		return $mysqli->query($sql);
 	}
 
+	public static function insert_id() {
+		self::init();
+		$mysqli = self::$_connection;
+		return $mysqli->insert_id;
+	}
+
 	public static function getCollection($query, $model = NULL) {
 		if(is_null($model)) {
 			$model = DB::getClassFromBacktrace();
