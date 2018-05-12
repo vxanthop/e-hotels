@@ -13,6 +13,7 @@ They provide global functionality to the app, like requesting data from a databa
 * **DB**  
     Connects with the database and provides methods to fetch and process data from it.
     * `query($sql)` Executes the SQL query given by the string `$sql` and returns the results.
+    * `insert_id()` Returns the `AUTO_INCREMENT` id from the last insertion query.
     * `getCollection($query, $model = NULL)` Converts the results of a `SELECT` query to an **array** of objects of the `$model` class. If no `$model` parameter has been given, it tries to guess it from the backtrace.
     * `getOne($query, $model = NULL)` Fetches the first result from a `SELECT` query and converts it to an object of the `$model` class. If no `$model` parameter has been given, it tries to guess it from the backtrace.
 
@@ -42,13 +43,15 @@ Each Hotel Group contains one or more Hotels.
 * `address_getter()`
 * `email_addresses_getter()`
 * `phone_numbers_getter()`
+* `addPhone($phone)`: Adds `$phone` to this Hotel Group's phone numbers list.
+* `addEmail($email)`: Adds `$email` to this Hotel Group's email addresses list.
 
 
 #### Hotel
 Each Hotel contains Rooms and Employees that work in it.
 ##### Properties
 * `hotel_id`: A number uniquely identifying the Hotel.
-* `stars`: A number in the range [0, 5] describing the rating of the Hotel.
+* `stars`: A number in the range [1, 5] describing the rating of the Hotel.
 * `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel.
 * `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`). (computed)
 * `email_addresses`: The email addresses of the Hotel. (computed)
@@ -61,6 +64,8 @@ Each Hotel contains Rooms and Employees that work in it.
 * `email_addresses_getter()`
 * `phone_numbers_getter()`
 * `manager_getter()`
+* `addPhone($phone)`: Adds `$phone` to this Hotel's phone numbers list.
+* `addEmail($email)`: Adds `$email` to this Hotel's email addresses list.
 
 
 #### Employee
@@ -91,10 +96,11 @@ Each customer rents a Room and is involved in a Transcation.
 ##### Methods
 * `address_getter()`
 
+
 #### Room
 Each Hotel contains Rooms that are rented to a Customer and rented by an Employee.
 ##### Properties:
-* `room_id`: A number associated to a Room. This need not be unique within the whole table of Rooms, because the primary key of Room consists of both `room_id` and `hotel_id`.
+* `room_id`: A number associated to a Room.
 * `hotel_id`: The primary key of the hotel to which this room belongs.
 * `customer_id`: The SSN of the customer that has rented this Room.
 * `employee_id`: The SSN of the employee that is responsible for renting and checking in the Room.
@@ -120,11 +126,7 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
 #### Transaction
 
 ##### Properties
-* `transaction_id`: A number associated to a Transaction.
-* `cust_IRS`: The IRS number of the customer associated with the Transaction.
-* `emp_IRS`:  The IRS number of the employee associated with the Transaction.
-* `room_id`: The id of the room associated with the Transaction. 
-* `hotel_id`: The hotel where the room is contained.
+* `rent_id`: The ID of the rent which this Transaction is associated with.
 * `payment_amount`: The amount that the customer has to pay.
 * `payment_method`: A string that describes the way the customer can pay the needed amount. Possible values are:
     - `'cash'`
@@ -138,13 +140,11 @@ Each Hotel contains Rooms that are rented to a Customer and rented by an Employe
 
 #### Amenity
 Each Room has a list of Amenities, such as Wi-Fi, A/C etc.
+
 ##### Properties:
 * `room_id`: The ID of the Room that this Amenity refers to.
 * `hotel_id`: The ID of the Hotel that the Room belongs to.
 * `amenity`: A string representing one amenity of the Room with key (`room_id`, `hotel_id`).
-
-_Note:_ The primary key of an Amenity entry is the tuple (`room_id`, `hotel_id`, `amenity`).
-
 
 ##### Methods:
 * `all()`: Returns an array of strings representing all the distinct amenities available among all hotels and rooms.

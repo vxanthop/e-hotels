@@ -10,6 +10,7 @@ The controllers used in this app are the following:
 
 * [reservationController](#reservationcontroller)
 * [customerController](#customercontroller)
+* [adminController](#admincontroller)
 * ...
 
 
@@ -26,6 +27,24 @@ Handles all requests regarding the confirmation and the storage of a Reservation
     `$data` is the same as above. The method needs to call the appropriate Model methods to store the Registration in the database. Upon completion, the user will be redirected to `/reserve/view/$`
 * `view($)`: `/reserve/view/$`  
     Finds the reservation that is identified by `$` and displays its information to the user.
+
+
+### adminController
+Presents the admin interface that allows the inspection, the creation, the update and the removal of Customers, Employees, Hotels, Hotel Groups or Rooms.
+
+#### Methods
+
+* `index()`: `/admin`
+
+
+### hotelGroupController
+
+#### Methods
+
+* `create()`: `/admin/hotel-group/create`
+* `createSubmit($vars)`: `/admin/hotel-group/createSubmit`
+* `update($id)`: `/admin/hotel-group/update/$id`
+* `delete($id)`: `/admin/hotel-group/delete/$id`
 
 
 ### customerController
