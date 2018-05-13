@@ -93,7 +93,6 @@ CREATE TABLE Hotel_Room (
     Expandable varchar(15) DEFAULT '',
     Repairs_need boolean DEFAULT 0,
     Price decimal(5, 2) UNSIGNED NOT NULL,
-    img_src varchar(255),
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Room_ID, Hotel_ID)
 );
