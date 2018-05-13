@@ -6,6 +6,15 @@
                         <li class="breadcrumb-item active">Hotel Group: <?= $group->name ?></li>
                     </ol>
                 </nav>
+            <?php if(isset($errors) && $errors) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                    <?php foreach($errors as $error) { ?>
+                        <li><?= $error ?></li>
+                    <?php } ?>
+                    </ul>
+                </div>
+            <?php } ?>
                 <a class="btn btn-primary mb-3" href="/admin/hotel/create/<?= $group->id ?>">Add <i class="ml-1 fas fa-plus"></i></a>
                 <table class="table table-striped">
                     <thead>
@@ -40,7 +49,7 @@
                                 <div class="btn-group-vertical">
                                     <a class="btn btn-sm btn-secondary" href="/admin/hotel/view/<?= $hotel->id ?>">View rooms</a>
                                     <a class="btn btn-sm btn-secondary" href="/admin/hotel/update/<?= $hotel->id ?>">Edit</a>
-                                    <a class="btn btn-sm btn-danger" href="/admin/hotel/delete/<?= $hotel->id ?>">Delete</a>
+                                    <a class="btn btn-sm btn-danger" href="/admin/hotel/delete/<?= $hotel->id ?>?return=<?= urlencode('/admin/hotel-group/view/' . $group->id) ?>">Delete</a>
                                 </div>
                             </td>
                         </tr>

@@ -7,28 +7,37 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <form action="/admin/hotel-group/createSubmit" method="POST">
+                    <form action="/admin/hotel-group/create?return=<?= urlencode('/admin/hotel-group/create') ?>" method="POST">
+                    <?php if(isset($errors) && $errors) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <ul>
+                            <?php foreach($errors as $error) { ?>
+                                <li><?= $error ?></li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+                    <?php } ?>
                         <div class="form-group">
-                            <label for="name">Hotel group name:</label>
+                            <label for="name">Hotel group name: <span class="text-danger" title="This field is required">*</span></label>
                             <input type="text" autofocus class="form-control" maxlength="42" required id="name" name="name" />
                         </div>
                         <div class="form-group row">
                             <div class="col">
-                                <label for="street">Address street:</label>
+                                <label for="street">Address street: <span class="text-danger" title="This field is required">*</span></label>
                                 <input type="text" class="form-control" maxlength="42" required id="street" name="street" />
                             </div>
                             <div class="col">
-                                <label for="number">Address number:</label>
+                                <label for="number">Address number: <span class="text-danger" title="This field is required">*</span></label>
                                 <input type="number" class="form-control" min="1" max="9999" required id="number" name="number" />
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col">
-                                <label for="city">City:</label>
+                                <label for="city">City: <span class="text-danger" title="This field is required">*</span></label>
                                 <input type="text" class="form-control" maxlength="42" required id="city" name="city" />
                             </div>
                             <div class="col">
-                                <label for="postal">Postal code:</label>
+                                <label for="postal">Postal code: <span class="text-danger" title="This field is required">*</span></label>
                                 <input type="number" class="form-control" min="10000" max="999999" required id="postal" name="postal_code" />
                             </div>
                         </div>

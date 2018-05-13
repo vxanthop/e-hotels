@@ -8,7 +8,16 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <form action="/admin/hotel/createSubmit/<?= $group->id ?>" method="POST">
+                    <?php if(isset($errors) && $errors) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <ul>
+                            <?php foreach($errors as $error) { ?>
+                                <li><?= $error ?></li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+                    <?php } ?>
+                    <form action="/admin/hotel/create/<?= $group->id ?>?return=<?= urlencode('/admin/hotel/create/' . $group->id) ?>" method="POST">
                         <div class="form-group">
                             <label for="name">Hotel name:</label>
                             <input type="text" autofocus class="form-control" maxlength="42" required id="name" name="name" />

@@ -6,6 +6,7 @@ require_once('src/bootstrap/loader.php');
 # Used for helping with include/require commands
 define('ROOT_PATH', dirname(__FILE__) . '/');
 
+session_start();
 
 # Controllers
 use \controllers\homeController as homeController;
@@ -13,6 +14,10 @@ use \controllers\searchController as searchController;
 use \controllers\adminController as adminController;
 use \controllers\hotelGroupController as hotelGroupController;
 use \controllers\hotelController as hotelController;
+
+# Models
+use \models\Hotel as Hotel;
+use \models\URL as URL;
 
 # Initialize app
 $app = new \OnePHP\App();
@@ -48,6 +53,9 @@ $app->get('/search', function () use ($app) {
 $app->get('/admin', function () use ($app) {
 
 	$data = adminController::index();
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/index.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -56,19 +64,26 @@ $app->get('/admin', function () use ($app) {
 });
 
 $app->get('/admin/hotel-group/create', function () use ($app) {
-	return $app->Response('admin/hotel-group/create.php', ['_layout' => 'main.php']);
+
+	$data = [];
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/hotel-group/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
 });
 
-$app->post('/admin/hotel-group/createSubmit', function () use ($app) {
+$app->post('/admin/hotel-group/create', function () use ($app) {
 
 	$errors = hotelGroupController::createSubmit($_POST);
 	if(empty($errors)) {
 		header('Location: /admin');
 		die();
 	} else {
-		foreach($errors as $error) {
-			echo "$error<br>";
-		}
+		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
 		die();
 	}
 
@@ -77,6 +92,9 @@ $app->post('/admin/hotel-group/createSubmit', function () use ($app) {
 $app->get('/admin/hotel-group/view/:id', function ($id) use ($app) {
 
 	$data = hotelGroupController::view($id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/hotel/listing.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -87,6 +105,9 @@ $app->get('/admin/hotel-group/view/:id', function ($id) use ($app) {
 $app->get('/admin/hotel-group/update/:id', function ($id) use ($app) {
 
 	$data = hotelGroupController::update($id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/hotel-group/update.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -101,9 +122,7 @@ $app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
 		header('Location: /admin');
 		die();
 	} else {
-		foreach($errors as $error) {
-			echo "$error<br>";
-		}
+		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
 		die();
 	}
 
@@ -112,6 +131,9 @@ $app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
 $app->get('/admin/hotel/create/:id', function ($id) use ($app) {
 
 	$data = hotelController::create($id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/hotel/create.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -119,7 +141,7 @@ $app->get('/admin/hotel/create/:id', function ($id) use ($app) {
 
 });
 
-$app->post('/admin/hotel/createSubmit/:id', function ($id) use ($app) {
+$app->post('/admin/hotel/create/:id', function ($id) use ($app) {
 
 	$vars = array_merge($_POST, ['hotel_group_id' => $id]);
 	$errors = hotelController::createSubmit($vars);
@@ -128,9 +150,7 @@ $app->post('/admin/hotel/createSubmit/:id', function ($id) use ($app) {
 		header('Location: /admin/hotel-group/view/' . $id);
 		die();
 	} else {
-		foreach($errors as $error) {
-			echo "$error<br>";
-		}
+		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
 		die();
 	}
 
@@ -139,6 +159,9 @@ $app->post('/admin/hotel/createSubmit/:id', function ($id) use ($app) {
 $app->get('/admin/hotel/update/:id', function ($id) use ($app) {
 
 	$data = hotelController::update($id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/hotel/update.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -153,9 +176,7 @@ $app->get('/admin/hotel/delete/:id', function ($id) use ($app) {
 		header('Location: /admin');
 		die();
 	} else {
-		foreach($errors as $error) {
-			echo "$error<br>";
-		}
+		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
 		die();
 	}
 

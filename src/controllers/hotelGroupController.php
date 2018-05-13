@@ -9,7 +9,7 @@ use \models\DB as DB;
 class hotelGroupController {
 
     public static function create() {
-
+        
     }
 
     public static function createSubmit($vars) {

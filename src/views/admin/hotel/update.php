@@ -8,7 +8,7 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <form action="/admin/hotel/updateSubmit/<?= $hotel->id ?>" method="POST">
+                    <form action="/admin/hotel/update/<?= $hotel->id ?>?return=<?= urlencode('/admin/hotel/update/' . $hotel->id) ?>" method="POST">
                         <div class="form-group">
                             <label for="name">Hotel name:</label>
                             <input type="text" autofocus class="form-control" maxlength="42" required id="name" name="name" value="<?= $hotel->name ?>" />

@@ -1,5 +1,14 @@
         <section class="general admin">
             <div class="container">
+            <?php if(isset($errors) && $errors) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                    <?php foreach($errors as $error) { ?>
+                        <li><?= $error ?></li>
+                    <?php } ?>
+                    </ul>
+                </div>
+            <?php } ?>
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#groups">Hotel Groups</a>
@@ -42,7 +51,7 @@
                                         <div class="btn-group-vertical">
                                             <a class="btn btn-sm btn-secondary" href="/admin/hotel-group/view/<?= $hotel_group->id ?>">View hotels</a>
                                             <a class="btn btn-sm btn-secondary" href="/admin/hotel-group/update/<?= $hotel_group->id ?>">Edit</a>
-                                            <a class="btn btn-sm btn-danger" href="/admin/hotel-group/delete/<?= $hotel_group->id ?>">Delete</a>
+                                            <a class="btn btn-sm btn-danger" href="/admin/hotel-group/delete/<?= $hotel_group->id ?>?return=<?= urlencode('/admin') ?>">Delete</a>
                                         </div>
                                     </td>
                                 </tr>
