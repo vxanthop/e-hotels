@@ -24,6 +24,7 @@ class searchController {
             'amenities' => $vars['amenities'] ?? [],
             'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => Amenity::all(),
+            'results' => [],
         ];
         /* If no hotel groups are selected, select all instead so that query makes sense */
         if(empty($data['hotel_groups'])) {

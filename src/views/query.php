@@ -21,6 +21,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="results-container">
+                        <?php foreach(array_chunk($results, 2) as $row) { ?>
+                            <div class="row no-gutters">
+                            <?php foreach($row as $i => $room) { ?>
+                                <div class="col col-6 <?= ($i == 0) ? 'pr-2 ' : 'pl-2 ' ?>py-2">
+                                    <div class="card">
+                                        <?php if($room->hotel->img_src) { ?><img src="<?= $room->hotel->img_src ?>" alt="" class="card-img-top" /><?php } ?>
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?= $room->hotel->name ?></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                            </div>
+                        <?php } ?>
+                        </div>
                     </div>
                     <div class="col col-3 aside-container">
                         <aside>
