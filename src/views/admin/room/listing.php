@@ -41,7 +41,7 @@
                             <td>
                                 <div class="btn-group-vertical">
                                     <a class="btn btn-sm btn-secondary" href="/admin/room/update/<?= $room->room_id ?>">Edit</a>
-                                    <a class="btn btn-sm btn-danger" href="/admin/room/delete/<?= $room->room_id ?>?return=<?= urlencode('/admin/hotel/view/' . $hotel->id) ?>">Delete</a>
+                                    <a class="btn btn-sm btn-danger" href="/admin/room/delete/<?= $room->room_id ?>?return=<?= urlencode('/admin/hotel/' . $hotel->id) ?>">Delete</a>
                                 </div>
                             </td>
                         </tr>

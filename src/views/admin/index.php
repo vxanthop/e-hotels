@@ -49,7 +49,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group-vertical">
-                                            <a class="btn btn-sm btn-secondary" href="/admin/hotel-group/view/<?= $hotel_group->id ?>">View hotels</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/hotel-group/<?= $hotel_group->id ?>">View hotels</a>
                                             <a class="btn btn-sm btn-secondary" href="/admin/hotel-group/update/<?= $hotel_group->id ?>">Edit</a>
                                             <a class="btn btn-sm btn-danger" href="/admin/hotel-group/delete/<?= $hotel_group->id ?>?return=<?= urlencode('/admin') ?>">Delete</a>
                                         </div>

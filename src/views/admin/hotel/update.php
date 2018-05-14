@@ -3,7 +3,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="/admin/hotel-group/view/<?= $group->id ?>"><?= $group->name ?></a></li>
+                        <li class="breadcrumb-item"><a href="/admin/hotel-group/<?= $group->id ?>"><?= $group->name ?></a></li>
                         <li class="breadcrumb-item active">Update Hotel: <?= $hotel->name ?></li>
                     </ol>
                 </nav>
