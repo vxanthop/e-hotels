@@ -53,11 +53,10 @@ class hotelController {
     }
 
     public static function view($id) {
-        $data = [
-            'hotel' => Hotel::getOne(compact('id')),
-            'rooms' => Room::ofHotel($id),
-        ];
-        return $data;
+        $hotel = Hotel::getOne(['id' => $id]);
+        $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
+        $rooms = Room::ofHotel($id);
+        return compact('hotel', 'group', 'rooms');
     }
 
     public static function update($id) {

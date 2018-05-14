@@ -18,7 +18,12 @@ class Room extends Model {
     ];
     
     public static function all() {
-        $query = DB::query("SELECT * FROM Hotel_Room");
+        $query = DB::query('SELECT * FROM Hotel_Room');
+        return DB::getCollection($query);
+    }
+
+    public static function ofHotel($hotel_id) {
+        $query = DB::query('SELECT * FROM Hotel_Room WHERE Hotel_ID = ' . $hotel_id);
         return DB::getCollection($query);
     }
 
