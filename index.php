@@ -144,9 +144,9 @@ $app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
 
 });
 
-$app->get('/admin/hotel/create/:id', function ($id) use ($app) {
+$app->get('/admin/hotel/create/:hotel_group_id', function ($hotel_group_id) use ($app) {
 
-	$data = hotelController::create($id);
+	$data = hotelController::create($hotel_group_id);
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
@@ -157,12 +157,12 @@ $app->get('/admin/hotel/create/:id', function ($id) use ($app) {
 
 });
 
-$app->post('/admin/hotel/create/:id', function ($id) use ($app) {
+$app->post('/admin/hotel/create/:hotel_group_id', function ($hotel_group_id) use ($app) {
 
-	$vars = array_merge($_POST, ['hotel_group_id' => $id]);
+	$vars = array_merge($_POST, ['hotel_group_id' => $hotel_group_id]);
 	$errors = hotelController::createSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin/hotel-group/' . $id);
+		header('Location: /admin/hotel-group/' . $hotel_group_id);
 		die();
 	} else {
 		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
@@ -171,9 +171,9 @@ $app->post('/admin/hotel/create/:id', function ($id) use ($app) {
 
 });
 
-$app->get('/admin/hotel/update/:id', function ($id) use ($app) {
+$app->get('/admin/hotel/update/:hotel_id', function ($hotel_id) use ($app) {
 
-	$data = hotelController::update($id);
+	$data = hotelController::update($hotel_id);
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
@@ -184,9 +184,9 @@ $app->get('/admin/hotel/update/:id', function ($id) use ($app) {
 
 });
 
-$app->post('/admin/hotel/update/:id', function ($id) use ($app) {
+$app->post('/admin/hotel/update/:hotel_id', function ($hotel_id) use ($app) {
 
-	$vars = array_merge($_POST, ['hotel_id' => $id]);
+	$vars = array_merge($_POST, ['hotel_id' => $hotel_id]);
 	$data = hotelController::updateSubmit($vars);
 	if(empty($errors)) {
 		header('Location: /admin/hotel-group/' . $data['group_id']);
@@ -198,9 +198,9 @@ $app->post('/admin/hotel/update/:id', function ($id) use ($app) {
 
 });
 
-$app->get('/admin/hotel/delete/:id', function ($id) use ($app) {
+$app->get('/admin/hotel/delete/:hotel_id', function ($hotel_id) use ($app) {
 
-	$errors = hotelController::delete($id);
+	$errors = hotelController::delete($hotel_id);
 	if(empty($errors)) {
 		header('Location: /admin');
 		die();
@@ -211,9 +211,9 @@ $app->get('/admin/hotel/delete/:id', function ($id) use ($app) {
 
 });
 
-$app->get('/admin/hotel/:id', function ($id) use ($app) {
+$app->get('/admin/hotel/:hotel_id', function ($hotel_id) use ($app) {
 
-	$data = hotelController::view($id);
+	$data = hotelController::view($hotel_id);
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
