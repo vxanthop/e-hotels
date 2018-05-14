@@ -45,14 +45,14 @@
                             <label>Phone numbers:</label>
                         <?php foreach($hotel->phone_numbers as $phone) { ?>
                             <div class="input-group phone">
-                                <input type="number" class="form-control" name="phones[]" value="<?= $phone ?>" />
+                                <input type="number" class="form-control" min="2100000000" max="6999999999" name="phones[]" value="<?= $phone ?>" />
                                 <div class="input-group-append">
                                     <button class="remove-input btn btn-secondary"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
                         <?php } ?>
                             <div class="input-group phone">
-                                <input type="number" class="form-control" name="phones[]" />
+                                <input type="number" class="form-control" min="2100000000" max="6999999999" name="phones[]" />
                                 <div class="input-group-append">
                                     <button class="add-input btn btn-primary"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" class="btn btn-primary" name="submit" value="Add" />
+                        <input type="submit" class="btn btn-primary" name="submit" value="Update" />
                     </form>
                 </div>
             </div>            

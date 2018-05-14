@@ -44,7 +44,7 @@
                         <div class="form-group phones">
                             <label>Phone numbers:</label>
                             <div class="input-group phone">
-                                <input type="number" class="form-control" name="phones[]" />
+                                <input type="number" class="form-control" min="2100000000" max="6999999999" name="phones[]" />
                                 <div class="input-group-append">
                                     <button class="add-input btn btn-primary"><i class="fas fa-plus"></i></button>
                                 </div>
