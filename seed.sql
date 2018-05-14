@@ -93,3 +93,19 @@ INSERT INTO Customer(Customer_IRS, Social_Security_Number, Last_Name, First_name
 (294198441, 31059110345, 'Nikolaou', 'Sofronia', 'Charalampidou', 19, 'Lokroi', 19152),
 (031039441, 13013149041, 'Iliopoulou', 'Leoni', 'Stamatiadou', 58, 'Argithea', 52578),
 (000041497, 09124309585, 'Papamarkou', 'Themis', 'Leof. Alexandrou', 59, 'Tyrnabos', 53910);
+
+
+-- Rooms 
+
+INSERT INTO Hotel_Room (Hotel_ID, Capacity, View, Expandable, Repairs_need, Price) VALUES
+(1, 2, 1, 'connecting_room', 0, 150), (1, 2, 0, 'more_beds', 1, 100), (1, 3, 0, '', 0, 131),
+(2, 4, 1, 'connecting_room', 0, 220), (2, 1, 1, '', 0, 70), (2, 2, 1, 'connecting_room', 0, 131), (2, 3, 0, '', 0, 134),
+(3, 4, 1, '', 0, 220), (3, 1, 1, '', 0, 70), (3, 2, 1, 'more_beds', 0, 120),
+(4, 1, 1, 'connecting_room', 0, 70), (4, 2, 1, 'more_beds', 0, 120), (4, 3, 0, '', 0, 120),
+(5, 4, 1, 'more_beds', 0, 220), (5, 1, 1, '', 0, 70), (5, 2, 1, 'more_beds', 0, 120), (5, 3, 0, '', 0, 120), (5, 5, 1, '', 0, 230), (5, 2, 1, 'connecting_room', 0, 130),
+(6, 4, 1, 'connecting_room', 0, 220), (6, 1, 1, '', 0, 70), (6, 2, 1, 'more_beds', 0, 120), (6, 3, 1, 'more_beds', 0, 150),
+(7, 1, 1, 'connecting_room', 0, 70), (7, 2, 1, 'more_beds', 0, 120), (7, 3, 0, '', 0, 120),
+(8, 1, 1, '', 0, 70), (8, 2, 1, 'more_beds', 0, 140), (8, 3, 0, '', 0, 140),
+(9, 1, 1, '', 0, 70), (9, 2, 1, 'more_beds', 0, 112), (9, 3, 0, '', 0, 112), (9, 3, 1, '', 1, 180), (9, 5, 1, '', 1, 202), (9, 2, 0, 'connecting_room', 1, 112),
+(10, 1, 1, 'more_beds', 0, 70), (10, 2, 1, 'more_beds', 0, 120), (10, 3, 0, '', 1, 135),
+(11, 1, 1, '', 0, 70), (11, 2, 1, 'more_beds', 1, 125), (11, 3, 1, '', 1, 108);
