@@ -66,6 +66,53 @@ class hotelController {
         return compact('hotel', 'group');
     }
 
+    public static function updateSubmit($vars) {
+        $update = [
+            'address' => [
+                'street' => $vars['street'],
+                'number' => $vars['number'],
+                'city' => $vars['city'],
+                'postal_code' => $vars['postal_code'],
+            ],
+            'name' => $vars['name'],
+            'stars' => $vars['stars'],
+        ];
+        $errors = [];
+        $hotel = Hotel::getOne([
+            'id' => $vars['hotel_id']
+        ]);
+        $group_id = $hotel->hotel_group_id;
+        $query = Hotel::update(['id' => $vars['hotel_id']], $update);
+        if($query){    
+            $hotel = Hotel::getOne([
+                'id' => $vars['hotel_id']
+            ]);
+            $hotel->deleteEmails();
+            $hotel->deletePhones();
+            foreach($vars['emails'] as $email) {
+                $email = trim($email);
+                if(strlen($email)) {
+                    $add = $hotel->addEmail($email);
+                    if(!$add) {
+                        $errors[] = 'Could not add email ' . $email . ' to Hotel. Result: ' . $add;
+                    }
+                }
+            }
+            foreach($vars['phones'] as $phone) {
+                $phone = trim($phone);
+                if(strlen($phone)) {
+                    $add = $hotel->addPhone($phone);
+                    if(!$add) {
+                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel. Result: ' . $add;
+                    }
+                }
+            }
+        } else {
+            $errors[] = 'Could not update Hotel. Please try again.';
+        }
+        return compact('errors', 'group_id');
+    }
+
     public static function delete($id) {
         $delete = Hotel::delete(compact('id'));
         $errors = [];
