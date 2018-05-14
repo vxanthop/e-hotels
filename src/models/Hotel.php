@@ -73,9 +73,17 @@ class Hotel extends Model {
         (' . $this->id . ', "' . $email . '")');
     }
 
+    public function deleteEmails() {
+        return DB::query('DELETE FROM Hotel_Email_Address WHERE Hotel_ID = ' . $this->id);
+    }
+
     public function addPhone($phone) {
         return DB::query('INSERT INTO Hotel_Phone_Number(Hotel_ID, Phone_Number) VALUES
             (' . $this->id . ', ' . $phone . ')');
+    }
+
+    public function deletePhones() {
+        return DB::query('DELETE FROM Hotel_Phone_Number WHERE Hotel_ID = ' . $this->id);
     }
 
 }
