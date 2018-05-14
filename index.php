@@ -115,6 +115,20 @@ $app->get('/admin/hotel-group/update/:id', function ($id) use ($app) {
 
 });
 
+$app->post('/admin/hotel-group/update/:id', function ($id) use ($app) {
+
+	$vars = array_merge($_POST, ['hotel_group_id' => $id]);
+	$errors = hotelGroupController::updateSubmit($vars);
+	if(empty($errors)) {
+		header('Location: /admin/hotel-group/view/' . $id);
+		die();
+	} else {
+		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
+		die();
+	}
+
+});
+
 $app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
 
 	$errors = hotelGroupController::delete($id);

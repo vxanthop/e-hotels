@@ -29,15 +29,21 @@ class hotelGroupController {
                 'id' => DB::insert_id()
             ]);
             foreach($vars['emails'] as $email) {
-                $add = $group->addEmail(trim($email));
-                if(!$add) {
-                    $errors[] = 'Could not add email ' . trim($email) . ' to Hotel Group. Result: ' . $add;
+                $email = trim($email);
+                if(strlen($email)) {
+                    $add = $group->addEmail($email);
+                    if(!$add) {
+                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group. Result: ' . $add;
+                    }
                 }
             }
             foreach($vars['phones'] as $phone) {
-                $add = $group->addPhone(trim($phone));
-                if(!$add) {
-                    $errors[] = 'Could not add phone ' . trim($phone) . ' to Hotel Group. Result: ' . $add;
+                $phone = trim($phone);
+                if(strlen($phone)) {
+                    $add = $group->addPhone($phone);
+                    if(!$add) {
+                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group. Result: ' . $add;
+                    }
                 }
             }
         } else {
@@ -59,6 +65,47 @@ class hotelGroupController {
             'group' => HotelGroup::getOne(compact('id')),
         ];
         return $data;
+    }
+
+    public static function updateSubmit($vars) {
+        $update = [
+            'address' => [
+                'street' => $vars['street'],
+                'number' => $vars['number'],
+                'city' => $vars['city'],
+                'postal_code' => $vars['postal_code'],
+            ],
+            'name' => $vars['name'],
+        ];        
+        $query = HotelGroup::update(['id' => $vars['hotel_group_id']], $update);
+        if($query){    
+            $group = HotelGroup::GetOne([
+                'id' => $vars['hotel_group_id']
+            ]);
+            $group->deleteEmails();
+            $group->deletePhones();
+            foreach($vars['emails'] as $email) {
+                $email = trim($email);
+                if(strlen($email)) {
+                    $add = $group->addEmail($email);
+                    if(!$add) {
+                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group. Result: ' . $add;
+                    }
+                }
+            }
+            foreach($vars['phones'] as $phone) {
+                $phone = trim($phone);
+                if(strlen($phone)) {
+                    $add = $group->addPhone($phone);
+                    if(!$add) {
+                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group. Result: ' . $add;
+                    }
+                }
+            }
+        } else {
+            $errors[] = 'Could not update Hotel Group. Please try again.';
+        }
+        return $errors;
     }
 
     public static function delete($id) {
