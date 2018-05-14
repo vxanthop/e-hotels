@@ -120,7 +120,7 @@ $app->post('/admin/hotel-group/update/:id', function ($id) use ($app) {
 	$vars = array_merge($_POST, ['hotel_group_id' => $id]);
 	$errors = hotelGroupController::updateSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin' . $id);
+		header('Location: /admin');
 		die();
 	} else {
 		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
