@@ -16,8 +16,10 @@ use \controllers\hotelGroupController as hotelGroupController;
 use \controllers\hotelController as hotelController;
 
 # Models
-use \models\Hotel as Hotel;
+use \models\Config as Config;
 use \models\URL as URL;
+
+error_reporting(Config::get('error-level'));
 
 # Initialize app
 $app = new \OnePHP\App();
