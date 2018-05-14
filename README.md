@@ -8,8 +8,8 @@ To find out more about the project structure, read the [spec](etc/spec/index.md)
 
 ### Contributors
 
-Listed alphabetically:
+Listed by ball size:
 
+* [Vassilis Xanthopoulos](https://github.com/vilaras) ([contact](mailto:xanthopoulos.vassilis@gmail.com))
 * [Theodore Diamantidis](https://github.com/tdiam) ([contact](mailto:diamaltho@gmail.com))
 * [Nick Loukas](https://github.com/laloukas) ([contact](mailto:nickloukas@outlook.com))
-* [Vassilis Xanthopoulos](https://github.com/vilaras) ([contact](mailto:xanthopoulos.vassilis@gmail.com))

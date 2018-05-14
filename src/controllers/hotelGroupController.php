@@ -79,7 +79,7 @@ class hotelGroupController {
         ];        
         $query = HotelGroup::update(['id' => $vars['hotel_group_id']], $update);
         if($query){    
-            $group = HotelGroup::GetOne([
+            $group = HotelGroup::getOne([
                 'id' => $vars['hotel_group_id']
             ]);
             $group->deleteEmails();
