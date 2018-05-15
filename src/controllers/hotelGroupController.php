@@ -16,9 +16,9 @@ class hotelGroupController {
         $create = [
             'address' => [
                 'street' => $vars['street'],
-                'number' => $vars['number'],
+                'number' => intval($vars['number']),
                 'city' => $vars['city'],
-                'postal_code' => $vars['postal_code'],
+                'postal_code' => intval($vars['postal_code']),
             ],
             'name' => $vars['name'],
         ];
@@ -33,16 +33,16 @@ class hotelGroupController {
                 if(strlen($email)) {
                     $add = $group->addEmail($email);
                     if(!$add) {
-                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group. Result: ' . $add;
+                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group.';
                     }
                 }
             }
             foreach($vars['phones'] as $phone) {
-                $phone = trim($phone);
-                if(strlen($phone)) {
+                $phone = intval($phone);
+                if($phone) {
                     $add = $group->addPhone($phone);
                     if(!$add) {
-                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group. Result: ' . $add;
+                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group.';
                     }
                 }
             }
@@ -54,7 +54,7 @@ class hotelGroupController {
 
     public static function view($id) {
         $data = [
-            'group' => HotelGroup::getOne(compact('id')),
+            'group' => HotelGroup::getOne(['id' => $id]),
             'hotels' => Hotel::ofHotelGroup($id),
         ];
         return $data;
@@ -62,7 +62,7 @@ class hotelGroupController {
 
     public static function update($id) {
         $data = [
-            'group' => HotelGroup::getOne(compact('id')),
+            'group' => HotelGroup::getOne(['id' => $id]),
         ];
         return $data;
     }
@@ -71,13 +71,15 @@ class hotelGroupController {
         $update = [
             'address' => [
                 'street' => $vars['street'],
-                'number' => $vars['number'],
+                'number' => intval($vars['number']),
                 'city' => $vars['city'],
-                'postal_code' => $vars['postal_code'],
+                'postal_code' => intval($vars['postal_code']),
             ],
             'name' => $vars['name'],
         ];        
-        $query = HotelGroup::update(['id' => $vars['hotel_group_id']], $update);
+        $query = HotelGroup::update([
+            'id' => $vars['hotel_group_id']
+        ], $update);
         if($query){    
             $group = HotelGroup::getOne([
                 'id' => $vars['hotel_group_id']
@@ -89,16 +91,16 @@ class hotelGroupController {
                 if(strlen($email)) {
                     $add = $group->addEmail($email);
                     if(!$add) {
-                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group. Result: ' . $add;
+                        $errors[] = 'Could not add email ' . $email . ' to Hotel Group.';
                     }
                 }
             }
             foreach($vars['phones'] as $phone) {
-                $phone = trim($phone);
-                if(strlen($phone)) {
+                $phone = intval($phone);
+                if($phone) {
                     $add = $group->addPhone($phone);
                     if(!$add) {
-                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group. Result: ' . $add;
+                        $errors[] = 'Could not add phone ' . $phone . ' to Hotel Group.';
                     }
                 }
             }
@@ -109,7 +111,9 @@ class hotelGroupController {
     }
 
     public static function delete($id) {
-        $delete = HotelGroup::delete(compact('id'));
+        $delete = HotelGroup::delete([
+            'id' => $id
+        ]);
         $errors = [];
         if(!$delete) {
             $errors[] = 'Could not delete Hotel Group. Please try again.';

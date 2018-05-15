@@ -9,15 +9,15 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <?php if(isset($errors) && $errors) { ?>
-                        <div class="alert alert-danger" role="alert">
-                            <ul>
-                            <?php foreach($errors as $error) { ?>
-                                <li><?= $error ?></li>
-                            <?php } ?>
-                            </ul>
-                        </div>
-                    <?php } ?>
+                <?php if(isset($errors) && $errors) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                        <?php foreach($errors as $error) { ?>
+                            <li><?= $error ?></li>
+                        <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
                     <form action="/admin/room/update/<?= $room->room_id ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/room/update/' . $room->room_id) ?>" method="POST">
                         <div class="form-group">
                             <label for="capacity">Capacity:</label>

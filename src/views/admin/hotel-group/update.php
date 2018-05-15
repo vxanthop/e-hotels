@@ -7,7 +7,16 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <form action="/admin/hotel-group/update/<?=$group->id?>?success=<?= urlencode('/admin') ?>&error=<?= urlencode('/admin/hotel-group/update') ?>" method="POST">
+                <?php if(isset($errors) && $errors) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                        <?php foreach($errors as $error) { ?>
+                            <li><?= $error ?></li>
+                        <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
+                    <form action="/admin/hotel-group/update/<?=$group->id?>?success=<?= urlencode('/admin') ?>&error=<?= urlencode('/admin/hotel-group/update/' . $group->id) ?>" method="POST">
                         <div class="form-group">
                             <label for="name">Hotel group name: <span class="text-danger" title="This field is required">*</span></label>
                             <input type="text" autofocus class="form-control" maxlength="42" required id="name" name="name" value="<?= $group->name ?>" />
