@@ -80,7 +80,7 @@ CREATE TABLE Works (
     Start_Date date NOT NULL,
     Finish_Date date,
     Position varchar(42) NOT NULL,
-    FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE,
+    FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Employee_IRS, Hotel_ID, Start_Date, Position)
 );
@@ -178,3 +178,25 @@ CREATE TRIGGER delete_hotel AFTER DELETE ON Hotel
 CREATE TRIGGER delete_room AFTER DELETE ON Hotel_Room
     FOR EACH ROW
         UPDATE Hotel SET Number_of_rooms = Number_of_rooms - 1 WHERE Hotel_ID = OLD.Hotel_ID;
+
+-- Employee assignment checks
+DELIMITER $$
+CREATE TRIGGER assign_employee BEFORE INSERT ON Works
+    FOR EACH ROW BEGIN
+        IF NEW.Finish_Date IS NOT NULL AND NEW.Finish_Date < NEW.Start_Date THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Finish date cannot be set earlier than the start date';
+        END IF;
+        IF (SELECT COUNT(Employee_IRS) FROM Works WHERE Employee_IRS = NEW.Employee_IRS AND
+            Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+        ) >= 1 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cannot assign a work to this employee, since the given period conflicts with an existent working period of his.';
+        END IF;
+        IF NEW.Position = 'manager' AND
+            (SELECT COUNT(Employee_IRS) FROM Works WHERE
+                Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
+                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+            ) >= 1 THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cannot assign a manager to this Hotel, since the given period conflicts with an existent manager period.';
+        END IF;
+    END$$
+DELIMITER ;
