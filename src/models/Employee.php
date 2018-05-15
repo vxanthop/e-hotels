@@ -4,7 +4,7 @@ namespace models;
 
 class Employee extends Model {
 
-    public $emp_IRS, $SSN, $first_name, $last_name, $address, $position;
+    public $emp_IRS, $SSN, $first_name, $last_name, $address, $current_job;
     
     protected static $table = 'Employee';
     protected static $mapper = [
@@ -16,13 +16,14 @@ class Employee extends Model {
         'Address_Number' => ['address[number]', 'int'],
         'Address_City' => 'address[city]',
         'Address_Postal_Code' => ['address[postal_code]', 'int'],
-        'Position' => 'position[title]',
-        'Start_Date' => 'position[start_date]',
-        'Finish_Date' => 'position[finish_date]'
+        'Position' => 'current_job[position]',
+        'Hotel_ID' => 'current_job[hotel_id]',
+        'Start_Date' => 'current_job[start_date]',
+        'Finish_Date' => 'current_job[finish_date]',
     ];
 
     public static function ofHotel($hotel_id) {
-        $query = DB::query('SELECT Employee.*, Works.Position, Works.Start_Date, Works.Finish_Date FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
+        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
         return DB::getCollection($query);
     }
 
