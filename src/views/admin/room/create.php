@@ -41,7 +41,7 @@
                             <label>Expandable:</label>
                             <select name="expandable" class="form-control">
                                 <option value="">No</option>
-                                <option value="connecting_rooms">Yes. By connecting rooms.</option>
+                                <option value="connecting_room">Yes. By connecting rooms.</option>
                                 <option value="more_beds">Yes. By adding more beds.</option>
                             </select>
                         </div>

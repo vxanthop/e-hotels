@@ -35,13 +35,13 @@
                             <td><?= $room->room_id ?></td>
                             <td><?= $room->capacity == 1 ? "1 bed" : $room->capacity . " beds" ?></td>
                             <td><?= $room->view ? "Yes" : "No" ?></td>
-                            <td><?= $room->expandable ?></td>
+                            <td><?= $room->expandable_description ?></td>
                             <td><?= $room->repairs_need ? "Yes" : "No" ?></td>
                             <td><?= number_format($room->price, 2) ?>€</td>
                             <td>
-                                <ul>
+                                <ul class="list-unstyled text-center">
                                 <?php foreach($room->amenities as $amenity) { ?>
-                                    <li><?= $amenity ?></li>
+                                    <li><?= $amenity->amenity ?></li>
                                 <?php } ?>
                                 </ul>
                             </td>

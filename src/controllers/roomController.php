@@ -28,7 +28,20 @@ class roomController {
         ];
         $errors = [];
         $query = Room::create($create);
-        if(!$query) {
+        if($query) {
+            $room = Room::getOne([
+                'id' => DB::insert_id()
+            ]);
+            foreach($vars['amenities'] as $amenity) {
+                $amenity = trim($amenity);
+                if(strlen($amenity)) {
+                    $add = $room->addAmenity($amenity);
+                    if(!$add) {
+                        $errors[] = 'Could not add Amenity "' . $amenity . '" to Room.';
+                    }
+                }
+            }
+        } else {
             $errors[] = 'Could not create Room. Please try again.';
         }
         return $errors;
@@ -56,7 +69,21 @@ class roomController {
         $query = Room::update([
             'room_id' => $vars['room_id']
         ], $update);
-        if(!$query) {    
+        if($query) {
+            $room = Room::getOne([
+                'room_id' => $vars['room_id']
+            ]);
+            $room->deleteAmenities();
+            foreach($vars['amenities'] as $amenity) {
+                $amenity = trim($amenity);
+                if(strlen($amenity)) {
+                    $add = $room->addAmenity($amenity);
+                    if(!$add) {
+                        $errors[] = 'Could not add Amenity "' . $amenity . '" to Room.';
+                    }
+                }
+            }
+        } else { 
             $errors[] = 'Could not update Room. Please try again.';
         }
         return $errors;

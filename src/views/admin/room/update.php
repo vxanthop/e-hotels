@@ -58,7 +58,7 @@
                             <label>Amenities:</label>
                         <?php foreach($room->amenities as $amenity) { ?>
                             <div class="input-group">
-                                <input type="text" maxlength="42" class="form-control" name="amenities[]" value="<?= $amenity ?>" />
+                                <input type="text" maxlength="42" class="form-control" name="amenities[]" value="<?= $amenity->amenity ?>" />
                                 <div class="input-group-append">
                                     <button class="remove-input btn btn-secondary"><i class="fas fa-times"></i></button>
                                 </div>

@@ -56,21 +56,25 @@ class Room extends Model {
         return $this->amenities = Amenity::ofRoom($this->room_id, $this->hotel_id);
     }
 
-    /*
-     * @input: None
-     * @output: A Customer object representing the customer that is currently renting this room. If none is found, returns NULL.
-     */ 
-    public function current_customer_getter() {
-        $query = DB::query('SELECT Customer_IRS FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(End_Date, CURDATE())');
-        $irs = [];
-        while($row = $query->fetch_assoc()) {
-            $irs[] = intval($row['Customer_IRS']);
-        }
-        if(count($irs) == 1) {
-            return Customer::getOne(['id' => $irs[0]]);
-        } else {
-            return NULL;
-        }
+    public function addAmenity($amenity) {
+        return DB::query('INSERT INTO Room_Amenities(Room_ID, Hotel_ID, amenity) VALUES(' . join(', ', [
+            $this->room_id,
+            $this->hotel_id,
+            '"' . $amenity . '"'
+        ]) . ')');
+    }
+
+    public function deleteAmenities() {
+        return DB::query('DELETE FROM Room_Amenities WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id);
+    }
+
+    public function expandable_description_getter() {
+        $arr = [
+            '' => 'No',
+            'connecting_room' => 'Yes (connecting rooms)',
+            'more_beds' => 'Yes (more beds)'
+        ];
+        return $this->expandable_description = $arr[$this->expandable];
     }
 
 }
