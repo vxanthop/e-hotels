@@ -4,7 +4,7 @@ namespace models;
 
 class Employee extends Model {
 
-    public $emp_IRS, $SSN, $first_name, $last_name, $address;
+    public $emp_IRS, $SSN, $first_name, $last_name, $address, $position;
     
     protected static $table = 'Employee';
     protected static $mapper = [
@@ -16,22 +16,14 @@ class Employee extends Model {
         'Address_Number' => ['address[number]', 'int'],
         'Address_City' => 'address[city]',
         'Address_Postal_Code' => ['address[postal_code]', 'int'],
+        'Position' => 'position[title]',
+        'Start_Date' => 'position[start_date]',
+        'Finish_Date' => 'position[finish_date]'
     ];
 
-    public function current_job_getter() {
-        $query = DB::query('SELECT Position FROM Works WHERE
-            Employee_IRS = ' . $this->emp_IRS .'
-        AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
-
-        $current_jobs = [];
-        while($row = $query->fetch_assoc()) {
-            $current_jobs[] = $row['Position'];
-        }
-        if(count($current_jobs) == 1) {
-            return $current_jobs[0];
-        } else {
-            die('This Employee has '.count($current_jobs).' jobs instead of 1.');
-        }
+    public static function ofHotel($hotel_id) {
+        $query = DB::query('SELECT Employee.*, Works.Position, Works.Start_Date, Works.Finish_Date FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
+        return DB::getCollection($query);
     }
 
 }
