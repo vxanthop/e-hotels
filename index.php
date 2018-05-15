@@ -20,6 +20,9 @@ use \controllers\roomController as roomController;
 use \models\Config as Config;
 use \models\URL as URL;
 
+# Seeders
+use \seeders\EmployeeSeeder as EmployeeSeeder;
+
 error_reporting(Config::get('error-level'));
 
 # Initialize app
@@ -283,6 +286,10 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 
 });
 
+
+$app->get('/seed/employees/:num', function ($num) use ($app) {
+	EmployeeSeeder::run($num);
+});
 
 
 # Launch app
