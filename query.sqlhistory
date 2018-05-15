@@ -25,7 +25,7 @@ CREATE TABLE Hotel_group_Email_Address (
 
 CREATE TABLE Hotel_group_Phone_Number (
     Hotel_group_ID int(10) UNSIGNED NOT NULL,
-    Phone_Number int(10) UNSIGNED NOT NULL,
+    Phone_Number bigint(10) UNSIGNED NOT NULL,
     FOREIGN KEY (Hotel_group_ID) REFERENCES Hotel_group(Hotel_group_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Hotel_group_ID, Phone_Number)
 );
@@ -47,7 +47,7 @@ CREATE TABLE Hotel (
 
 CREATE TABLE Hotel_Phone_Number (
     Hotel_ID int(10) UNSIGNED NOT NULL,
-    Phone_Number int(10) UNSIGNED NOT NULL,
+    Phone_Number bigint(10) UNSIGNED NOT NULL,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Hotel_ID, Phone_Number)
 );
