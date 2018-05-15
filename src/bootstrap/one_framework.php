@@ -128,6 +128,9 @@ abstract class CoreFramework{
                 if (strlen(trim($segment)) === 0){
                   return false;
                 }
+                if(is_numeric($segment)) {
+                    $segment = $segment + 0;
+                }
                 $slugs[ str_ireplace(array(':', '{', '}'), '', $segment_route) ] = $segment;//save slug key => value
               }
             else if($segment_route !== $segment && $is_slug !== 1)

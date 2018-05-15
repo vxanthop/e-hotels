@@ -11,7 +11,7 @@ class roomController {
 
     public static function create($hotel_id) {
         $hotel = Hotel::getOne([
-            'id' => intval($hotel_id)
+            'id' => $hotel_id
         ]);
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         return compact('hotel', 'group');
@@ -19,7 +19,7 @@ class roomController {
 
     public static function createSubmit($vars) {
         $create = [
-            'hotel_id' => intval($vars['hotel_id']),
+            'hotel_id' => $vars['hotel_id'],
             'capacity' => intval($vars['capacity']),
             'view' => isset($vars['view']) && $vars['view'] == 'yes',
             'expandable' => $vars['expandable'],
@@ -36,7 +36,7 @@ class roomController {
 
     public static function update($room_id) {
         $room = Room::getOne([
-            'room_id' => intval($room_id)
+            'room_id' => $room_id
         ]);
         $hotel = Hotel::getOne(['id' => $room->hotel_id]);
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
@@ -53,20 +53,17 @@ class roomController {
         ];
 
         $errors = [];
-        $room = Room::getOne([
-            'room_id' => intval($vars['room_id'])
-        ]);
         $query = Room::update([
-            'room_id' => intval($vars['room_id'])
+            'room_id' => $vars['room_id']
         ], $update);
-        if(!$query){    
+        if(!$query) {    
             $errors[] = 'Could not update Room. Please try again.';
         }
         return $errors;
     }
 
     public static function delete($id) {
-        $delete = Room::delete(['room_id' => intval($id)]);
+        $delete = Room::delete(['room_id' => $id]);
         $errors = [];
         if(!$delete) {
             $errors[] = 'Could not delete Room. Please try again.';
