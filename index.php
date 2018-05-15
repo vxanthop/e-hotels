@@ -288,7 +288,7 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 
 
 $app->get('/seed/employees/:num', function ($num) use ($app) {
-	EmployeeSeeder::run($num);
+	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
 });
 
 
