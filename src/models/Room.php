@@ -53,7 +53,7 @@ class Room extends Model {
     }
 
     public function amenities_getter() {
-        return $this->amenities = Amenity::ofRoom($room_id, $hotel_id);
+        return $this->amenities = Amenity::ofRoom($this->room_id, $this->hotel_id);
     }
 
     /*

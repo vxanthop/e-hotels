@@ -53,6 +53,17 @@ table.table-clickable tbody tr {
     cursor: pointer;
 }
 
+/* Bold checkbox labels */
+:checked ~ label.checked-bold {
+    font-weight: bold;
+}
+
+/* Form-control-lg for form-check */
+.form-check.form-control-lg input[type=checkbox] {
+    transform: scale(1.25);
+    margin-top: .55rem;
+}
+
 /* Home page */
 section.hero {
     background: url('/assets/images/hero.jpg');

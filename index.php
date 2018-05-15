@@ -14,6 +14,7 @@ use \controllers\searchController as searchController;
 use \controllers\adminController as adminController;
 use \controllers\hotelGroupController as hotelGroupController;
 use \controllers\hotelController as hotelController;
+use \controllers\roomController as roomController;
 
 # Models
 use \models\Config as Config;
@@ -218,6 +219,32 @@ $app->get('/admin/hotel/:hotel_id', function ($hotel_id) use ($app) {
 		$data['errors'] = $_GET['errors'];
 	}
 	return $app->Response('admin/room/listing.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->get('/admin/room/create/:hotel_id', function($hotel_id) use ($app) {
+
+	$data = roomController::create($hotel_id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/room/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->get('/admin/room/update/:room', function ($room_id) use ($app) {
+
+	$data = roomController::update($room_id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/room/update.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
 	));
