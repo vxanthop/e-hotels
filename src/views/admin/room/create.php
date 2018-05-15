@@ -29,11 +29,11 @@
                         </div>
                         <div class="form-group d-flex justify-content-around">
                             <div class="form-check form-control-lg">
-                                <input type="checkbox" class="form-check-input" name="view" id="view">
+                                <input type="checkbox" class="form-check-input" name="view" id="view" value="yes">
                                 <label for="view" class="form-check-label checked-bold">View to the sea</label>
                             </div>
                             <div class="form-check form-control-lg">
-                                <input type="checkbox" class="form-check-input" name="repairs_need" id="repairs_need">
+                                <input type="checkbox" class="form-check-input" name="repairs_need" id="repairs_need" value="yes">
                                 <label for="repairs_need" class="form-check-label checked-bold">Needs repairs?</label>
                             </div>
                         </div>

@@ -29,11 +29,11 @@
                         </div>
                         <div class="form-group d-flex justify-content-around">
                             <div class="form-check form-control-lg">
-                                <input type="checkbox" class="form-check-input"<?= $room->view ? ' checked' : '' ?>  name="view" id="view">
+                                <input type="checkbox" class="form-check-input"<?= $room->view ? ' checked' : '' ?>  name="view" id="view" value="yes">
                                 <label for="view" class="form-check-label checked-bold">View to the sea</label>
                             </div>
                             <div class="form-check form-control-lg">
-                                <input type="checkbox" class="form-check-input"<?= $room->repairs_need ? ' checked' : '' ?> name="repairs_need" id="repairs_need">
+                                <input type="checkbox" class="form-check-input"<?= $room->repairs_need ? ' checked' : '' ?> name="repairs_need" id="repairs_need" value="yes">
                                 <label for="repairs_need" class="form-check-label checked-bold">Needs repairs?</label>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label for="price">Price: <span class="text-danger" title="This field is required">*</span></label>
                             <div class="input-group">
-                                <input type="number" class="form-control" min="1.00" max="300.00" step="0.01" name="price" id="price" value="<?= $room->price ?>" required />
+                                <input type="number" class="form-control" min="1.00" max="300.00" step="0.01" name="price" id="price" value="<?= number_format($room->price, 2) ?>" required />
                                 <div class="input-group-append">
                                     <span class="input-group-text">€</span>
                                 </div>

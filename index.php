@@ -184,7 +184,7 @@ $app->get('/admin/hotel/update/:hotel_id', function ($hotel_id) use ($app) {
 $app->post('/admin/hotel/update/:hotel_id', function ($hotel_id) use ($app) {
 
 	$vars = array_merge($_POST, ['hotel_id' => $hotel_id]);
-	$data = hotelController::updateSubmit($vars);
+	$errors = hotelController::updateSubmit($vars);
 	if(empty($errors)) {
 		$url = $_GET['success'];
 	} else {
@@ -237,12 +237,11 @@ $app->post('/admin/room/create/:hotel_id', function ($hotel_id) use ($app) {
 	$vars = array_merge($_POST, ['hotel_id' => $hotel_id]);
 	$errors = roomController::createSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin/hotel/' . $hotel_id);
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -262,14 +261,13 @@ $app->get('/admin/room/update/:room_id', function ($room_id) use ($app) {
 $app->post('/admin/room/update/:room_id', function ($room_id) use ($app) {
 
 	$vars = array_merge($_POST, ['room_id' => $room_id]);
-	$data = roomController::updateSubmit($vars);
+	$errors = roomController::updateSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin/hotel/' . $data['hotel_id']);
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $data['errors']]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -277,12 +275,11 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 
 	$errors = roomController::delete($room_id);
 	if(empty($errors)) {
-		header('Location: /admin');
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
