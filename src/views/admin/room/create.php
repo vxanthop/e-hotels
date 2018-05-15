@@ -18,7 +18,7 @@
                             </ul>
                         </div>
                     <?php } ?>
-                    <form action="/admin/room/create/<?= $hotel->id ?>?return=<?= urlencode('/admin/room/create/' . $hotel->id) ?>" method="POST">
+                    <form action="/admin/room/create/<?= $hotel->id ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/room/create/' . $hotel->id) ?>" method="POST">
                         <div class="form-group">
                             <label for="capacity">Capacity:</label>
                             <select class="form-control" name="capacity">

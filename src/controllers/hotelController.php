@@ -109,7 +109,7 @@ class hotelController {
         } else {
             $errors[] = 'Could not update Hotel. Please try again.';
         }
-        return compact('errors', 'group_id');
+        return $errors;
     }
 
     public static function delete($id) {

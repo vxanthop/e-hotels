@@ -7,7 +7,7 @@
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">
-                    <form action="/admin/hotel-group/create?return=<?= urlencode('/admin/hotel-group/create') ?>" method="POST">
+                    <form action="/admin/hotel-group/create?success=<?= urlencode('/admin') ?>&error=<?= urlencode('/admin/hotel-group/create') ?>" method="POST">
                     <?php if(isset($errors) && $errors) { ?>
                         <div class="alert alert-danger" role="alert">
                             <ul>

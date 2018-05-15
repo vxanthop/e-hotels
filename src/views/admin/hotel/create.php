@@ -17,7 +17,7 @@
                             </ul>
                         </div>
                     <?php } ?>
-                    <form action="/admin/hotel/create/<?= $group->id ?>?return=<?= urlencode('/admin/hotel/create/' . $group->id) ?>" method="POST">
+                    <form action="/admin/hotel/create/<?= $group->id ?>?success=<?= urlencode('/admin/hotel-group/' . $group->id) ?>&error=<?= urlencode('/admin/hotel/create/' . $group->id) ?>" method="POST">
                         <div class="form-group">
                             <label for="name">Hotel name: <span class="text-danger" title="This field is required">*</span></label>
                             <input type="text" autofocus class="form-control" maxlength="42" required id="name" name="name" />

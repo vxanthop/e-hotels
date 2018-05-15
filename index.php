@@ -83,12 +83,11 @@ $app->post('/admin/hotel-group/create', function () use ($app) {
 
 	$errors = hotelGroupController::createSubmit($_POST);
 	if(empty($errors)) {
-		header('Location: /admin');
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -123,12 +122,11 @@ $app->post('/admin/hotel-group/update/:id', function ($id) use ($app) {
 	$vars = array_merge($_POST, ['hotel_group_id' => $id]);
 	$errors = hotelGroupController::updateSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin');
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -136,12 +134,11 @@ $app->get('/admin/hotel-group/delete/:id', function ($id) use ($app) {
 
 	$errors = hotelGroupController::delete($id);
 	if(empty($errors)) {
-		header('Location: /admin');
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -163,12 +160,11 @@ $app->post('/admin/hotel/create/:hotel_group_id', function ($hotel_group_id) use
 	$vars = array_merge($_POST, ['hotel_group_id' => $hotel_group_id]);
 	$errors = hotelController::createSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin/hotel-group/' . $hotel_group_id);
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -190,12 +186,11 @@ $app->post('/admin/hotel/update/:hotel_id', function ($hotel_id) use ($app) {
 	$vars = array_merge($_POST, ['hotel_id' => $hotel_id]);
 	$data = hotelController::updateSubmit($vars);
 	if(empty($errors)) {
-		header('Location: /admin/hotel-group/' . $data['group_id']);
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $data['errors']]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
@@ -203,12 +198,11 @@ $app->get('/admin/hotel/delete/:hotel_id', function ($hotel_id) use ($app) {
 
 	$errors = hotelController::delete($hotel_id);
 	if(empty($errors)) {
-		header('Location: /admin');
-		die();
+		$url = $_GET['success'];
 	} else {
-		header('Location: ' . URL::addQuery($_GET['return'], ['errors' => $errors]));
-		die();
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
+	header('Location: ' . $url);
 
 });
 
