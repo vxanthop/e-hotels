@@ -19,6 +19,11 @@ class Hotel extends Model {
         'Address_Postal_Code' => ['address[postal_code]', 'int'],
     ];
 
+    public static function all() {
+        $query = DB::query('SELECT * FROM Hotel');
+        return DB::getCollection($query);
+    }
+
     public static function ofHotelGroup($hotel_group_id) {
         $query = DB::query('SELECT * FROM Hotel WHERE
             Hotel_group_ID = ' . $hotel_group_id 
