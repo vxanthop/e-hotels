@@ -23,26 +23,19 @@ class Model extends BaseModel {
      */
     public static function create($keys) {
         $db_keys = self::getDBKeys($keys);
-        $insert = '';
-        $values = '';
+        $insert = [];
+        $values = [];
         foreach($db_keys as $key => $value) {
-            if(is_numeric($value) && !is_string($value)) {
-                $valuei = strval($value);
+            if(is_bool($value)) {
+                $values[] = strval(intval($value));
+            } else if(is_numeric($value) && !is_string($value)) {
+                $values[] = strval($value);
             } else {
-                $valuei = '"' . $value . '"';
+                $values[] = '"' . $value . '"';
             }
-            if($insert) {
-                $insert .= ', ' . $key;
-            } else {
-                $insert = $key;
-            }
-            if($values) {
-                $values .= ', ' . $valuei;
-            } else {
-                $values = $valuei;
-            }
+            $insert[] = $key;
         }
-        return DB::query('INSERT INTO ' . static::$table . '(' . $insert . ') VALUES (' . $values . ')');
+        return DB::query('INSERT INTO ' . static::$table . '(' . join(', ', $insert) . ') VALUES (' . join(', ', $values) . ')');
     }
 
     /*

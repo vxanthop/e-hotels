@@ -94,7 +94,9 @@ class BaseModel {
         $db_keys = self::getDBKeys($keys);
         $clauses = [];
         foreach($db_keys as $key => $value) {
-            if(is_numeric($value) && !is_string($value)) {
+            if(is_bool($value)) {
+                $clauses[] = $key . ' = ' . intval($value);
+            } else if(is_numeric($value) && !is_string($value)) {
                 $clauses[] = $key . ' = ' . $value;
             } else {
                 $clauses[] = $key . ' = "' . $value . '"';
