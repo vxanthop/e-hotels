@@ -85,6 +85,32 @@ INSERT INTO Hotel_Email_Address (Hotel_ID, Email_Address) VALUES
 (11, 'kalamata@mercure.com'), (11, 'info@mercure-hotels.gr');
 
 
+-- Employees
+
+INSERT INTO Employee(Employee_IRS, Social_Security_Number, Last_Name, First_name, Address_Street, Address_Number, Address_City, Address_Postal_Code) VALUES 
+(403140001, 10023249411, 'Korakas', 'Agamemnon', 'Triantafyllidou', 84, 'Orestiada', 38828),
+(104955910, 14056691300, 'Makris', 'Pythagoras', 'Zografou', 94, 'Zichni', 62989),
+(051044458, 15069610358, 'Christopoulos', 'Isaias', 'Papakosta', 52, 'Orestiada', 84531),
+(747190941, 13094094518, 'Nikolopoulos', 'Achilleas', 'Ioannou', 1, 'Filothei', 29700),
+(093495858, 30122031856, 'Laskari', 'Anatoli', 'Makris', 145, 'Polygyros', 31703);
+
+
+-- Works
+
+INSERT INTO Works(Employee_IRS, Hotel_ID, Start_Date, Finish_Date, Position) VALUES
+(403140001, 1, DATE('2016-04-30'), DATE('2019-04-30'), 'chef'),
+(104955910, 2, DATE('2015-09-18'), DATE('2016-03-04'), 'accountant'),
+(104955910, 2, DATE('2016-03-05'), DATE('2016-09-29'), 'staff manager'),
+(104955910, 2, DATE('2016-09-30'), NULL, 'manager'),
+(051044458, 4, DATE('2015-01-01'), DATE('2015-11-10'), 'manager'),
+(051044458, 3, DATE('2015-11-11'), NULL, 'manager'),
+(747190941, 2, DATE('2016-08-01'), DATE('2018-03-01'), 'maid'),
+(747190941, 4, DATE('2018-03-02'), DATE('2018-05-29'), 'receptionist'),
+(747190941, 5, DATE('2018-07-30'), DATE('2018-08-30'), 'receptionist'),
+(093495858, 10, DATE('2017-05-15'), DATE('2017-09-03'), 'technician'),
+(093495858, 6, DATE('2018-04-02'), DATE('2018-09-10'), 'technician');
+
+
 -- Customers
 
 INSERT INTO Customer(Customer_IRS, Social_Security_Number, Last_Name, First_name, Address_Street, Address_Number, Address_City, Address_Postal_Code) VALUES 
