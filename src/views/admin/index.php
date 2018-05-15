@@ -16,6 +16,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#customers">Customers</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#employees">Employees</a>
+                    </li>
                 </ul>
                 <div class="tab-content p-3">
                     <div class="tab-pane show active" id="groups">
@@ -61,6 +64,34 @@
                     </div>
                     <div class="tab-pane" id="customers">
                         Customers
+                    </div>
+                    <div class="tab-pane" id="employees">
+                        <a class="btn btn-primary mb-3" href="/admin/employee/create">Add <i class="ml-1 fas fa-plus"></i></a>
+                        <table class="table table-striped">
+                            <thead>
+                                <th>IRS</th>
+                                <th>Full name</th>
+                                <th>Address</th>
+                                <th>City</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach($employees as $employee) { ?>
+                                <tr>
+                                    <td><?= $employee->emp_IRS ?></td>
+                                    <td><?= $employee->last_name . ', ' . $employee->first_name ?></td>
+                                    <td><?= $employee->address['street'] . ' ' . $employee->address['number'] ?></td>
+                                    <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
+                                    <td>
+                                        <div class="btn-group-vertical">
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
+                                            <a class="btn btn-sm btn-danger" href="/admin/employee/delete/<?= $employee->emp_IRS ?>?success=<?= urlencode('/admin#employees') ?>&error=<?= urlencode('/admin#employees') ?>">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>            

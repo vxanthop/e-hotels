@@ -286,6 +286,39 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 
 });
 
+$app->get('/admin/employee/create', function () use ($app) {
+
+	/* FILL ME PLEASE */
+
+	return $app->Response('admin/employee/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/employee/create', function () use ($app) {
+
+	/* FILL ME PLEASE */
+
+});
+
+$app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
+
+	/* FILL ME PLEASE */
+
+	return $app->Response('admin/employee/update.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
+
+	/* FILL ME PLEASE */
+
+});
 
 $app->get('/seed/employees/:num', function ($num) use ($app) {
 	EmployeeSeeder::run($num, isset($_GET['onlySQL']));

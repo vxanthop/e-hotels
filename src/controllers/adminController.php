@@ -11,7 +11,7 @@ class adminController {
     public static function index() {
         $data = [
             'hotel_groups' => HotelGroup::all(),
-            'employees' => [],
+            'employees' => Employee::all(),
             'customers' => [],
         ];
         return $data;
