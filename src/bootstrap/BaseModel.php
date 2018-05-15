@@ -68,7 +68,7 @@ class BaseModel {
         $this->data = [];
     }
 
-    protected static function getDBKeys($keys) {
+    public static function getDBKeys($keys) {
         self::invertMapper();
         $db_keys = [];
         foreach($keys as $key => $value) {
@@ -90,7 +90,24 @@ class BaseModel {
         return $db_keys;
     }
 
-    protected static function getDBClauses($keys) {
+    public static function getDBClausesInsert($keys) {
+        $db_keys = self::getDBKeys($keys);
+        $insert = [];
+        $values = [];
+        foreach($db_keys as $key => $value) {
+            if(is_bool($value)) {
+                $values[] = strval(intval($value));
+            } else if(is_numeric($value) && !is_string($value)) {
+                $values[] = strval($value);
+            } else {
+                $values[] = '\'' . $value . '\'';
+            }
+            $insert[] = $key;
+        }
+        return compact('insert', 'values');
+    }
+
+    public static function getDBClauses($keys) {
         $db_keys = self::getDBKeys($keys);
         $clauses = [];
         foreach($db_keys as $key => $value) {
@@ -99,7 +116,7 @@ class BaseModel {
             } else if(is_numeric($value) && !is_string($value)) {
                 $clauses[] = $key . ' = ' . $value;
             } else {
-                $clauses[] = $key . ' = "' . $value . '"';
+                $clauses[] = $key . ' = \'' . $value . '\'';
             }
         }
         return $clauses;

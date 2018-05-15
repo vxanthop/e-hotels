@@ -22,20 +22,11 @@ class Model extends BaseModel {
      * @output: Returns 1 if the entry is inserted, else returns 0
      */
     public static function create($keys) {
-        $db_keys = self::getDBKeys($keys);
-        $insert = [];
-        $values = [];
-        foreach($db_keys as $key => $value) {
-            if(is_bool($value)) {
-                $values[] = strval(intval($value));
-            } else if(is_numeric($value) && !is_string($value)) {
-                $values[] = strval($value);
-            } else {
-                $values[] = '"' . $value . '"';
-            }
-            $insert[] = $key;
+        $db_clauses = self::getDBClausesInsert($keys);
+        if(empty($db_clauses['insert']) || empty($db_clauses['values'])) {
+            return 0;
         }
-        return DB::query('INSERT INTO ' . static::$table . '(' . join(', ', $insert) . ') VALUES (' . join(', ', $values) . ')');
+        return DB::query('INSERT INTO ' . static::$table . '(' . join(', ', $db_clauses['insert']) . ') VALUES (' . join(', ', $db_clauses['values']) . ')');
     }
 
     /*
