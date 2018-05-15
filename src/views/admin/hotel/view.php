@@ -87,9 +87,9 @@
                                     <td><?= $employee->last_name . ', ' . $employee->first_name ?></td>
                                     <td><?= $employee->address['street'] . ' ' . $employee->address['number'] ?></td>
                                     <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
-                                    <td><?= $employee->position['title'] ?></td>
-                                    <td><?= $employee->position['start_date'] ?></td>
-                                    <td><?= $employee->position['finish_date'] ?? '-' ?></td>
+                                    <td><?= $employee->current_job['position'] ?></td>
+                                    <td><?= $employee->current_job['start_date'] ?></td>
+                                    <td><?= $employee->current_job['finish_date'] ?? '-' ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
                                             <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
