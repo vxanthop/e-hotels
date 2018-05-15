@@ -6,7 +6,7 @@ Entity classes represent the "real-life" objects of the app, such as a Person or
 
 * [Auto-properties](#auto-properties)
 * [Mapper](#mapper)
-* [DB queries](#db-queries)
+* [CRUD operations](#crud-operations)
 * [Computed properties](#computed-properties)
 
 ### Auto-properties
@@ -73,10 +73,11 @@ class User extends Model {
 
 The key of each mapper entry represents the MySQL field name. The value can be a string -the property name- or an array with 2 elements, the property name and the property type (`int`, `string`, `float`, `boolean` or `json`). Field names not included in the mapper will be assigned as they are, e.g. the `username` field will be automatically assigned to the `$username` property.
 
-### DB queries
+### CRUD operations
 
-Each entity model inheriting from Model will have the following methods available:
-* `getOne($find)`: Searches the database to find entries that match `$find`. `$find` is an associative array with entries of the format `property => value`. Both schema field names and model property names can be used in place of `property`.
+CRUD stands for Create/Read/Update/Delete. Each entity model inheriting from Model will have the following methods available:
+
+* `getOne($find)`: Searches the database to find entries that match `$find` and returns the first match. `$find` is an associative array with entries of the format `property => value`. Both schema field names and model property names can be used in place of `property`.
     ```php
     $user = User::getOne(['first' => 'John', 'last' => 'Doe']);
     echo $user->username;
@@ -100,7 +101,7 @@ Each entity model inheriting from Model will have the following methods availabl
      * (no fullname field exists in schema and username is not specified)
      */
     ```
-* `update($find, $replace)`: Searches the database to find entries that match `$find`. All entries matched will have their fields updated, as determined by `$replace`. `$replace` has the same format as `$find`.
+* `update($find, $replace)`: Searches the database to find entries that match `$find`. All entries matched will have their fields updated, as determined by `$replace`. `$replace` has the same format as `$find`. Returns the number of updated entries.
     ```php
     /* Updates all users with first name 'John' and set their birthyear to 2000 */
     echo User::update(['first' => 'John'], ['birthyear' => 2000]);
@@ -144,7 +145,7 @@ class User extends Model {
     public $first, $last;
 
     public function fullname_getter() {
-        return $this->first . " " . $this->last;
+        return $this->fullname = $this->first . " " . $this->last;
     }
 
 }
@@ -155,3 +156,5 @@ class User extends Model {
 
 <h1><?php echo $user->fullname; ?></h1>
 ```
+
+It's recommended that the value is explicitly stored inside the method's body (`return $this->property = $value`) with the given property name, so that any subsequent calls will not need to recalculate it.

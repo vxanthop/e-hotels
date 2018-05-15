@@ -9,6 +9,16 @@ The most common request types are `GET` and `POST`. `GET` is used when a user si
 * [GET requests](#get-requests)
 * [POST requests](#post-requests)
 
+The following helper functions may also be used:
+* `Response($view, $vars, $status_code)`  
+    Exports the variables given in the associative array `$vars` to the `$view` file. The default pathname for the views is `/src/views`. The HTTP response code is given by `$status_code` (default = 200). Read more information about Views [here](views.md).
+* `ResponseHTML($html, $status)`  
+    Prints raw HTML as a response, given by `$html`. `$status` functions as previously.
+* `JsonResponse($data)`  
+    Encodes `$data` as a JSON object and prints it.
+* `Redirect($url)`  
+    Redirects client to `$url`.
+
 ### GET requests
 
 A user visits `/users` and we need our app to forward that request to `UserController::index()`. In this case, we may write the routing directive as shown below:

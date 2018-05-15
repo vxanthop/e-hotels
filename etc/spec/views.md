@@ -31,16 +31,3 @@ In the above example, the first parameter of the `Response` method is the filena
 Also, as can be seen, the filename of the _layout_ is given along with the data array and is bound to the `_layout` key. All layouts are stored in the `src/views/layouts/` directory.
 
 If no layout parameter is provided, then the view is simply rendered as a single file.
-
-The views used in this app are the following:
-
-* [Home](#home)
-* [Results page](#results-page)
-* ...
-
-### Home
-_Insert here description and specs of the Home view._
-
-
-### Results page
-_Insert here description and specs of the Results page view._
