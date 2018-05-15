@@ -5,6 +5,7 @@ namespace controllers;
 use \models\HotelGroup as HotelGroup;
 use \models\Hotel as Hotel;
 use \models\Room as Room;
+use \models\Employee as Employee;
 use \models\DB as DB;
 
 class hotelController {
@@ -66,7 +67,8 @@ class hotelController {
         ]);
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         $rooms = Room::ofHotel($id);
-        return compact('hotel', 'group', 'rooms');
+        $employees = Employee::ofHotel($id);
+        return compact('hotel', 'group', 'rooms', 'employees');
     }
 
     public static function update($id) {

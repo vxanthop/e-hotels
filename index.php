@@ -97,7 +97,7 @@ $app->get('/admin/hotel-group/:hotel_group_id', function ($hotel_group_id) use (
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
-	return $app->Response('admin/hotel/listing.php', array_merge(
+	return $app->Response('admin/hotel-group/view.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
 	));
@@ -212,7 +212,7 @@ $app->get('/admin/hotel/:hotel_id', function ($hotel_id) use ($app) {
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
-	return $app->Response('admin/room/listing.php', array_merge(
+	return $app->Response('admin/hotel/view.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
 	));
