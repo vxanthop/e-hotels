@@ -49,7 +49,7 @@
                                 <div class="btn-group-vertical">
                                     <a class="btn btn-sm btn-secondary" href="/admin/hotel/<?= $hotel->id ?>">View rooms</a>
                                     <a class="btn btn-sm btn-secondary" href="/admin/hotel/update/<?= $hotel->id ?>">Edit</a>
-                                    <a class="btn btn-sm btn-danger" href="/admin/hotel/delete/<?= $hotel->id ?>?return=<?= urlencode('/admin/hotel-group/' . $group->id) ?>">Delete</a>
+                                    <a class="btn btn-sm btn-danger" href="/admin/hotel/delete/<?= $hotel->id ?>?success=<?= urlencode('/admin/hotel-group/' . $group->id) ?>&error=<?= urlencode('/admin/hotel-group/' . $group->id) ?>">Delete</a>
                                 </div>
                             </td>
                         </tr>
