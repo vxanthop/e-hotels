@@ -92,7 +92,7 @@ INSERT INTO Employee(Employee_IRS, Social_Security_Number, Last_Name, First_Name
 (225744, '16076198834', 'Xanthopoulou', 'Semina', 'Gaspari', 83, 78555, 'Parga'),
 (472800425, '08056249165', 'Nikolaidis', 'Foteinos', 'Koronaios', 2, 41604, 'Ilio'),
 (738242228, '14038347787', 'Iatridis', 'Paris', 'Papadopoulos', 3, 87295, 'Patra'),
-(248719098, '14115661875', 'Vitali', 'Ήra', 'Koliatsos', 8, 56829, 'Naupaktia'),
+(248719098, '14115661875', 'Vitali', 'Ira', 'Koliatsos', 8, 56829, 'Naupaktia'),
 (38701508, '12034117037', 'Aggelopoulou', 'Paraskeui', 'Protonotarios', 3, 81227, 'Elassona'),
 (715833361, '11047284440', 'Antonopoulou', 'Iordania', 'Euthymiadis', 5, 62948, 'Orestiada'),
 (341921072, '02087468262', 'Argyrou', 'Aglaia', 'Papakonstantinou', 8, 28215, 'Athina'),
