@@ -1,4 +1,4 @@
-CREATE DATABASE ehotels;
+CREATE DATABASE IF NOT EXISTS ehotels;
 
 GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
 
