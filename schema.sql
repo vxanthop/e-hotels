@@ -1,8 +1,8 @@
-CREATE USER 'e-hotels'@'localhost' IDENTIFIED BY 'KostasMitroglou11';
-
 CREATE DATABASE ehotels;
 
 GRANT ALL ON ehotels.* TO 'e-hotels'@'localhost';
+
+USE ehotels;
 
 CREATE TABLE Hotel_group (
     Hotel_group_ID int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
