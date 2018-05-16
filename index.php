@@ -15,6 +15,7 @@ use \controllers\adminController as adminController;
 use \controllers\hotelGroupController as hotelGroupController;
 use \controllers\hotelController as hotelController;
 use \controllers\roomController as roomController;
+use \controllers\employeeController as employeeController;
 
 # Models
 use \models\Config as Config;
@@ -287,8 +288,11 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 });
 
 $app->get('/admin/employee/create', function () use ($app) {
-
-	/* FILL ME PLEASE */
+	
+	$data = employeeController::create();
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 
 	return $app->Response('admin/employee/create.php', array_merge(
 		$data,
@@ -299,14 +303,35 @@ $app->get('/admin/employee/create', function () use ($app) {
 
 $app->post('/admin/employee/create', function () use ($app) {
 
-	/* FILL ME PLEASE */
+	$errors = employeeController::createSubmit($_POST);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
+});
+
+$app->get('/admin/employee/:irs', function ($irs) use ($app) {
+
+	$data = employeeController::view($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/employee/view.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
 
 });
 
 $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 
-	/* FILL ME PLEASE */
-
+	$data = employeeController::update($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
 	return $app->Response('admin/employee/update.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
@@ -316,7 +341,14 @@ $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 
 $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
-	/* FILL ME PLEASE */
+	$vars = array_merge($_POST, ['irs' => $irs]);
+	$errors = employeeController::updateSubmit($vars);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
 
 });
 
