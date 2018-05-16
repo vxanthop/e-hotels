@@ -184,19 +184,22 @@ DELIMITER $$
 CREATE TRIGGER assign_employee BEFORE INSERT ON Works
     FOR EACH ROW BEGIN
         IF NEW.Finish_Date IS NOT NULL AND NEW.Finish_Date < NEW.Start_Date THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Finish date cannot be set earlier than the start date';
+            SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Finish date can''t be earlier than start date');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
         IF (SELECT COUNT(Employee_IRS) FROM Works WHERE Employee_IRS = NEW.Employee_IRS AND
             Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
         ) >= 1 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cannot assign a work to this employee, since the given period conflicts with an existent working period of his.';
+            SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': The given working period conflicts with an existent one.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
         IF NEW.Position = 'manager' AND
             (SELECT COUNT(Employee_IRS) FROM Works WHERE
                 Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
                 Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
             ) >= 1 THEN
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: Cannot assign a manager to this Hotel, since the given period conflicts with an existent manager period.';
+            SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Can''t assign a manager to this Hotel for this period, since one already exists.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
     END$$
 DELIMITER ;
