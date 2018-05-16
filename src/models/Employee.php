@@ -33,7 +33,7 @@ class Employee extends Model {
     }
 
     public function positions_getter() {
-        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Employee_IRS = '.$this->irs . 'ORDER BY Start_Date');
+        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Employee_IRS = ' . $this->emp_IRS . ' ORDER BY Start_Date');
         
         $this->positions = [];
         while($row = $query->fetch_assoc()) {
