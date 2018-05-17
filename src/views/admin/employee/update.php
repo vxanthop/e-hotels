@@ -16,7 +16,7 @@
                         </ul>
                     </div>
                 <?php } ?>
-                    <form action="/admin/employee/update/<?= $employee->emp_IRS ?>?success=<?= urlencode('/admin/employee/' . $employee->emp_IRS) ?>&error=<?= urlencode('/admin/employee/update/<?= $employee->emp_IRS ?>') ?>" method="POST">
+                    <form action="/admin/employee/update/<?= $employee->emp_IRS ?>?success=<?= urlencode('/admin/employee/' . $employee->emp_IRS) ?>&error=<?= urlencode('/admin/employee/update/' . $employee->emp_IRS) ?>" method="POST">
                         <div class="form-group row">
                             <div class="col">
                                 <label for="first">First name: <span class="text-danger" title="This field is required">*</span></label>
