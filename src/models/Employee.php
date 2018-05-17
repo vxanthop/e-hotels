@@ -23,7 +23,7 @@ class Employee extends Model {
     ];
 
     public static function all() {
-        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
+        $query = DB::query('SELECT * FROM Employee');
         return DB::getCollection($query);
     }
 
@@ -47,4 +47,5 @@ class Employee extends Model {
         return DB::query('INSERT INTO Works VALUES
         (' . $this->emp_IRS. ', ' . $hotel_id . ', DATE("' . $start_date . '"), DATE("' . $finish_date . '"), "' . $position . '")');
     }
+
 }
