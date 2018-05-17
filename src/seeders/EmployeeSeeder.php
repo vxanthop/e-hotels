@@ -10,6 +10,9 @@ class EmployeeSeeder extends Seeder {
 
     public static function run($num, $onlySQL = false) {
         header('Content-type: text/plain');
+        // Set default timezone to UTC for proper time calculations
+        $tz = date_default_timezone_get();
+        date_default_timezone_set('UTC');
         $hotels = Hotel::all();
         $keys_employees = [];
         $insert_employees = [];
@@ -34,7 +37,7 @@ class EmployeeSeeder extends Seeder {
                 while(intdiv($start, 86400) < intdiv(time(), 86400)) {
                     $hotel_id = $hotels[rand(0, count($hotels) - 1)]->id;
                     /* Random duration from 0 to 5 years */
-                    $duration = rand(0, 157784630);
+                    $duration = rand(1, 157784630);
                     $values = '(' . join(', ', [
                         $irs,
                         $hotel_id,
@@ -47,9 +50,8 @@ class EmployeeSeeder extends Seeder {
                         $query = DB::query('INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES ' . $values);
                     }
                     if($onlySQL || $query) {
-                        $start += $duration;
                         /* Start from next day */
-                        $start = (intdiv($start - 1, 86400) + 1) * 86400;
+                        $start = (intdiv($start + $duration, 86400) + 1) * 86400;
                     }
                 }
             }
@@ -62,6 +64,7 @@ class EmployeeSeeder extends Seeder {
             echo "-- Works\n\n";
             echo 'INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES' . "\n" . join(",\n", $insert_works) . ";\n\n";
         }
+        date_default_timezone_set($tz);
     }
 
 }
