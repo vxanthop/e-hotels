@@ -69,12 +69,12 @@ class employeeController {
         ];
 
         $query = Employee::update([
-            'irs' => intval($vars['irs'])
+            'emp_IRS' => intval($vars['irs'])
         ], $update);
     }
 
     public static function delete($irs) {
-        $delete = Employee::delete(['irs' => $irs]);
+        $delete = Employee::delete(['emp_IRS' => $irs]);
         $errors = [];
         if(!$delete) {
             $errors[] = 'Could not delete Employee. Please try again.';
