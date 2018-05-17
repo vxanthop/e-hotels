@@ -377,6 +377,19 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
 });
 
+$app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
+
+	$errors = employeeController::delete($irs);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
+});
+
+
 $app->get('/seed/employees/:num', function ($num) use ($app) {
 	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
 });

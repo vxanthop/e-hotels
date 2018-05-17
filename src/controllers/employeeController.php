@@ -77,7 +77,7 @@ class employeeController {
         $delete = Employee::delete(['irs' => $irs]);
         $errors = [];
         if(!$delete) {
-            $errors[] = 'Could not delete Room. Please try again.';
+            $errors[] = 'Could not delete Employee. Please try again.';
         }
         return $errors;
     }
