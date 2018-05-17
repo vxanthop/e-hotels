@@ -49,10 +49,8 @@ class employeeController {
     }
 
     public static function update($irs) {
-        $data = [
-            'emp' => Employee::getOne(['emp_IRS' => $irs]),
-        ];
-        return $data;
+            $emp = Employee::getOne(['emp_IRS' => $irs]);
+        return ['employee' => $emp];
     }
 
     public static function updateSubmit($vars) {
@@ -92,7 +90,6 @@ class employeeController {
             'emp_IRS' => $irs
         ]);
         $works = $emp -> positions;
-        
-        return compact('emp', 'work');
+        return compact('emp', 'works');
     }
 }

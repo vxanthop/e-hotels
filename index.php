@@ -361,7 +361,6 @@ $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$data,
 		['_layout' => 'main.php']
 	));
-
 });
 
 $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
@@ -374,7 +373,6 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
-
 });
 
 $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
