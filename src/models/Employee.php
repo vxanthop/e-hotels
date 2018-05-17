@@ -33,13 +33,18 @@ class Employee extends Model {
     }
 
     public function positions_getter() {
-        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Employee_IRS = ' . $this->emp_IRS . ' ORDER BY Start_Date');
+        $query = DB::query('SELECT * FROM Works WHERE Employee_IRS = ' . $this->emp_IRS . ' ORDER BY Start_Date');
         
         $this->positions = [];
         while($row = $query->fetch_assoc()) {
-            $this->positions[] = $row['Position'];
+            $this->positions[] = $row;
         }
 
         return $this->positions;
+    }
+
+    public function assignWork($hotel_id, $position, $start_date, $finish_date) {
+        return DB::query('INSERT INTO Works VALUES
+        (' . $this->emp_IRS. ', ' . $hotel_id . ', DATE("' . $start_date . '"), DATE("' . $finish_date . '"), "' . $position . '")');
     }
 }

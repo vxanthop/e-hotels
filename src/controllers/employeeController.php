@@ -24,10 +24,10 @@ class employeeController {
 
     public static function createSubmit($vars) {
         $create = [
-            'emp_IRS' => $vars['emp_IRS'],
-            'SSN' => $vars['SSN'],
-            'first_name' => $vars['first_name'],
-            'last_name' => $vars['last_name'],
+            'emp_IRS' => intval($vars['irs']),
+            'SSN' => intval($vars['ssn']),
+            'first_name' => $vars['first'],
+            'last_name' => $vars['last'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),
@@ -35,21 +35,31 @@ class employeeController {
                 'postal_code' => intval($vars['postal_code']),
             ],
         ];
-        $query = Employee::create($create);     
+        $query = Employee::create($create);
+        if ($vars['hotel_id']){
+            $emp = Employee::getOne([
+                'emp_IRS' => intval($vars['irs'])
+            ]); 
+            $emp -> assignWork([
+                'hotel_id' => $vars['hotel_id'],
+                'position' => $vars['position'],
+                'start_date' => $vars['start'],
+                'finish_date' => $vars['finish']]);
+        }
     }
 
     public static function update($irs) {
         $emp = Employee::getOne([
-            'irs' => $irs
+            'emp_IRS' => $irs
         ]);
         return $emp;
     }
 
     public static function updateSubmit($vars) {
         $update = [
-            'SSN' => $vars['SSN'],
-            'first_name' => $vars['first_name'],
-            'last_name' => $vars['last_name'],
+            'SSN' => intval($vars['ssn']),
+            'first_name' => $vars['first'],
+            'last_name' => $vars['last'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),
@@ -59,7 +69,7 @@ class employeeController {
         ];
 
         $query = Employee::update([
-            'irs' => $vars['irs']
+            'irs' => intval($vars['irs'])
         ], $update);
     }
 
@@ -77,8 +87,7 @@ class employeeController {
             'emp_IRS' => $irs
         ]);
         $works = $emp -> positions;
-        var_dump($emp, $works);
-        die();
+        
         return compact('emp', 'work');
     }
 }

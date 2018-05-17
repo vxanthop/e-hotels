@@ -310,7 +310,32 @@ $app->post('/admin/employee/create', function () use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
+});
 
+$app->get('/admin/employee/create/:hotel_id', function ($hotel_id) use ($app) {
+	
+	$data = employeeController::create($hotel_id);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+
+	return $app->Response('admin/employee/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/employee/create/:hotel_id', function ($hotel_id) use ($app) {
+
+	$vars = array_merge($_POST, ['hotel_id' => $hotel_id]);
+	$errors = employeeController::createSubmit($vars);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
 });
 
 $app->get('/admin/employee/:irs', function ($irs) use ($app) {
