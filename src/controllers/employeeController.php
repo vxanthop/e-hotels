@@ -49,10 +49,10 @@ class employeeController {
     }
 
     public static function update($irs) {
-        $emp = Employee::getOne([
-            'emp_IRS' => $irs
-        ]);
-        return $emp;
+        $data = [
+            'emp' => Employee::getOne(['emp_IRS' => $irs]),
+        ];
+        return $data;
     }
 
     public static function updateSubmit($vars) {
@@ -68,9 +68,14 @@ class employeeController {
             ],
         ];
 
+        $errors = [];
         $query = Employee::update([
             'emp_IRS' => intval($vars['irs'])
         ], $update);
+        if(!$query) { 
+            $errors[] = 'Could not update Room. Please try again.';
+        }
+        return $errors;
     }
 
     public static function delete($irs) {

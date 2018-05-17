@@ -366,7 +366,7 @@ $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 
 $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
-	$vars = array_merge($_POST, ['irs' => $irs]);
+	$vars = array_merge($_POST, ['emp_IRS' => $irs]);
 	$errors = employeeController::updateSubmit($vars);
 	if(empty($errors)) {
 		$url = $_GET['success'];
