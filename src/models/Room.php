@@ -27,6 +27,25 @@ class Room extends Model {
         return DB::getCollection($query);
     }
 
+    public static function search($data) {
+        $sql = 'SELECT Hotel_Room.* FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE Hotel.Address_City = "' . $data['city'] . '" AND (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_start'] . ' AND ' . $data['rooms_end'] . ')';
+        if($data['capacity'] > 0) {
+            $sql .= ' AND Hotel_Room.Capacity = ' . $data['capacity'];
+        }
+        if($data['stars'] > 0) {
+            $sql .= ' AND Hotel.Stars = ' . $data['stars'];
+        }
+        if(count($data['amenities'])) {
+            $sql .= ' AND (SELECT COUNT(amenity) FROM Room_Amenities WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND amenity IN (\'' . join('\', \'', $data['amenities']) . '\')) >= ' . count($data['amenities']);
+        }
+        if(count($data['hotel_groups'])) {
+            $sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
+        }
+        $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $query = DB::query($sql);
+        return DB::getCollection($query);
+    }
+
     /*
      * @input: The customer that will reserve the room, the start date and the end date of the reservation.
      * @output: None
@@ -66,6 +85,12 @@ class Room extends Model {
 
     public function deleteAmenities() {
         return DB::query('DELETE FROM Room_Amenities WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id);
+    }
+
+    public function hotel_getter() {
+        return $this->hotel = Hotel::getOne([
+            'hotel_id' => $this->hotel_id
+        ]);
     }
 
     public function expandable_description_getter() {

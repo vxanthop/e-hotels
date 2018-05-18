@@ -9,16 +9,13 @@ use \models\DB as DB;
 
 class employeeController {
 
-
     public static function create($hotel_id = NULL) {
-        if (!$hotel_id){
+        if(!$hotel_id) {
             return [];
-        }
-        else{
-            $data=[
-                'hotel'=> Hotel::getOne(['id' => $hotel_id]),
+        } else {
+            return [
+                'hotel' => Hotel::getOne(['id' => $hotel_id]),
             ];
-            return $data;  
         }
     }
 
@@ -36,20 +33,30 @@ class employeeController {
             ],
         ];
         $query = Employee::create($create);
-        if ($vars['hotel_id']){
-            $emp = Employee::getOne([
-                'emp_IRS' => intval($vars['irs'])
-            ]); 
-            $emp -> assignWork([
-                'hotel_id' => $vars['hotel_id'],
-                'position' => $vars['position'],
-                'start_date' => $vars['start'],
-                'finish_date' => $vars['finish']]);
+        $errors = [];
+        if($query) {
+            if(isset($vars['hotel_id'])) {
+                $emp = Employee::getOne([
+                    'emp_IRS' => intval($vars['irs'])
+                ]); 
+                $assign = $emp->assignWork([
+                    'hotel_id' => $vars['hotel_id'],
+                    'position' => $vars['position'],
+                    'start_date' => $vars['start'],
+                    'finish_date' => $vars['finish']
+                ]);
+                if(!$assign) {
+                    $errors[] = 'Could not assign work to Employee. Please try again.';
+                }
+            }
+        } else {
+            $errors[] = 'Could not create Employee. Please try again.';
         }
+        return $errors;
     }
 
     public static function update($irs) {
-            $emp = Employee::getOne(['emp_IRS' => $irs]);
+        $emp = Employee::getOne(['emp_IRS' => $irs]);
         return ['employee' => $emp];
     }
 
@@ -71,7 +78,7 @@ class employeeController {
             'emp_IRS' => intval($vars['irs'])
         ], $update);
         if(!$query) { 
-            $errors[] = 'Could not update Room. Please try again.';
+            $errors[] = 'Could not update Employee. Please try again.';
         }
         return $errors;
     }
@@ -86,10 +93,10 @@ class employeeController {
     }
 
     public static function view($irs) {
-        $emp = Employee::getOne([
+        $employee = Employee::getOne([
             'emp_IRS' => $irs
         ]);
-        $works = $emp -> positions;
-        return compact('emp', 'works');
+        return ['employee' => $employee];
     }
+
 }

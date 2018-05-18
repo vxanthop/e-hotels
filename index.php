@@ -22,6 +22,9 @@ use \models\Config as Config;
 use \models\URL as URL;
 
 # Seeders
+use \seeders\HotelGroupSeeder as HotelGroupSeeder;
+use \seeders\HotelSeeder as HotelSeeder;
+use \seeders\RoomSeeder as RoomSeeder;
 use \seeders\EmployeeSeeder as EmployeeSeeder;
 
 error_reporting(Config::get('error-level'));
@@ -310,6 +313,7 @@ $app->post('/admin/employee/create', function () use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
+
 });
 
 $app->get('/admin/employee/create/:hotel_id', function ($hotel_id) use ($app) {
@@ -336,6 +340,7 @@ $app->post('/admin/employee/create/:hotel_id', function ($hotel_id) use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
+
 });
 
 $app->get('/admin/employee/:irs', function ($irs) use ($app) {
@@ -373,6 +378,7 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
+
 });
 
 $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
@@ -388,8 +394,22 @@ $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
 });
 
 
+# Seeder routes
+
+$app->get('/seed/hotel-group/:num', function ($num) use ($app) {
+	HotelGroupSeeder::run($num);
+});
+
+$app->get('/seed/hotel/:num', function ($num) use ($app) {
+	HotelSeeder::run($num);
+});
+
+$app->get('/seed/room/:num', function ($num) use ($app) {
+	RoomSeeder::run($num);
+});
+
 $app->get('/seed/employees/:num', function ($num) use ($app) {
-	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
+	EmployeeSeeder::run($num);
 });
 
 # Launch app

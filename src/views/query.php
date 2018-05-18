@@ -11,8 +11,9 @@
                                 </div>
                                 <div class="col col-3">
                                     <select name="capacity" class="form-control">
+                                        <option value="0"<?= ($capacity == 0) ? " selected" : "" ?> >Any beds</option>
 <?php for($i = 1; $i <= 10; ++$i) { ?>
-                                        <option value="<?= $i ?>"<?= ($capacity == $i) ? " selected" : ""?> ><?= $i ?> beds</option>
+                                        <option value="<?= $i ?>"<?= ($capacity == $i) ? " selected" : "" ?> ><?= $i ?> beds</option>
 <?php } ?>
                                     </select>
                                 </div>
@@ -26,10 +27,25 @@
                             <div class="row no-gutters">
                             <?php foreach($row as $i => $room) { ?>
                                 <div class="col col-6 <?= ($i == 0) ? 'pr-2 ' : 'pl-2 ' ?>py-2">
-                                    <div class="card">
-                                        <?php if($room->hotel->img_src) { ?><img src="<?= $room->hotel->img_src ?>" alt="" class="card-img-top" /><?php } ?>
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?= $room->hotel->name ?></h5>
+                                    <div class="card h-100">
+                                        <img src="<?= $room->hotel->img_src ?? 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
+                                        <div class="card-body d-flex flex-column">
+                                            <h4 class="card-title text-center mb-4"><?= $room->hotel->name ?> <span class="badge badge-warning"><?= $room->hotel->stars ?><i class="fas fa-star"></i></span></h4>
+                                            <div class="mt-auto d-flex justify-content-between">
+                                                <div>
+                                                    <ul class="list-unstyled mb-0">
+                                                        <li><strong>Capacity: <?= $room->capacity ?></strong></li>
+                                                        <?= ($room->view) ? '<li>View to the sea' : '' ?>
+                                                        <?= ($room->repairs_need) ? '<li>Needs repairs' : '' ?>
+                                                    <?php foreach($room->amenities as $amenity) { ?>
+                                                        <li><?= $amenity ?>
+                                                    <?php } ?>
+                                                    </ul>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <h5 class="mt-auto mb-0"><span class="badge badge-secondary"><?= number_format($room->price, 2) ?>€</span></h5>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

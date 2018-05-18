@@ -25,7 +25,10 @@ class Seeder {
         list($street, $number, $postal_code, $city) = explode(', ', $address);
         $street = Text::toGreeklish(str_replace(['Όδος ', 'Λεωφόρος '], '', $street));
         $number = $number + 0;
-        $postal_code = str_replace(' ', '', $postal_code) + 0;
+        $postal_code = str_pad(str_replace(' ', '', $postal_code), 5, '0') + 0;
+        if($postal_code < 10000) {
+            $postal_code += rand(1, 9) * 10000;
+        }
         $hyphen = strpos($city, '-');
         if($hyphen !== FALSE) {
             $city = substr($city, 0, $hyphen);

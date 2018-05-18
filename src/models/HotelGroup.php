@@ -18,7 +18,7 @@ class HotelGroup extends Model {
     ];
 
     public static function all() {
-        $query = DB::query('SELECT * FROM Hotel_group');
+        $query = DB::query('SELECT * FROM Hotel_group ORDER BY Hotel_group_Name');
         return DB::getCollection($query);
     }
 

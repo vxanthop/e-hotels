@@ -29,7 +29,7 @@
                         <a class="btn btn-primary mb-3" href="/admin/room/create/<?= $hotel->id ?>">Add <i class="ml-1 fas fa-plus"></i></a>
                         <table class="table table-striped">
                             <thead>
-                                <th>Room ID</th>
+                                <th>Room</th>
                                 <th>Capacity</th>
                                 <th>View to the sea</th>
                                 <th>Expandable</th>
@@ -42,7 +42,7 @@
                             <tbody>
                             <?php foreach($rooms as $room) { ?>
                                 <tr>
-                                    <td><?= $room->room_id ?></td>
+                                    <td>#<?= $room->room_id ?></td>
                                     <td><?= $room->capacity == 1 ? "1 bed" : $room->capacity . " beds" ?></td>
                                     <td><?= $room->view ? "Yes" : "No" ?></td>
                                     <td><?= $room->expandable_description ?></td>
@@ -51,7 +51,7 @@
                                     <td>
                                         <ul class="list-unstyled text-center">
                                         <?php foreach($room->amenities as $amenity) { ?>
-                                            <li><?= $amenity->amenity ?></li>
+                                            <li><?= $amenity ?></li>
                                         <?php } ?>
                                         </ul>
                                     </td>

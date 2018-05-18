@@ -8,16 +8,12 @@ use \models\DB as DB;
 
 class EmployeeSeeder extends Seeder {
 
-    public static function run($num, $onlySQL = false) {
+    public static function run($num) {
         header('Content-type: text/plain');
         // Set default timezone to UTC for proper time calculations
         $tz = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $hotels = Hotel::all();
-        $keys_employees = [];
-        $insert_employees = [];
-        $keys_works = ['Employee_IRS', 'Hotel_ID', 'Start_Date', 'Finish_Date', 'Position'];
-        $insert_works = [];
         for($n = 0; $n < $num; ++$n) {
             $irs = self::generateIRS();
             $ssn = self::generateSSN();
@@ -25,13 +21,8 @@ class EmployeeSeeder extends Seeder {
                 'emp_IRS' => $irs,
                 'SSN' => $ssn
             ], self::generatePerson());
-            $db_clauses = Employee::getDBClausesInsert($data);
-            if(!$onlySQL) {
-                $query = Employee::create($data);
-            }
-            if($onlySQL || $query) {
-                $keys_employees = $db_clauses['insert'];
-                $insert_employees[] = '(' . join(', ', $db_clauses['values']) . ')';
+            $query = Employee::create($data);
+            if($query) {
                 /* From 2000-01-01 */
                 $start = rand(946684800, time());
                 while(intdiv($start, 86400) < intdiv(time(), 86400)) {
@@ -45,24 +36,13 @@ class EmployeeSeeder extends Seeder {
                         'DATE(\'' . date('Y-m-d', $start + $duration) . '\')',
                         '\'' . self::generatePosition() . '\''
                     ]) . ')';
-                    $insert_works[] = $values;
-                    if(!$onlySQL) {
-                        $query = DB::query('INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES ' . $values);
-                    }
-                    if($onlySQL || $query) {
+                    $query = DB::query('INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES ' . $values);
+                    if$query) {
                         /* Start from next day */
                         $start = (intdiv($start + $duration, 86400) + 1) * 86400;
                     }
                 }
             }
-        }
-        if(count($insert_employees)) {
-            echo "-- Employees\n\n";
-            echo 'INSERT INTO Employee(' . join(', ', $keys_employees) . ') VALUES' . "\n" . join(",\n", $insert_employees) . ";\n\n";
-        }
-        if(count($insert_works)) {
-            echo "-- Works\n\n";
-            echo 'INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES' . "\n" . join(",\n", $insert_works) . ";\n\n";
         }
         date_default_timezone_set($tz);
     }
