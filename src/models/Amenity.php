@@ -20,8 +20,11 @@ class Amenity extends Model {
         $query = DB::query('SELECT amenity FROM Room_Amenities WHERE
             Room_ID = ' . $room_id . '
         AND Hotel_ID = ' . $hotel_id);
-
-        return DB::getCollection($query);
+        $amenities = [];
+        while($row = $query->fetch_assoc()) {
+            $amenities[] = $row['amenity'];
+        }
+        return $amenities;
     }
 
     /*
@@ -29,7 +32,7 @@ class Amenity extends Model {
         @output: An array of strings representing all the various amenities available among all hotels and rooms
     */
     public static function all(){
-        $query = DB::query('SELECT DISTINCT amenity FROM Room_Amenities');
+        $query = DB::query('SELECT DISTINCT amenity FROM Room_Amenities ORDER BY amenity');
         $amenities = [];
         /*  For each result in the query, fetch_assoc() will return an associative array
             like ['amenity' => value]
