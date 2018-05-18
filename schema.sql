@@ -217,8 +217,8 @@ CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
                     CASE 
                         WHEN Room_ID = NEW.Room_ID AND 
                              Hotel_ID = NEW.Hotel_ID AND
-                            (Start_Date <= NEW.Start_Date AND Finish_Date >= NEW.Start_Date) OR 
-                            (Start_Date <= NEW.Finish_Date AND Finish_Date >= NEW.Finish_Date)
+                             Start_Date <= NEW.Finish_Date OR 
+                             NEW.Start_Date <= Finish_Date
                         THEN 1
                         ELSE 0
                     END
