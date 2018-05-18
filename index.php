@@ -361,12 +361,11 @@ $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$data,
 		['_layout' => 'main.php']
 	));
-
 });
 
 $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
-	$vars = array_merge($_POST, ['irs' => $irs]);
+	$vars = array_merge($_POST, ['emp_IRS' => $irs]);
 	$errors = employeeController::updateSubmit($vars);
 	if(empty($errors)) {
 		$url = $_GET['success'];
@@ -374,7 +373,6 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
-
 });
 
 $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
