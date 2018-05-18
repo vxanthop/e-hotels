@@ -180,6 +180,7 @@ CREATE TRIGGER delete_room AFTER DELETE ON Hotel_Room
         UPDATE Hotel SET Number_of_rooms = Number_of_rooms - 1 WHERE Hotel_ID = OLD.Hotel_ID;
 
 -- Employee assignment checks
+DROP TRIGGER IF EXISTS assign_employee;
 DELIMITER $$
 CREATE TRIGGER assign_employee BEFORE INSERT ON Works
     FOR EACH ROW BEGIN
@@ -205,27 +206,23 @@ CREATE TRIGGER assign_employee BEFORE INSERT ON Works
 DELIMITER ;
 
 -- Reserve check
+DROP TRIGGER IF EXISTS reserve_room;
 DELIMITER $$
 CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
     FOR EACH ROW BEGIN
         IF NEW.Start_Date > NEW.Finish_Date THEN
-            SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , '): Finish date can''t be earlier than start date');
+            SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , '): Finish date can''t be earlier than start date.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
-        IF (SELECT 
-                SUM(
-                    CASE 
-                        WHEN Room_ID = NEW.Room_ID AND 
-                             Hotel_ID = NEW.Hotel_ID AND
-                             Start_Date <= NEW.Finish_Date OR 
-                             NEW.Start_Date <= Finish_Date
-                        THEN 1
-                        ELSE 0
-                    END
-                )
+        IF (SELECT COUNT(Room_ID)
             FROM Reserves
-        ) >= 1 THEN
-        SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , ') : The reserve period for the given room conflicts with an existent one.');
+            WHERE
+                Room_ID = NEW.Room_ID AND 
+                Hotel_ID = NEW.Hotel_ID AND
+                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND 
+                NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+            ) >= 1 THEN
+            SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , ') : Reserve period conflicts with an existent one.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
     END$$
