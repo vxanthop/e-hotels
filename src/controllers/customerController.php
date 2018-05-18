@@ -2,29 +2,24 @@
 
 namespace controllers;
 
-use \models\Employee as Employee;
+use \models\Customer as Customer;
 use \models\Hotel as Hotel;
 use \models\Room as Room;
 use \models\DB as DB;
 
-class employeeController {
+class customerController {
 
-    public static function create($hotel_id = NULL) {
-        if(!$hotel_id) {
+    public static function register($irs = NULL) {
             return [];
-        } else {
-            return [
-                'hotel' => Hotel::getOne(['id' => $hotel_id]),
-            ];
-        }
     }
 
-    public static function createSubmit($vars) {
+    public static function registerSubmit($vars) {
         $create = [
-            'emp_IRS' => intval($vars['irs']),
+            'cust_IRS' => intval($vars['irs']),
             'SSN' => intval($vars['ssn']),
             'first_name' => $vars['first'],
             'last_name' => $vars['last'],
+            'first_registration' => $vars['registration'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),
@@ -32,32 +27,17 @@ class employeeController {
                 'postal_code' => intval($vars['postal_code']),
             ],
         ];
-        $query = Employee::create($create);
+        $query = Customer::create($create);
         $errors = [];
-        if($query) {
-            if(isset($vars['hotel_id'])) {
-                $emp = Employee::getOne([
-                    'emp_IRS' => intval($vars['irs'])
-                ]); 
-                $assign = $emp->assignWork([
-                    'hotel_id' => $vars['hotel_id'],
-                    'position' => $vars['position'],
-                    'start_date' => $vars['start'],
-                    'finish_date' => $vars['finish']
-                ]);
-                if(!$assign) {
-                    $errors[] = 'Could not assign work to Employee. Please try again.';
-                }
-            }
-        } else {
+        if(!$query) {
             $errors[] = 'Could not create Employee. Please try again.';
         }
         return $errors;
     }
 
     public static function update($irs) {
-        $emp = Employee::getOne(['emp_IRS' => $irs]);
-        return ['employee' => $emp];
+        $cust = Customer::getOne(['cust_IRS' => $irs]);
+        return ['customer' => $cust];
     }
 
     public static function updateSubmit($vars) {
@@ -65,6 +45,7 @@ class employeeController {
             'SSN' => intval($vars['ssn']),
             'first_name' => $vars['first'],
             'last_name' => $vars['last'],
+            'first_registration' => $vars['registration'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),
@@ -72,10 +53,9 @@ class employeeController {
                 'postal_code' => intval($vars['postal_code']),
             ],
         ];
-
         $errors = [];
-        $query = Employee::update([
-            'emp_IRS' => intval($vars['irs'])
+        $query = Customer::update([
+            'cust_IRS' => intval($vars['irs'])
         ], $update);
         if(!$query) { 
             $errors[] = 'Could not update Employee. Please try again.';
@@ -84,10 +64,9 @@ class employeeController {
     }
 
     public static function view($irs) {
-        $employee = Employee::getOne([
-            'emp_IRS' => $irs
+        $customer = Customer::getOne([
+            'cust_IRS' => $irs
         ]);
-        return ['employee' => $employee];
+        return ['customer' => $customer];
     }
-
 }
