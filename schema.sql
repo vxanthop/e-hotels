@@ -179,6 +179,36 @@ CREATE TRIGGER delete_room AFTER DELETE ON Hotel_Room
     FOR EACH ROW
         UPDATE Hotel SET Number_of_rooms = Number_of_rooms - 1 WHERE Hotel_ID = OLD.Hotel_ID;
 
+-- Employee update check
+DROP TRIGGER IF EXISTS update_employee;
+DELIMITER $$
+CREATE TRIGGER update_employee BEFORE UPDATE ON Works
+    FOR EACH ROW BEGIN
+        IF NEW.Position <> 'manager' AND
+            (SELECT COUNT(Employee_IRS) FROM Works WHERE
+                Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
+                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+            ) >= 1 THEN
+            SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Can''t update this employee since the hotel will be left without a manager.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
+        END IF;
+    END$$
+
+-- Employee deletion check
+DROP TRIGGER IF EXISTS delete_employee;
+DELIMITER $$
+CREATE TRIGGER delete_employee BEFORE DELETE ON Works
+    FOR EACH ROW BEGIN
+        IF (SELECT COUNT(Employee_IRS) FROM Works WHERE
+                Hotel_ID = OLD.Hotel_ID AND Position = 'manager' AND
+                Start_Date <= IFNULL(OLD.Finish_Date, Start_Date) AND OLD.Start_Date <= IFNULL(Finish_Date, OLD.Start_Date)
+            ) >= 1 THEN
+            SET @message_text = CONCAT('Error for employee #', OLD.Employee_IRS, ': Can''t delete this employee since the hotel will be left without a manager.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
+        END IF;
+    END$$
+
+
 -- Employee assignment checks
 DROP TRIGGER IF EXISTS assign_employee;
 DELIMITER $$
@@ -192,14 +222,6 @@ CREATE TRIGGER assign_employee BEFORE INSERT ON Works
             Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
         ) >= 1 THEN
             SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': The given working period conflicts with an existent one.');
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
-        END IF;
-        IF NEW.Position = 'manager' AND
-            (SELECT COUNT(Employee_IRS) FROM Works WHERE
-                Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
-                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
-            ) >= 1 THEN
-            SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Can''t assign a manager to this Hotel for this period, since one already exists.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
     END$$
