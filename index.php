@@ -390,8 +390,21 @@ $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
 });
 
 
+
+$app->get('/seed/hotel-group/:num', function ($num) use ($app) {
+	\seeders\HotelGroupSeeder::run($num);
+});
+
+$app->get('/seed/hotel/:num', function ($num) use ($app) {
+	\seeders\HotelSeeder::run($num);
+});
+
+$app->get('/seed/room/:num', function ($num) use ($app) {
+	\seeders\RoomSeeder::run($num);
+});
+
 $app->get('/seed/employees/:num', function ($num) use ($app) {
-	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
+	EmployeeSeeder::run($num);
 });
 
 
