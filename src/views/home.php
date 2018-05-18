@@ -10,6 +10,7 @@
                         </div>
                         <div class="col col-3">
                             <select name="capacity" class="form-control">
+                                <option value="0">Any beds</option>
 <?php for($i = 1; $i <= 10; ++$i) { ?>
                                 <option value="<?= $i ?>"><?= $i ?> beds</option>
 <?php } ?>
@@ -57,7 +58,7 @@
     <script>
     $().ready(function(){
         $("#datepicker").datepicker({
-            format: "dd-mm-yyyy",
+            format: "yyyy-mm-dd",
             maxViewMode: 2,
             todayHighlight: true
         });
