@@ -37,7 +37,7 @@ class EmployeeSeeder extends Seeder {
                         '\'' . self::generatePosition() . '\''
                     ]) . ')';
                     $query = DB::query('INSERT INTO Works(' . join(', ', $keys_works) . ') VALUES ' . $values);
-                    if$query) {
+                    if($query) {
                         /* Start from next day */
                         $start = (intdiv($start + $duration, 86400) + 1) * 86400;
                     }

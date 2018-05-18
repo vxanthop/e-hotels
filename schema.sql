@@ -203,3 +203,30 @@ CREATE TRIGGER assign_employee BEFORE INSERT ON Works
         END IF;
     END$$
 DELIMITER ;
+
+-- Reserve check
+DELIMITER $$
+CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
+    FOR EACH ROW BEGIN
+        IF NEW.Start_Date > NEW.Finish_Date THEN
+            SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , '): Finish date can''t be earlier than start date');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
+        END IF;
+        IF (SELECT 
+                SUM(
+                    CASE 
+                        WHEN Room_ID = NEW.Room_ID AND 
+                             Hotel_ID = NEW.Hotel_ID AND
+                            (Start_Date <= NEW.Start_Date AND Finish_Date >= NEW.Start_Date) OR 
+                            (Start_Date <= NEW.Finish_Date AND Finish_Date >= NEW.Finish_Date)
+                        THEN 1
+                        ELSE 0
+                    END
+                )
+            FROM Reserves
+        ) >= 1 THEN
+        SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , ') : The reserve period for the given room conflicts with an existent one.');
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
+        END IF;
+    END$$
+DELIMITER ;   
