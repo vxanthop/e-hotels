@@ -83,15 +83,6 @@ class employeeController {
         return $errors;
     }
 
-    public static function delete($irs) {
-        $delete = Employee::delete(['emp_IRS' => $irs]);
-        $errors = [];
-        if(!$delete) {
-            $errors[] = 'Could not delete Employee. Please try again.';
-        }
-        return $errors;
-    }
-
     public static function view($irs) {
         $employee = Employee::getOne([
             'emp_IRS' => $irs

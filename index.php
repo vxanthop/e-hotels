@@ -381,9 +381,90 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
 });
 
-$app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
+$app->get('/seed/employees/:num', function ($num) use ($app) {
+	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
+});
 
-	$errors = employeeController::delete($irs);
+$app->get('/admin/customer/register', function () use ($app) {
+	
+	$data = customerController::register();
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+
+	return $app->Response('admin/customer/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/customer/register', function () use ($app) {
+
+	$errors = customerController::registerSubmit($_POST);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+});
+
+$app->get('/admin/customer/register/:irs', function ($irs) use ($app) {
+	
+	$data = customerController::register($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+
+	return $app->Response('admin/customer/create.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/customer/register/:irs', function ($irs) use ($app) {
+
+	$vars = array_merge($_POST, ['cust_IRS' => $irs]);
+	$errors = customerController::registerSubmit($vars);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+});
+
+$app->get('/admin/customer/:irs', function ($irs) use ($app) {
+
+	$data = customerController::view($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/customer/view.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->get('/admin/customer/update/:irs', function ($irs) use ($app) {
+
+	$data = customerController::update($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/customer/update.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+});
+
+$app->post('/admin/customer/update/:irs', function ($irs) use ($app) {
+
+	$vars = array_merge($_POST, ['cust_IRS' => $irs]);
+	$errors = customerController::updateSubmit($vars);
 	if(empty($errors)) {
 		$url = $_GET['success'];
 	} else {
@@ -392,7 +473,6 @@ $app->get('/admin/employee/delete/:irs', function ($irs) use ($app) {
 	$app->Redirect($url);
 
 });
-
 
 # Seeder routes
 
