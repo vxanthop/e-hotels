@@ -392,6 +392,5 @@ $app->get('/seed/employees/:num', function ($num) use ($app) {
 	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
 });
 
-
 # Launch app
 $app->listen();
