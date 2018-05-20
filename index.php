@@ -16,6 +16,7 @@ use \controllers\hotelGroupController as hotelGroupController;
 use \controllers\hotelController as hotelController;
 use \controllers\roomController as roomController;
 use \controllers\employeeController as employeeController;
+use \controllers\customerController as customerController;
 
 # Models
 use \models\Config as Config;
@@ -367,6 +368,7 @@ $app->get('/admin/employee/update/:irs', function ($irs) use ($app) {
 		$data,
 		['_layout' => 'main.php']
 	));
+
 });
 
 $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
@@ -382,8 +384,42 @@ $app->post('/admin/employee/update/:irs', function ($irs) use ($app) {
 
 });
 
-$app->get('/seed/employees/:num', function ($num) use ($app) {
-	EmployeeSeeder::run($num, isset($_GET['onlySQL']));
+$app->get('/admin/employee/move/:irs', function ($irs) use ($app) {
+
+	$data = employeeController::move($irs);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('admin/employee/move.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+$app->post('/admin/employee/move/:irs', function ($irs) use ($app) {
+
+	$vars = array_merge($_POST, ['emp_IRS' => $irs]);
+	$errors = employeeController::moveSubmit($vars);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
+});
+
+$app->get('/admin/employee/quit/:irs', function ($irs) use ($app) {
+
+	$errors = employeeController::quit($irs);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
 });
 
 $app->get('/admin/customer/register', function () use ($app) {
@@ -437,13 +473,13 @@ $app->post('/admin/customer/register/:irs', function ($irs) use ($app) {
 	$app->Redirect($url);
 });
 
-$app->get('/admin/customer/:irs', function ($irs) use ($app) {
+$app->get('/customer/:irs', function ($irs) use ($app) {
 
 	$data = customerController::view($irs);
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
-	return $app->Response('admin/customer/view.php', array_merge(
+	return $app->Response('customer/view.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
 	));
@@ -474,6 +510,7 @@ $app->post('/admin/customer/update/:irs', function ($irs) use ($app) {
 	$app->Redirect($url);
 
 });
+
 
 # Seeder routes
 

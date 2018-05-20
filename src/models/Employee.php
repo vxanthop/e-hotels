@@ -8,7 +8,7 @@ class Employee extends Model {
     
     protected static $table = 'Employee';
     protected static $mapper = [
-        'Employee_IRS' => ['emp_IRS', 'int'],
+        'Employee_IRS' => 'emp_IRS',
         'Social_Security_Number' => 'SSN',
         'First_Name' => 'first_name',
         'Last_Name' => 'last_name',
@@ -27,25 +27,62 @@ class Employee extends Model {
         return DB::getCollection($query);
     }
 
+    public static function getOne($find) {
+        $employee = parent::getOne($find);
+        $query = DB::query('SELECT Hotel_ID, Start_Date, Finish_Date, Position FROM Works WHERE Employee_IRS = ' . $employee->emp_IRS . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
+        $job = $query->fetch_assoc();
+        if($job) {
+            $employee->current_job = [
+                'hotel_id' => $job['Hotel_ID'],
+                'start_date' => $job['Start_Date'],
+                'finish_date' => $job['Finish_Date'],
+                'position' => $job['Position'],
+            ];
+        }
+        return $employee;
+    }
+
     public static function ofHotel($hotel_id) {
         $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
         return DB::getCollection($query);
     }
 
-    public function positions_getter() {
-        $query = DB::query('SELECT * FROM Works WHERE Employee_IRS = ' . $this->emp_IRS . ' ORDER BY Start_Date');
-        
-        $this->positions = [];
-        while($row = $query->fetch_assoc()) {
-            $this->positions[] = $row;
-        }
-
-        return $this->positions;
+    public function quit() {
+        return DB::query('UPDATE Works SET Finish_Date = DATE(\'' . date('Y-m-d', strtotime('-1 day')) . '\') WHERE Employee_IRS = ' . $this->emp_IRS . ' AND Finish_Date >= DATE(\'' . date('Y-m-d') . '\') LIMIT 1');
     }
 
     public function assignWork($hotel_id, $position, $start_date, $finish_date) {
         return DB::query('INSERT INTO Works VALUES
         (' . $this->emp_IRS. ', ' . $hotel_id . ', DATE("' . $start_date . '"), DATE("' . $finish_date . '"), "' . $position . '")');
+    }
+
+    public function fullname_getter() {
+        return $this->fullname = $this->first_name . " " . $this->last_name;
+    }
+
+    public function jobs_getter() {
+        $query = DB::query('SELECT * FROM Works WHERE Employee_IRS = ' . $this->emp_IRS . ' ORDER BY Start_Date DESC');
+        
+        $this->jobs = [];
+        while($row = $query->fetch_assoc()) {
+            if($row['Finish_Date'] >= date('Y-m-d')) {
+                $status = 'Current job';
+            } else {
+                $status = 'Past job';
+            }
+            $job = [
+                'hotel' => Hotel::getOne([
+                    'id' => intval($row['Hotel_ID'])
+                ]),
+                'start_date' => $row['Start_Date'],
+                'finish_date' => $row['Finish_Date'],
+                'position' => $row['Position'],
+                'status' => $status,
+            ];
+            $this->jobs[] = $job;
+        }
+
+        return $this->jobs;
     }
 
 }
