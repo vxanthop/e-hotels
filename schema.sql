@@ -114,7 +114,7 @@ CREATE TABLE Customer (
     Address_Number smallint(4) UNSIGNED NOT NULL,
     Address_City varchar(42) NOT NULL,
     Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
-    First_Registration date NOT NULL,
+    First_Registration date,
     PRIMARY KEY (Customer_IRS)
 );
 
@@ -159,22 +159,32 @@ CREATE TABLE Payment_Transaction (
     FOREIGN KEY (Rent_ID) REFERENCES Rents(Rent_ID) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
+DROP TRIGGER IF EXISTS first_registration;
+DELIMITER $$
 CREATE TRIGGER first_registration BEFORE INSERT ON Customer
     FOR EACH ROW
-        SET NEW.First_Registration = CURDATE();
+        IF (NEW.First_Registration IS NULL) THEN
+            SET NEW.First_Registration = CURDATE();
+        END IF;
+    END$$
+DELIMITER ;
 
+DROP TRIGGER IF EXISTS add_hotel;
 CREATE TRIGGER add_hotel AFTER INSERT ON Hotel
     FOR EACH ROW
         UPDATE Hotel_group SET Number_of_hotels = Number_of_hotels + 1 WHERE Hotel_group_ID = NEW.Hotel_group_ID;
 
-CREATE TRIGGER add_room AFTER INSERT ON Hotel_Room
-    FOR EACH ROW
-        UPDATE Hotel SET Number_of_rooms = Number_of_rooms + 1 WHERE Hotel_ID = NEW.Hotel_ID;
-
+DROP TRIGGER IF EXISTS delete_hotel;
 CREATE TRIGGER delete_hotel AFTER DELETE ON Hotel
     FOR EACH ROW
         UPDATE Hotel_group SET Number_of_hotels = Number_of_hotels - 1 WHERE Hotel_group_ID = OLD.Hotel_group_ID;
 
+DROP TRIGGER IF EXISTS add_room;
+CREATE TRIGGER add_room AFTER INSERT ON Hotel_Room
+    FOR EACH ROW
+        UPDATE Hotel SET Number_of_rooms = Number_of_rooms + 1 WHERE Hotel_ID = NEW.Hotel_ID;
+
+DROP TRIGGER IF EXISTS delete_room;
 CREATE TRIGGER delete_room AFTER DELETE ON Hotel_Room
     FOR EACH ROW
         UPDATE Hotel SET Number_of_rooms = Number_of_rooms - 1 WHERE Hotel_ID = OLD.Hotel_ID;
@@ -193,6 +203,7 @@ CREATE TRIGGER update_employee BEFORE UPDATE ON Works
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
     END$$
+DELIMITER ;
 
 -- Employee deletion check
 DROP TRIGGER IF EXISTS delete_employee;
@@ -207,7 +218,7 @@ CREATE TRIGGER delete_employee BEFORE DELETE ON Works
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
     END$$
-
+DELIMITER ;
 
 -- Employee assignment checks
 DROP TRIGGER IF EXISTS assign_employee;
