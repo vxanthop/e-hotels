@@ -21,11 +21,11 @@ class Seeder {
             $name = substr($name, $i + 2);
         }
         $name = Text::toGreeklish($name);
-        list($first_name, $last_name) = explode(' ', $name);
-        list($street, $number, $postal_code, $city) = explode(', ', $address);
+        [$first_name, $last_name] = explode(' ', $name);
+        [$street, $number, $postal_code, $city] = explode(', ', $address);
         $street = Text::toGreeklish(str_replace(['Όδος ', 'Λεωφόρος '], '', $street));
-        $number = $number + 0;
-        $postal_code = str_pad(str_replace(' ', '', $postal_code), 5, '0') + 0;
+        $number = intval($number);
+        $postal_code = intval(str_pad(str_replace(' ', '', $postal_code), 5, '0'));
         if($postal_code < 10000) {
             $postal_code += rand(1, 9) * 10000;
         }

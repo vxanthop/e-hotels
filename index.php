@@ -26,6 +26,7 @@ use \seeders\HotelGroupSeeder as HotelGroupSeeder;
 use \seeders\HotelSeeder as HotelSeeder;
 use \seeders\RoomSeeder as RoomSeeder;
 use \seeders\EmployeeSeeder as EmployeeSeeder;
+use \seeders\CustomerSeeder as CustomerSeeder;
 
 error_reporting(Config::get('error-level'));
 
@@ -490,6 +491,10 @@ $app->get('/seed/room/:num', function ($num) use ($app) {
 
 $app->get('/seed/employees/:num', function ($num) use ($app) {
 	EmployeeSeeder::run($num);
+});
+
+$app->get('/seed/customers/:num', function ($num) use ($app) {
+	CustomerSeeder::run($num);
 });
 
 # Launch app
