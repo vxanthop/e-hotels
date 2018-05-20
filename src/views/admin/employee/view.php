@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col col-2 text-center">
                             <img src="/assets/images/blank-user.png" class="img-fluid mb-3" alt="No avatar available">
-                            <h3 class="mb-4"><?= $employee->fullname ?></h3>
+                            <h4 class="mb-4"><?= $employee->fullname ?></h4>
                             <h6 class="font-weight-bold mt-3">IRS Number</h6>
                             <?= $employee->emp_IRS ?>
                             <h6 class="font-weight-bold mt-3">Social Security Number</h6>
