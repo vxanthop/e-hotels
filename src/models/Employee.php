@@ -18,8 +18,8 @@ class Employee extends Model {
         'Address_Postal_Code' => ['address[postal_code]', 'int'],
         'Position' => 'current_job[position]',
         'Hotel_ID' => 'current_job[hotel_id]',
-        'Start_Date' => 'current_job[start_date]',
-        'Finish_Date' => 'current_job[finish_date]',
+        'Start_Date' => ['current_job[start_date]', 'date'],
+        'Finish_Date' => ['current_job[finish_date]', 'date'],
     ];
 
     public static function all() {

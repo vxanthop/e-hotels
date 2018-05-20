@@ -2,6 +2,7 @@
 
 namespace bootstrap;
 
+use \models\DB as DB;
 use \models\Types as Types;
 
 class BaseModel {
@@ -62,64 +63,13 @@ class BaseModel {
                 }
                 $this->$field[$subfield] = $v;
             } else {
+                if(!property_exists($this, $field)) {
+                    trigger_error(get_class($this) . " has no property \"" . $field . "\".", E_USER_ERROR);
+                }
                 $this->$field = $v;
             }
         }
         $this->data = [];
-    }
-
-    public static function getDBKeys($keys) {
-        self::invertMapper();
-        $db_keys = [];
-        foreach($keys as $key => $value) {
-            if(is_array($value)) {
-                foreach($value as $k => $v) {
-                    $field = $key . '[' . $k . ']';
-                    if(isset(self::$inverseMapper[$field])) {
-                        $db_keys[self::$inverseMapper[$field]] = $v;
-                    }
-                }
-            } else {
-                if(isset(self::$inverseMapper[$key])) {
-                    $db_keys[self::$inverseMapper[$key]] = $value;
-                } else {
-                    $db_keys[$key] = $value;
-                }
-            }
-        }
-        return $db_keys;
-    }
-
-    public static function getDBClausesInsert($keys) {
-        $db_keys = self::getDBKeys($keys);
-        $insert = [];
-        $values = [];
-        foreach($db_keys as $key => $value) {
-            if(is_bool($value)) {
-                $values[] = strval(intval($value));
-            } else if(is_numeric($value) && !is_string($value)) {
-                $values[] = strval($value);
-            } else {
-                $values[] = '\'' . $value . '\'';
-            }
-            $insert[] = $key;
-        }
-        return compact('insert', 'values');
-    }
-
-    public static function getDBClauses($keys) {
-        $db_keys = self::getDBKeys($keys);
-        $clauses = [];
-        foreach($db_keys as $key => $value) {
-            if(is_bool($value)) {
-                $clauses[] = $key . ' = ' . intval($value);
-            } else if(is_numeric($value) && !is_string($value)) {
-                $clauses[] = $key . ' = ' . $value;
-            } else {
-                $clauses[] = $key . ' = \'' . $value . '\'';
-            }
-        }
-        return $clauses;
     }
 
     private static function invertMapper() {
@@ -127,12 +77,89 @@ class BaseModel {
             foreach(static::$mapper as $key => $t) {
                 if(is_array($t)) {
                     $field = $t[0];
+                    $type = $t[1];
                 } else if(is_string($t)) {
                     $field = $t;
+                    $type = 'string';
                 }
-                self::$inverseMapper[$field] = $key;
+                self::$inverseMapper[$field] = [$key, $type];
             }
         }
+    }
+
+    public static function getDBKeyValues($data) {
+        self::invertMapper();
+        $db_keys = [];
+        foreach($data as $key => $value) {
+            if(is_array($value)) {
+                foreach($value as $k => $v) {
+                    $mapper_key = $key . '[' . $k . ']';
+                    if(isset(self::$inverseMapper[$mapper_key])) {
+                        $field = self::$inverseMapper[$mapper_key][0];
+                        $db_keys[$field] = [$v, self::$inverseMapper[$mapper_key][1]];
+                    }
+                }
+            } else {
+                if(isset(self::$inverseMapper[$key])) {
+                    $field = self::$inverseMapper[$key][0];
+                    $db_keys[$field] = [$value, self::$inverseMapper[$key][1]];
+                } else {
+                    $db_keys[$key] = [$value, 'auto'];
+                }
+            }
+        }
+        return $db_keys;
+    }
+
+    private static function toDBValue($value, $type) {
+        if($value == null) {
+            return 'NULL';
+        }
+        if($type == 'auto') {
+            $type = Types::getAutoType($value);
+        }
+        switch($type) {
+            case 'int':
+            case 'float':
+                return strval($value);
+            case 'boolean':
+                return strval(intval($value));
+            case 'string':
+            case 'json':
+                return '\'' . DB::escape($value) . '\'';
+            case 'date':
+                return 'DATE(\'' . DB::escape($value) . '\')';
+            default:
+                return '';
+        }
+    }
+
+    public static function getDBClausesInsert($data) {
+        $db_keyvalues = self::getDBKeyValues($data);
+        $insert = [];
+        $values = [];
+        foreach($db_keyvalues as $key => $t) {
+            [$value, $type] = $t;
+            $v = self::toDBValue($value, $type);
+            if(strlen($v)) {
+                $values[] = $v;
+                $insert[] = $key;
+            }
+        }
+        return compact('insert', 'values');
+    }
+
+    public static function getDBClauses($keys) {
+        $db_keyvalues = self::getDBKeyValues($keys);
+        $clauses = [];
+        foreach($db_keyvalues as $key => $t) {
+            [$value, $type] = $t;
+            $v = self::toDBValue($value, $type);
+            if(strlen($v)) {
+                $clauses[] = $key . ' = ' . $v;
+            }
+        }
+        return $clauses;
     }
 
     /* Computed property processor */

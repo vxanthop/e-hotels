@@ -12,6 +12,7 @@ class Types {
             'string' => 'strval',
             'float' => 'floatval',
             'json' => 'json_decode',
+            'date' => 'strval',
             'boolean' => function ($value) {
                 return !!$value;
             }
@@ -26,6 +27,16 @@ class Types {
         } else {
             return NULL;
         }
+    }
+
+    public static function getAutoType($auto) {
+        if(is_bool($auto)) {
+            return 'boolean';
+        }
+        if(is_numeric($auto) && !is_string($auto)) {
+            return 'int';
+        }
+        return 'string';
     }
 
 }
