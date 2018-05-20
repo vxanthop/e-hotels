@@ -9,7 +9,6 @@ use \models\DB as DB;
 class CustomerSeeder extends Seeder {
 
     public static function run($num) {
-        header('Content-type: text/plain');
         // Set default timezone to UTC for proper time calculations
         $tz = date_default_timezone_get();
         date_default_timezone_set('UTC');
