@@ -12,7 +12,7 @@ class adminController {
         $data = [
             'hotel_groups' => HotelGroup::all(),
             'employees' => Employee::all(),
-            'customers' => [],
+            'customers' => Customer::all(),
         ];
         return $data;
     }
