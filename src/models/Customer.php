@@ -24,4 +24,25 @@ class Customer extends Model {
         return DB::getCollection($query);
     }
 
+    public function fullname_getter() {
+        return $this->fullname = $this->first_name . " " . $this->last_name;
+    }
+    
+    public function reservations_getter() {
+        $this->reservations = [];
+        $query = DB::query('SELECT * FROM Reserves WHERE Customer_IRS = ' . intval($this->cust_IRS) . ' ORDER BY IFNULL(Finish_Date, DATE(\'9999-12-31\'))');
+        while($row = $query->fetch_assoc()) {
+            $this->reservations[] = [
+                'hotel' => Hotel::getOne([
+                    'id' => intval($row['Hotel_ID'])
+                ]),
+                'room_id' => intval($row['Room_ID']),
+                'start_date' => $row['Start_Date'],
+                'finish_date' => $row['Finish_Date'],
+                'status' => 'Not implemented',
+            ];
+        }
+        return $this->reservations;
+    }
+
 }
