@@ -526,11 +526,11 @@ $app->get('/seed/room/:num', function ($num) use ($app) {
 	RoomSeeder::run($num);
 });
 
-$app->get('/seed/employees/:num', function ($num) use ($app) {
+$app->get('/seed/employee/:num', function ($num) use ($app) {
 	EmployeeSeeder::run($num);
 });
 
-$app->get('/seed/customers/:num', function ($num) use ($app) {
+$app->get('/seed/customer/:num', function ($num) use ($app) {
 	CustomerSeeder::run($num);
 });
 
