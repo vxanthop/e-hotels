@@ -13,6 +13,7 @@ class adminController {
             'hotel_groups' => HotelGroup::all(),
             'employees' => Employee::all(),
             'customers' => Customer::all(),
+            'view' => $_GET['view'] ?? 'groups',
         ];
         return $data;
     }

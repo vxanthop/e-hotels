@@ -3,6 +3,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/admin?view=employees">Employees</a></li>
                         <li class="breadcrumb-item active">Add employee</li>
                     </ol>
                 </nav>
@@ -16,7 +17,7 @@
                         </ul>
                     </div>
                 <?php } ?>
-                    <form action="/admin/employee/create?success=<?= urlencode('/admin#employees') ?>&error=<?= urlencode('/admin/employee/create') ?>" method="POST">
+                    <form action="/admin/employee/create?success=<?= urlencode('/admin?view=employees') ?>&error=<?= urlencode('/admin/employee/create') ?>" method="POST">
                         <div class="form-group row">
                             <div class="col">
                                 <label for="first">First name: <span class="text-danger" title="This field is required">*</span></label>

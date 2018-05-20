@@ -10,18 +10,17 @@
                 </div>
             <?php } ?>
                 <ul class="nav nav-tabs">
+                <?php
+                    $tabs = ['groups' => 'Hotel Groups', 'employees' => 'Employees', 'customers' => 'Customers'];
+                    foreach($tabs as $id => $title) {
+                ?>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#groups">Hotel Groups</a>
+                        <a class="nav-link<?= $view == $id ? ' active' : '' ?>" data-toggle="tab" href="#<?= $id ?>"><?= $title ?></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#employees">Employees</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#customers">Customers</a>
-                    </li>
+                <?php } ?>
                 </ul>
                 <div class="tab-content p-3">
-                    <div class="tab-pane show active" id="groups">
+                    <div class="tab-pane<?= $view == 'groups' ? ' show active' : '' ?>" id="groups">
                         <a class="btn btn-primary mb-3" href="/admin/hotel-group/create">Add <i class="ml-1 fas fa-plus"></i></a>
                         <table class="table table-striped">
                             <thead>
@@ -62,7 +61,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane" id="employees">
+                    <div class="tab-pane<?= $view == 'employees' ? ' show active' : '' ?>" id="employees">
                         <a class="btn btn-primary mb-3" href="/admin/employee/create">Add <i class="ml-1 fas fa-plus"></i></a>
                         <table class="table table-striped">
                             <thead>
@@ -81,8 +80,8 @@
                                     <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $employee->emp_IRS ?>">View</a>
                                             <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
-                                            <a class="btn btn-sm btn-danger" href="/admin/employee/delete/<?= $employee->emp_IRS ?>?success=<?= urlencode('/admin#employees') ?>&error=<?= urlencode('/admin#employees') ?>">Delete</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -90,7 +89,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane" id="customers">
+                    <div class="tab-pane<?= $view == 'customers' ? ' show active' : '' ?>" id="customers">
                         <a class="btn btn-primary mb-3" href="/customer/register">Add <i class="ml-1 fas fa-plus"></i></a>
                         <table class="table table-striped">
                             <thead>
