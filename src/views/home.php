@@ -1,6 +1,6 @@
         <section class="hero">
             <div class="container">
-                <h2><?= $description; ?></h2>
+                <h2>Choose between <?= count($citynames) ?> destinations!</h2>
                 <form action="/search" method="GET" class="hero-search-container" autocomplete="off">
                     <div class="form-group hero-searchbox-container">
                         <input type="search" id="city" name="city" class="hero-searchbox" autofocus placeholder="Search destination..." required />

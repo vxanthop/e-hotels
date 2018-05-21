@@ -16,7 +16,6 @@ class homeController {
 			$rooms_per_city[$city['city']] = $city['availableRoomsNum'];
 		}
 		return [
-			'description' => 'Choose from 27 different destinations!',
 			'offers' => [
 				['city' => 'Athens', 'price' => 34],
 				['city' => 'Rethymno', 'price' => 33],
