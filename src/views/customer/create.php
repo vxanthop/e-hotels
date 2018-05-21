@@ -16,7 +16,7 @@
                         </ul>
                     </div>
                 <?php } ?>
-                    <form action="/customer/register?success=<?= urlencode('/admin?view=customers') ?>&error=<?= urlencode('/customer/register') ?>" method="POST">
+                    <form action="/customer/register?success=<?= isset($_GET['callback']) ? urlencode($_GET['callback']) : urlencode('/admin?view=customers') ?>&error=<?= urlencode('/customer/register' . (isset($_GET['callback']) ? '?callback=' . urlencode($_GET['callback']) : '')) ?>" method="POST">
                         <div class="form-group row">
                             <div class="col">
                                 <label for="first">First name: <span class="text-danger" title="This field is required">*</span></label>

@@ -526,6 +526,18 @@ $app->get('/reserve/prepare', function () use ($app) {
 
 });
 
+$app->post('/reserve/create', function () use ($app) {
+
+	$errors = reservationController::createSubmit($_POST);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
+});
+
 
 # Seeder routes
 
