@@ -38,6 +38,26 @@ class Seeder {
         return compact('last_name', 'first_name', 'address');
     }
 
+    protected static function generateCity() {
+        $cities = [
+            ['city' => 'Elassona', 'postal_code' => 40200],
+            ['city' => 'Meteora', 'postal_code' => 42200],
+            ['city' => 'Lefkada', 'postal_code' => 31100],
+            ['city' => 'Lindos', 'postal_code' => 85107],
+            ['city' => 'Nikaia', 'postal_code' => 18453],
+            ['city' => 'Skydra', 'postal_code' => 58500],
+            ['city' => 'Spetses', 'postal_code' => 18050],
+            ['city' => 'Delfoi', 'postal_code' => 33054],
+            ['city' => 'Peiraias', 'postal_code' => 18540],
+            ['city' => 'Donousa', 'postal_code' => 84300],
+            ['city' => 'Amaliada', 'postal_code' => 27200],
+            ['city' => 'Zagori', 'postal_code' => 44010],
+            ['city' => 'Kalavryta', 'postal_code' => 25001],
+            ['city' => 'Nafplio', 'postal_code' => 21100],
+        ];
+        return $cities[rand(0, count($cities) - 1)];
+    }
+
     protected static function generateIRS() {
         return rand(0, 999999999);
     }

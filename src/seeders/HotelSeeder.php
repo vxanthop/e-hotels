@@ -10,14 +10,21 @@ use \models\Text as Text;
 class HotelSeeder extends Seeder {
 
     public static function run($num) {
-        $suffixes = ['', ' Hotel', ' Resort', ' Suites', ' Apartments'];
+        $suffixes = ['', ' Hotel', ' Resort', ' Suites', ' Apartments', ' Villa', ' B&B', ' Hostel', ' Motel', ' Budget', ' Estate', ' Airport'];
         $groups = HotelGroup::all();
+        if(isset($_GET['withMax'])) {
+            $groups = array_filter($groups, function($group) {
+                return $group->number_of_hotels <= intval($_GET['withMax']);
+            });
+        }
         $extras = array_merge(array_fill(0, 20, 0), array_fill(0, 8, 1), array_fill(0, 4, 2), [3, 3]);
         $email_prefixes = ['hello', 'hey', 'accommodation', 'reserve', 'booking', 'group'];
         $i = 0;
         while($i < $num) {
             $group = $groups[rand(0, count($groups) - 1)];
             $gen = self::generatePerson();
+            $gen['address']['city'] = $place['city'];
+            $gen['address']['postal_code'] = $place['postal_code'];
             $names = array_merge($suffixes, array_fill(0, count($suffixes), ' ' . $gen['address']['city']));
             $name = $group->name . $names[rand(0, count($names) - 1)];
             $data = [
@@ -26,6 +33,7 @@ class HotelSeeder extends Seeder {
                 'name' => $name,
                 'stars' => rand(1, 5)
             ];
+            $place = self::generateCity();
             $query = Hotel::create($data);
             if($query) {
                 $hotel = Hotel::getOne([
