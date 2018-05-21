@@ -23,6 +23,7 @@ class searchController {
             'start_date' => $vars['start_date'],
             'end_date' => $vars['end_date'],
             'capacity' => $vars['capacity'] ?? 0,
+            'view' => $vars['view'] ?? 'rooms',
             'hotel_groups' => $vars['hotel_groups'] ?? [],
             'stars' => $vars['stars'] ?? 0,
             'rooms_start' => $vars['rooms_start'] ?? 1,
@@ -31,7 +32,11 @@ class searchController {
             'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => Amenity::all()
         ];
-        $data['results'] = Room::search($data);
+        if($data['view'] == 'rooms') {
+            $data['results'] = Room::search($data);
+        } else {
+            $data['results'] = Room::searchPerCity($data);
+        }
         $data['citynames'] = $citynames;
         /* If no hotel groups are selected, select all instead so that query makes sense */
         if(empty($data['hotel_groups'])) {
