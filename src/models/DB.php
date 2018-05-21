@@ -63,6 +63,12 @@ class DB {
 		return $mysqli->real_escape_string($str);
 	}
 
+	public static function error() {
+		self::init();
+		$mysqli = self::$_connection;
+		return $mysqli->error;
+	}
+
 	public static function getCollection($query, $model = NULL) {
 		if(is_null($model)) {
 			$model = DB::getClassFromBacktrace();
