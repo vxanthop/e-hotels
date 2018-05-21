@@ -2,16 +2,14 @@
 
 namespace models;
 
-class City extends Model {
-
-    public $city_name;
+class City {
     
     /*
         @input: None
         @output: Array of city names paired with the number of available rooms in them
         @todo: Implement Room::availableInCityNum($city)
     */
-    public function all() {
+    public static function all() {
         $query = DB::query('SELECT DISTINCT Address_City FROM Hotel');
         $cities = [];
         /*  For each result in the query, fetch_assoc() will return an associative array

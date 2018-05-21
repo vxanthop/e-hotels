@@ -46,6 +46,12 @@ class Room extends Model {
         return DB::getCollection($query);
     }
 
+    public static function availableInCityNum($city) {
+        $query = DB::query('SELECT COUNT(*) AS total FROM Hotel_Room INNER JOIN Hotel ON Hotel.Hotel_ID = Hotel_Room.Hotel_ID WHERE Hotel.Address_City = "' . $city . '" AND (SELECT COUNT(*) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())) = 0');
+        $res = $query->fetch_assoc();
+        return $res['total'];
+    }
+
     /*
      * @input: The customer that will reserve the room, the start date and the end date of the reservation.
      * @output: None

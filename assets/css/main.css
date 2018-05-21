@@ -87,7 +87,7 @@ section.hero h2 {
                  0px 18px 23px rgba(0, 0, 0, 0.2);
 }
 
-section.hero .hero-searchbox-container {
+section.hero .hero-search-container {
     width: 100%;
     max-width: 720px;
     margin: 0 auto;
@@ -111,7 +111,31 @@ section.hero .hero-searchbox:focus {
     outline: none;
 }
 
-section.hero .hero-searchbox-container .btn, section.search-results .results-searchbox-container .btn {
+section.hero .hero-searchbox-container, section.search-results .results-searchbox-container {
+    position: relative;
+}
+
+section.hero .hero-search-autocomplete, section.search-results .results-search-autocomplete {
+    position: absolute;
+    top: calc(100% - .25rem);
+    width: 100%;
+    font-size: .5em;
+    z-index: 10;
+}
+
+section.hero .hero-search-autocomplete .list-group-item:not(.active), section.search-results .results-search-autocomplete .list-group-item:not(.active) {
+    background: #F4F4F4;
+}
+section.hero .hero-search-autocomplete .list-group-item:not(.active):hover, section.search-results .results-search-autocomplete .list-group-item:not(.active) {
+    background: #F9F9F9;
+}
+
+section.hero .hero-search-autocomplete .list-group-item:first-child, section.search-results .results-search-autocomplete .list-group-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+section.hero .hero-search-container .btn, section.search-results .results-search-container .btn {
     vertical-align: top;
 }
 
@@ -181,7 +205,7 @@ section.search-results aside .search-filters label :checked ~ span {
     font-weight: bold;
 }
 
-section.search-results .results-searchbox-container {
+section.search-results .results-search-container {
     font-size: 1.75rem;
 }
 
