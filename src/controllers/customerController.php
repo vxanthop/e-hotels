@@ -10,7 +10,7 @@ use \models\DB as DB;
 class customerController {
 
     public static function register($irs = NULL) {
-            return [];
+        return [];
     }
 
     public static function registerSubmit($vars) {
@@ -19,7 +19,6 @@ class customerController {
             'SSN' => intval($vars['ssn']),
             'first_name' => $vars['first'],
             'last_name' => $vars['last'],
-            'first_registration' => $vars['registration'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),
@@ -45,7 +44,6 @@ class customerController {
             'SSN' => intval($vars['ssn']),
             'first_name' => $vars['first'],
             'last_name' => $vars['last'],
-            'first_registration' => $vars['registration'],
             'address' => [
                 'street' => $vars['street'],
                 'number' => intval($vars['number']),

@@ -80,8 +80,8 @@
                                     <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
-                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $employee->emp_IRS ?>">View</a>
-                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $employee->emp_IRS ?>">Manage</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit info</a>
                                         </div>
                                     </td>
                                 </tr>

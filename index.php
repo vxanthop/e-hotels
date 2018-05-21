@@ -17,6 +17,7 @@ use \controllers\hotelController as hotelController;
 use \controllers\roomController as roomController;
 use \controllers\employeeController as employeeController;
 use \controllers\customerController as customerController;
+use \controllers\reservationController as reservationController;
 
 # Models
 use \models\Config as Config;
@@ -422,21 +423,21 @@ $app->get('/admin/employee/quit/:irs', function ($irs) use ($app) {
 
 });
 
-$app->get('/admin/customer/register', function () use ($app) {
+$app->get('/customer/register', function () use ($app) {
 	
 	$data = customerController::register();
 	if(isset($_GET['errors'])) {
 		$data['errors'] = $_GET['errors'];
 	}
 
-	return $app->Response('admin/customer/create.php', array_merge(
+	return $app->Response('customer/create.php', array_merge(
 		$data,
 		['_layout' => 'main.php']
 	));
 
 });
 
-$app->post('/admin/customer/register', function () use ($app) {
+$app->post('/customer/register', function () use ($app) {
 
 	$errors = customerController::registerSubmit($_POST);
 	if(empty($errors)) {
@@ -496,11 +497,12 @@ $app->get('/admin/customer/update/:irs', function ($irs) use ($app) {
 		$data,
 		['_layout' => 'main.php']
 	));
+
 });
 
 $app->post('/admin/customer/update/:irs', function ($irs) use ($app) {
 
-	$vars = array_merge($_POST, ['cust_IRS' => $irs]);
+	$vars = array_merge($_POST, ['irs' => $irs]);
 	$errors = customerController::updateSubmit($vars);
 	if(empty($errors)) {
 		$url = $_GET['success'];
@@ -508,6 +510,19 @@ $app->post('/admin/customer/update/:irs', function ($irs) use ($app) {
 		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
 	}
 	$app->Redirect($url);
+
+});
+
+$app->get('/reserve/prepare', function () use ($app) {
+
+	$data = reservationController::prepare($_GET);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('/reservation/prepare.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
 
 });
 
