@@ -17,6 +17,13 @@ class Model extends BaseModel {
         return DB::getOne($query, get_called_class());
     }
 
+    public static function getMany($find) {
+        $clauses = self::getDBClauses($find);
+        if(!$clauses) return NULL;
+        $query = DB::query('SELECT * FROM ' . static::$table . ' WHERE ' . join(' AND ', $clauses));
+        return DB::getCollection($query, get_called_class());
+    }
+
     /*
      * @input: An associative array with entries of the format property => value that will be used to insert into the database table. Both schema field names and model property names can be used in place of `property`.
      * @output: Returns 1 if the entry is inserted, else returns 0
