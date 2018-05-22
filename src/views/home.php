@@ -143,6 +143,7 @@
         $().ready(function(){
             $("#datepicker").datepicker({
                 format: "yyyy-mm-dd",
+                startDate: "<?= date('Y-m-d') ?>",
                 maxViewMode: 2,
                 todayHighlight: true
             });

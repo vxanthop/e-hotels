@@ -261,6 +261,7 @@
         $().ready(function(){
             $("#datepicker").datepicker({
                 format: "yyyy-dd-mm",
+                startDate: "<?= date('Y-m-d') ?>",
                 maxViewMode: 2,
                 todayHighlight: true
             });
