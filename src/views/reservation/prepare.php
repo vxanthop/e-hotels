@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <h6 class="text-center">
-                            Not listed? <a href="/customer/register?callback=<?= urlencode('/reserve/prepare?room_id=' . $_GET['room_id'] . '&hotel_id=' . $_GET['hotel_id'] . '&start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['start_date']) ?>">Register now</a>.
+                            Not listed? <a href="/customer/register?callback=<?= urlencode('/reserve/prepare?room_id=' . $_GET['room_id'] . '&hotel_id=' . $_GET['hotel_id'] . '&start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date']) ?>">Register now</a>.
                         </h6>
                     <?php if($query) { ?>
                         <table class="table table-striped mt-4">
