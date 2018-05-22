@@ -90,7 +90,6 @@
                                 <?= $customer->first_registration ?>
                             </div>
                             <div class="col col-10">
-                                <a href="/reserve/prepare?room_id=<?= $_GET['room_id'] ?>&hotel_id=<?= $_GET['hotel_id'] ?>&start_date=<?= $_GET['start_date'] ?>&end_date=<?= $_GET['start_date'] ?>&first_name=<?= urlencode($customer->first_name) ?>&last_name=<?= urlencode($customer->last_name) ?>" class="btn btn-secondary mb-4"><i class="fas fa-chevron-left"></i> Back to customer selection</a>
                             <?php if(isset($errors) && $errors) { ?>
                                 <div class="alert alert-danger" role="alert">
                                     <ul>
@@ -100,7 +99,12 @@
                                     </ul>
                                 </div>
                             <?php } ?>
-                                <h3 class="text-center">You are about to reserve:</h3>
+                                <h3 class="text-center">
+                                    <a href="/reserve/prepare?room_id=<?= $_GET['room_id'] ?>&hotel_id=<?= $_GET['hotel_id'] ?>&start_date=<?= $_GET['start_date'] ?>&end_date=<?= $_GET['start_date'] ?>&first_name=<?= urlencode($customer->first_name) ?>&last_name=<?= urlencode($customer->last_name) ?>" class="btn btn-secondary mr-2">
+                                        <i class="fas fa-chevron-left"></i> Back
+                                    </a>
+                                    You are about to reserve:
+                                </h3>
                                 <div class="card w-50 mx-auto mt-3 text-center">
                                     <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x100' ?>" alt="" class="card-img-top" />
                                     <div class="card-body d-flex flex-column">
