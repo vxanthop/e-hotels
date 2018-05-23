@@ -139,8 +139,7 @@ class BaseModel {
         $insert = [];
         $values = [];
         foreach($db_keyvalues as $key => $t) {
-            [$value, $type] = $t;
-            $v = self::toDBValue($value, $type);
+            $v = self::toDBValue($t[0], $t[1]);
             if(strlen($v)) {
                 $values[] = $v;
                 $insert[] = $key;
@@ -153,8 +152,7 @@ class BaseModel {
         $db_keyvalues = self::getDBKeyValues($keys);
         $clauses = [];
         foreach($db_keyvalues as $key => $t) {
-            [$value, $type] = $t;
-            $v = self::toDBValue($value, $type);
+            $v = self::toDBValue($t[0], $t[1]);
             if(strlen($v)) {
                 $clauses[] = $key . ' = ' . $v;
             }
