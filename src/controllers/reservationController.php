@@ -39,8 +39,23 @@ class reservationController {
     }
 
     public static function createSubmit($vars) {
-        /* TODO: IMPLEMENT */
         $errors = [];
+
+        if(isset($vars['room_id'])) {
+            $room = Room::getOne([
+                'room_id' => intval($vars['room_id'])
+            ]); 
+            $assign = $room->reserve([
+                'cust_IRS' => intval($vars['irs']),
+                'start_date' => $vars['start_date'],
+                'finish_date' => $vars['finish_date']
+            ]);
+            if(!$assign) {
+                $errors[] = 'Could not reserve to Room. Please try again.';
+            }
+        } else {
+            $errors[] = 'Could not create Room. Please try again.';
+        }
         return $errors;
     }
     
