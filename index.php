@@ -548,6 +548,19 @@ $app->post('/reserve/create', function () use ($app) {
 
 });
 
+$app->get('/admin/reserve/check-in', function () use ($app) {
+
+	$data = reservationController::checkIn($_GET);
+	if(isset($_GET['errors'])) {
+		$data['errors'] = $_GET['errors'];
+	}
+	return $app->Response('/reservation/check_in.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
 
 # Seeder routes
 

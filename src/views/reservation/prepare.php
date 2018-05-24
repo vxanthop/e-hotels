@@ -109,15 +109,15 @@
                                     <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x100' ?>" alt="" class="card-img-top" />
                                     <div class="card-body d-flex flex-column">
                                         <h4 class="card-title text-center mb-2">
-                                            <?= $room->hotel->name ?>
+                                            <?= $hotel->name ?>
                                             <span class="badge badge-warning">
-                                                <?= $room->hotel->stars ?>
+                                                <?= $hotel->stars ?>
                                                 <i class="fas fa-star"></i>
                                             </span>
                                         </h4>
                                         <h6 class="mb-4 text-center">
                                             <i class="fas fa-map-marker"></i>
-                                            <?= $room->hotel->address['city'] ?>
+                                            <?= $hotel->address['city'] ?>
                                         </h6>
                                         <h6>
                                             from <strong><?= $_GET['start_date'] ?></strong>

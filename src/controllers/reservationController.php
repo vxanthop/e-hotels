@@ -6,6 +6,7 @@ use \models\HotelGroup as HotelGroup;
 use \models\Hotel as Hotel;
 use \models\Room as Room;
 use \models\Customer as Customer;
+use \models\Employee as Employee;
 use \models\Amenity as Amenity;
 use \models\City as City;
 
@@ -18,7 +19,7 @@ class reservationController {
             'hotel_id' => intval($vars['hotel_id'])
         ]);
         $hotel = Hotel::getOne([
-            'hotel_id' => intval($vars['hotel_id'])
+            'id' => intval($vars['hotel_id'])
         ]);
         if(!isset($vars['irs'])) {
             $first_name = $_GET['first_name'] ?? '';
@@ -57,6 +58,41 @@ class reservationController {
             $errors[] = 'Could not create Room. Please try again.';
         }
         return $errors;
+    }
+
+    public static function checkIn($vars) {
+        /* CHECKS IF ROOM IS AVAILABLE ETC. */
+        $room = Room::getOne([
+            'room_id' => intval($vars['room_id']),
+            'hotel_id' => intval($vars['hotel_id'])
+        ]);
+        $hotel = Hotel::getOne([
+            'id' => intval($vars['hotel_id'])
+        ]);
+        $group = HotelGroup::getOne([
+            'id' => $hotel->hotel_group_id
+        ]);
+        $reservation = $room->getReservation(
+            intval($vars['customer_irs']),
+            $vars['start_date']
+        );
+        if(!isset($vars['employee_irs'])) {
+            $first_name = $_GET['first_name'] ?? '';
+            $last_name = $_GET['last_name'] ?? '';
+            $query = [];
+            $employees = Employee::ofHotel($hotel->id);
+            if(strlen($first_name) && strlen($last_name)) {
+                $query = compact('first_name', 'last_name');
+            /* FIND A WAY TO ONLY GET EMPLOYEES OF THE CURRENT HOTEL */
+                $employees = Employee::getMany($query);
+            }
+            return compact('room', 'hotel', 'group', 'reservation', 'query', 'employees');
+        } else {
+            $employee = Employee::getOne([
+                'emp_IRS' => intval($vars['employee_irs'])
+            ]);
+            return compact('room', 'hotel', 'group', 'reservation', 'employee');
+        }
     }
     
 }

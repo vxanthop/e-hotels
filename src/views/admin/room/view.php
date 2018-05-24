@@ -56,7 +56,9 @@
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
                                         <td><?= $reservation['status'] ?></td>
-                                        <td></td>
+                                        <td>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/reserve/check-in?room_id=<?= $room->room_id ?>&hotel_id=<?= $hotel->id ?>&start_date=<?= $reservation['start_date'] ?>&customer_irs=<?= $reservation['customer']->cust_IRS ?>">Check-in</a>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>

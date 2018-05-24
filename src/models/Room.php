@@ -100,6 +100,15 @@ class Room extends Model {
     }
 
     /*
+     * @input: IRS number of the customer that made the reservation and the start date
+     * @output: An associative array with keys customer, start_date, finish_date, status that represents the reservation
+     * @todo: Implementation
+     */
+    public function getReservation($customer_irs, $start_date) {
+
+    }
+
+    /*
      * @input: None
      * @output: None
      * @todo: Implementation
