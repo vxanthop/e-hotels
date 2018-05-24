@@ -26,8 +26,8 @@ class searchController {
             'view' => $vars['view'] ?? 'rooms',
             'hotel_groups' => $vars['hotel_groups'] ?? [],
             'stars' => $vars['stars'] ?? 0,
-            'rooms_start' => $vars['rooms_start'] ?? 1,
-            'rooms_end' => $vars['rooms_end'] ?? 100,
+            'rooms_min' => $vars['rooms_min'] ?? 1,
+            'rooms_max' => $vars['rooms_max'] ?? 100,
             'amenities' => $vars['amenities'] ?? [],
             'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => Amenity::all()

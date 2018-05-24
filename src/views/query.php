@@ -114,8 +114,8 @@
                                 <h6 class="filter-title">Total rooms in hotel</h6>
                                 <div id="rooms-range" class="nouislider-container"></div>
                                 <div class="input-group mt-2">
-                                    <input id="rooms-start" name="rooms_start" type="number" class="form-control" value="<?= $rooms_start ?>" min="1" max="100" onblur="search()" />
-                                    <input id="rooms-end" name="rooms_end" type="number" class="form-control" value="<?= $rooms_end ?>" min="1" max="100" onblur="search()" />
+                                    <input id="rooms-min" name="rooms_min" type="number" class="form-control" value="<?= $rooms_min ?>" min="1" max="100" onblur="search()" />
+                                    <input id="rooms-max" name="rooms_max" type="number" class="form-control" value="<?= $rooms_max ?>" min="1" max="100" onblur="search()" />
                                 </div>
 
                                 <h6 class="filter-title">
@@ -147,7 +147,7 @@
               clearGroupsBtn = document.getElementById("clearGroupsBtn"),
               hotelGroups = document.querySelectorAll("#hotel-group-filter input"),
               roomsRange = document.getElementById("rooms-range"),
-              roomsIn = [document.getElementById("rooms-start"), document.getElementById("rooms-end")]
+              roomsIn = [document.getElementById("rooms-min"), document.getElementById("rooms-max")]
         
         function search() {
             document.getElementById('search-form').submit()
@@ -238,7 +238,7 @@
         })
 
         noUiSlider.create(roomsRange, {
-            start: [<?= $rooms_start ?>, <?= $rooms_end ?>],
+            start: [<?= $rooms_min ?>, <?= $rooms_max ?>],
             step: 1,
             connect: true,
             range: {
