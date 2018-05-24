@@ -58,6 +58,7 @@
                                     <td><?= 'Not implemented' /*$room->current_customer ? 'Reserved by ' . $room->current_customer->first_name . ' ' . $room->current_customer->last_name : 'Available'*/ ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
+                                            <a class="btn btn-sm btn-secondary" href="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>">View</a>
                                             <a class="btn btn-sm btn-secondary" href="/admin/room/update/<?= $room->room_id ?>">Edit</a>
                                             <a class="btn btn-sm btn-danger" href="/admin/room/delete/<?= $room->room_id ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/hotel/' . $hotel->id) ?>">Delete</a>
                                         </div>
@@ -92,8 +93,8 @@
                                     <td><?= $employee->current_job['finish_date'] ?? '-' ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
-                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
-                                            <a class="btn btn-sm btn-danger" href="/admin/employee/delete/<?= $employee->emp_IRS ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) . '#employees' ?>&error=<?= urlencode('/admin/hotel/' . $hotel->id . '#employees') ?>">Delete</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $employee->emp_IRS ?>">Manage</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit info</a>
                                         </div>
                                     </td>
                                 </tr>

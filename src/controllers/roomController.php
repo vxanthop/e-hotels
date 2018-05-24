@@ -98,4 +98,18 @@ class roomController {
         return $errors;
     }
 
+    public static function view($hotel_id, $room_id) {
+        $room = Room::getOne([
+            'hotel_id' => $hotel_id,
+            'room_id' => $room_id
+        ]);
+        $hotel = Hotel::getOne([
+            'id' => $hotel_id
+        ]);
+        $group = HotelGroup::getOne([
+            'id' => $hotel->hotel_group_id
+        ]);
+        return compact('room', 'hotel', 'group');
+    }
+
 }

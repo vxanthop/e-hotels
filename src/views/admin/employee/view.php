@@ -50,7 +50,7 @@
                                 <tbody>
                                 <?php foreach($employee->jobs as $job) { ?>
                                     <tr<?= $job['status'] == 'Current job' ? ' class="table-info"' : '' ?>>
-                                        <td><?= $job['hotel']->name ?></td>
+                                        <td><a href="/admin/hotel/<?= $job['hotel']->id ?>"><?= $job['hotel']->name ?></a></td>
                                         <td><?= $job['hotel']->address['city'] ?></td>
                                         <td><?= $job['start_date'] ?></td>
                                         <td><?= $job['finish_date'] ?></td>

@@ -293,6 +293,16 @@ $app->get('/admin/room/delete/:room_id', function ($room_id) use ($app) {
 
 });
 
+$app->get('/admin/hotel/:hotel_id/room/:room_id', function ($hotel_id, $room_id) use ($app) {
+
+	$data = roomController::view($hotel_id, $room_id);
+	return $app->Response('admin/room/view.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
 $app->get('/admin/employee/create', function () use ($app) {
 	
 	$data = employeeController::create();

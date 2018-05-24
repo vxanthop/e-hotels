@@ -107,5 +107,21 @@ class Room extends Model {
         ];
         return $this->expandable_description = $arr[$this->expandable];
     }
+    
+    public function reservations_getter() {
+        $this->reservations = [];
+        $query = DB::query('SELECT * FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' ORDER BY IFNULL(Finish_Date, DATE(\'9999-12-31\'))');
+        while($row = $query->fetch_assoc()) {
+            $this->reservations[] = [
+                'customer' => Customer::getOne([
+                    'cust_IRS' => intval($row['Customer_IRS'])
+                ]),
+                'start_date' => $row['Start_Date'],
+                'finish_date' => $row['Finish_Date'],
+                'status' => 'Not implemented',
+            ];
+        }
+        return $this->reservations;
+    }
 
 }

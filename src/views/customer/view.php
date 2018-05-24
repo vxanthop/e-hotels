@@ -36,9 +36,9 @@
                                 <tbody>
                                 <?php foreach($customer->reservations as $reservation) { ?>
                                     <tr<?= $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d') ? ' class="table-info"' : '' ?>>
-                                        <td><?= $reservation['hotel']->name ?></td>
+                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>"><?= $reservation['hotel']->name ?></a></td>
                                         <td><?= $reservation['hotel']->address['city'] ?></td>
-                                        <td>#<?= $reservation['room_id'] ?></td>
+                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>/room/<?= $reservation['room_id'] ?>">#<?= $reservation['room_id'] ?></a></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
                                         <td><?= $reservation['status'] ?></td>
