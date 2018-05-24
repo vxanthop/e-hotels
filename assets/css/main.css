@@ -227,6 +227,12 @@ section.search-results .results-searchbox:focus {
     outline: none;
 }
 
-section.search-results .city-link {
-    cursor: pointer;
+section.search-results button.city-link {
+    color: inherit;
+    padding: 0;
+    text-decoration: none;
+}
+
+section.search-results button.city-link:hover {
+    transform: scale(1.015);
 }

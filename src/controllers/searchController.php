@@ -10,17 +10,19 @@ use \models\City as City;
 class searchController {
 
     public static function query($vars) {
-        if(!isset($vars['start_date']) || !isset($vars['end_date']) || !isset($vars['capacity'])) {
-            header('Location: /', true);
-            die();
-        }
         $citynames = [];
 		foreach(City::all() as $city) {
 			$citynames[] = $city['city'];
         }
         $view = $vars['view'] ?? 'rooms';
-        if(!$vars['city']) {
-            $view = 'per_city';
+        if(!isset($vars['view'])) {
+            if(!$vars['city']) {
+                $view = 'per_city';
+            } else {
+                $view = 'rooms';
+            }
+        } else {
+            $view = $vars['view'];
         } 
         $data = [
             'city' => $vars['city'],
@@ -36,10 +38,14 @@ class searchController {
             'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => Amenity::all()
         ];
-        if($data['view'] == 'rooms') {
-            $data['results'] = Room::search($data);
+        if(!isset($vars['start_date']) || !isset($vars['end_date']) || !isset($vars['capacity'])) {
+            $data['results'] = [];
         } else {
-            $data['results'] = Room::searchPerCity($data);
+            if($data['view'] == 'rooms') {
+                $data['results'] = Room::search($data);
+            } else {
+                $data['results'] = Room::searchPerCity($data);
+            }
         }
         $data['citynames'] = $citynames;
         /* If no hotel groups are selected, select all instead so that query makes sense */

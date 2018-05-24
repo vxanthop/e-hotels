@@ -14,7 +14,17 @@
                             <div class="card text-center">
                                 <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
                                 <div class="card-body d-flex flex-column">
-                                    <h4 class="card-title text-center"><?= $hotel->name ?> <span class="badge badge-warning"><?= $hotel->stars ?><i class="fas fa-star"></i></span></h4>
+                                    <h4 class="card-title text-center mb-2">
+                                        <?= $hotel->name ?>
+                                        <span class="badge badge-warning">
+                                            <?= $hotel->stars ?>
+                                            <i class="fas fa-star"></i>
+                                        </span>
+                                    </h4>
+                                    <h6 class="mb-4 text-center">
+                                        <i class="fas fa-map-marker"></i>
+                                        <?= $hotel->address['city'] ?>
+                                    </h6>
                                     <h6>
                                         <strong>Price:</strong> <?= number_format($room->price, 2) ?>€
                                     </h6>
@@ -30,7 +40,8 @@
                             </div>
                         </div>
                         <div class="col col-9">
-                            <table class="table table-striped">
+                            <h3>Reservation history</h3>
+                            <table class="table table-striped mt-3">
                                 <thead>
                                     <th>Customer</th>
                                     <th>Start Date</th>

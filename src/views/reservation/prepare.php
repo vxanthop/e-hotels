@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="col col-2 text-center">
                                 <img src="/assets/images/blank-user.png" class="img-fluid mb-3" alt="No avatar available">
-                                <h4 class="mb-4"><?= $customer->fullname ?></h4>
+                                <h4 class="mb-4"><a href="/customer/<?= $customer->cust_IRS ?>"><?= $customer->fullname ?></a></h4>
                                 <h6 class="font-weight-bold mt-3">IRS Number</h6>
                                 <?= $customer->cust_IRS ?>
                                 <h6 class="font-weight-bold mt-3">Social Security Number</h6>
@@ -108,7 +108,17 @@
                                 <div class="card w-50 mx-auto mt-3 text-center">
                                     <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x100' ?>" alt="" class="card-img-top" />
                                     <div class="card-body d-flex flex-column">
-                                        <h4 class="card-title text-center"><?= $room->hotel->name ?> <span class="badge badge-warning"><?= $room->hotel->stars ?><i class="fas fa-star"></i></span></h4>
+                                        <h4 class="card-title text-center mb-2">
+                                            <?= $room->hotel->name ?>
+                                            <span class="badge badge-warning">
+                                                <?= $room->hotel->stars ?>
+                                                <i class="fas fa-star"></i>
+                                            </span>
+                                        </h4>
+                                        <h6 class="mb-4 text-center">
+                                            <i class="fas fa-map-marker"></i>
+                                            <?= $room->hotel->address['city'] ?>
+                                        </h6>
                                         <h6>
                                             from <strong><?= $_GET['start_date'] ?></strong>
                                             to <strong><?= $_GET['end_date'] ?></strong>

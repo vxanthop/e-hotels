@@ -28,7 +28,10 @@ class Room extends Model {
     }
 
     public static function search($data) {
-        $sql = 'SELECT Hotel_Room.* FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE Hotel.Address_City = "' . $data['city'] . '" AND (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_min'] . ' AND ' . $data['rooms_max'] . ')';
+        $sql = 'SELECT Hotel_Room.* FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_min'] . ' AND ' . $data['rooms_max'] . ')';
+        if($data['city']) {
+            $sql .= ' AND Hotel.Address_City = "' . $data['city'] . '"';
+        }
         if($data['capacity'] > 0) {
             $sql .= ' AND Hotel_Room.Capacity = ' . $data['capacity'];
         }

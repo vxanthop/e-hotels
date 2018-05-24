@@ -23,7 +23,8 @@
                             <a class="btn btn-secondary mt-3" href="/admin/customer/update/<?= $customer->cust_IRS ?>">Edit</a>
                         </div>
                         <div class="col col-10">
-                            <table class="table table-striped">
+                            <h3>Reservation history</h3>
+                            <table class="table table-striped mt-3">
                                 <thead>
                                     <th>Hotel</th>
                                     <th>City</th>
