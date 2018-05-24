@@ -46,6 +46,35 @@ class Room extends Model {
         return DB::getCollection($query);
     }
 
+    public static function searchPerCity($data) {
+        $sql = 'SELECT COUNT(*) AS availableRoomsNum, Hotel.Address_City AS city FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_min'] . ' AND ' . $data['rooms_max'] . ')';
+        if($data['city']) {
+            $sql .=  ' AND Hotel.Address_City = "' . $data['city'] . '"';
+        }
+        if($data['capacity'] > 0) {
+            $sql .= ' AND Hotel_Room.Capacity = ' . $data['capacity'];
+        }
+        if($data['stars'] > 0) {
+            $sql .= ' AND Hotel.Stars = ' . $data['stars'];
+        }
+        if(count($data['amenities'])) {
+            $sql .= ' AND (SELECT COUNT(amenity) FROM Room_Amenities WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND amenity IN (\'' . join('\', \'', $data['amenities']) . '\')) >= ' . count($data['amenities']);
+        }
+        if(count($data['hotel_groups'])) {
+            $sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
+        }
+        $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $sql .= ' GROUP BY Hotel.Address_City';
+        $query = DB::query($sql);
+        $datum = [];
+        while ($row = $query->fetch_assoc()) {
+            $datum[] = $row;
+        }
+        // var_dump($datum);
+        // die();
+        return $datum;
+    }
+
     public static function availableInCityNum($city) {
         $query = DB::query('SELECT COUNT(*) AS total FROM Hotel_Room INNER JOIN Hotel ON Hotel.Hotel_ID = Hotel_Room.Hotel_ID WHERE Hotel.Address_City = "' . $city . '" AND (SELECT COUNT(*) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())) = 0');
         $res = $query->fetch_assoc();
