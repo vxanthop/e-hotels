@@ -4,7 +4,7 @@
                     <div class="col col-9 order-2">
                         <div class="results-search-container">
                             <div class="results-searchbox-container">
-                                <input type="search" id="city" class="results-searchbox" name="city" placeholder="Search destination..." required value="<?= $city; ?>" />
+                                <input type="search" id="city" class="results-searchbox" name="city" placeholder="Search destination..." value="<?= $city; ?>" />
                                 <div class="results-search-autocomplete list-group" id="autocomplete" data-selected="-1"></div>
                             </div>
                             <div class="form-row mt-2">

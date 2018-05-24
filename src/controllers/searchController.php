@@ -10,7 +10,7 @@ use \models\City as City;
 class searchController {
 
     public static function query($vars) {
-        if(!isset($vars['city']) || !isset($vars['start_date']) || !isset($vars['end_date']) || !isset($vars['capacity'])) {
+        if(!isset($vars['start_date']) || !isset($vars['end_date']) || !isset($vars['capacity'])) {
             header('Location: /', true);
             die();
         }

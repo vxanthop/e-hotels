@@ -3,7 +3,7 @@
                 <h2>Choose between <?= count($citynames) ?> destinations!</h2>
                 <form action="/search" method="GET" class="hero-search-container" autocomplete="off">
                     <div class="form-group hero-searchbox-container">
-                        <input type="search" id="city" name="city" class="hero-searchbox" autofocus placeholder="Search destination..." required />
+                        <input type="search" id="city" name="city" class="hero-searchbox" autofocus placeholder="Search destination..." />
                         <div class="hero-search-autocomplete list-group" id="autocomplete" data-selected="-1"></div>
                     </div>
                     <div class="form-row mt-4">
