@@ -45,11 +45,11 @@ class reservationController {
             $room = Room::getOne([
                 'room_id' => intval($vars['room_id'])
             ]); 
-            $assign = $room->reserve([
-                'cust_IRS' => intval($vars['irs']),
-                'start_date' => $vars['start_date'],
-                'finish_date' => $vars['finish_date']
-            ]);
+            $assign = $room->reserve(
+                intval($vars['irs']),
+                $vars['start_date'],
+                $vars['end_date']
+            );
             if(!$assign) {
                 $errors[] = 'Could not reserve to Room. Please try again.';
             }

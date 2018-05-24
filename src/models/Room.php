@@ -58,13 +58,13 @@ class Room extends Model {
      * @todo: Integrity check to manually confirm that the customer exists and the room is available for the designated period
      */ 
     public function reserve($customer_irs, $start_date, $finish_date) {
-        DB::query('INSERT INTO Reserves (Customer_IRS, Room_ID, Hotel_ID, Start_Date, Finish_Date) VALUES (' . join(", ", [
+        return DB::query('INSERT INTO Reserves (Customer_IRS, Room_ID, Hotel_ID, Start_Date, Finish_Date) VALUES (' . join(', ', [
             $customer_irs,
             $this->room_id,
             $this->hotel_id,
-            $start_date,
-            $finish_date,
-        ]));
+            'DATE(\'' . $start_date . '\')',
+            'DATE(\'' . $finish_date . '\')',
+        ]) . ')');
     }
 
     /*

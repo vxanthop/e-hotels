@@ -68,12 +68,12 @@
                         </table>
                     <?php } ?>
                 <?php } else { ?>
-                    <form action="/reserve/create?success=<?= urlencode('/customer/' . $customer->cust_IRS) ?>&error=<?= urlencode('/reserve/prepare?room_id=' . $_GET['room_id'] . '&hotel_id=' . $_GET['hotel_id'] . '&start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['start_date'] . '&irs=' . $customer->cust_IRS) ?>" method="POST">
+                    <form action="/reserve/create?success=<?= urlencode('/customer/' . $customer->cust_IRS) ?>&error=<?= urlencode('/reserve/prepare?room_id=' . $_GET['room_id'] . '&hotel_id=' . $_GET['hotel_id'] . '&start_date=' . $_GET['start_date'] . '&end_date=' . $_GET['end_date'] . '&irs=' . $customer->cust_IRS) ?>" method="POST">
                         <input type="hidden" name="room_id" value="<?= $_GET['room_id'] ?>" />
                         <input type="hidden" name="hotel_id" value="<?= $_GET['hotel_id'] ?>" />
                         <input type="hidden" name="start_date" value="<?= $_GET['start_date'] ?>" />
                         <input type="hidden" name="end_date" value="<?= $_GET['end_date'] ?>" />
-                        <input type="hidden" name="customer_irs" value="<?= $customer->cust_IRS ?>" />
+                        <input type="hidden" name="irs" value="<?= $customer->cust_IRS ?>" />
                         <div class="row">
                             <div class="col col-2 text-center">
                                 <img src="/assets/images/blank-user.png" class="img-fluid mb-3" alt="No avatar available">
@@ -100,7 +100,7 @@
                                 </div>
                             <?php } ?>
                                 <h3 class="text-center">
-                                    <a href="/reserve/prepare?room_id=<?= $_GET['room_id'] ?>&hotel_id=<?= $_GET['hotel_id'] ?>&start_date=<?= $_GET['start_date'] ?>&end_date=<?= $_GET['start_date'] ?>&first_name=<?= urlencode($customer->first_name) ?>&last_name=<?= urlencode($customer->last_name) ?>" class="btn btn-secondary mr-2">
+                                    <a href="/reserve/prepare?room_id=<?= $_GET['room_id'] ?>&hotel_id=<?= $_GET['hotel_id'] ?>&start_date=<?= $_GET['start_date'] ?>&end_date=<?= $_GET['end_date'] ?>&first_name=<?= urlencode($customer->first_name) ?>&last_name=<?= urlencode($customer->last_name) ?>" class="btn btn-secondary mr-2">
                                         <i class="fas fa-chevron-left"></i> Back
                                     </a>
                                     You are about to reserve:
