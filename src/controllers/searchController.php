@@ -17,13 +17,17 @@ class searchController {
         $citynames = [];
 		foreach(City::all() as $city) {
 			$citynames[] = $city['city'];
-		}
+        }
+        $view = $vars['view'] ?? 'rooms';
+        if(!$vars['city']) {
+            $view = 'per_city';
+        } 
         $data = [
             'city' => $vars['city'],
             'start_date' => $vars['start_date'],
             'end_date' => $vars['end_date'],
             'capacity' => $vars['capacity'] ?? 0,
-            'view' => $vars['view'] ?? 'rooms',
+            'view' => $view,
             'hotel_groups' => $vars['hotel_groups'] ?? [],
             'stars' => $vars['stars'] ?? 0,
             'rooms_min' => $vars['rooms_min'] ?? 1,

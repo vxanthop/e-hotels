@@ -27,10 +27,10 @@
                         </div>
                         <div class="btn-group btn-group-lg btn-group-toggle my-2 d-flex justify-content-center">
                             <label class="btn btn-secondary<?= $view == 'rooms' ? ' active' : '' ?>">
-                                <i class="fas fa-th-large"></i> <input type="radio" name="view" value="rooms"<?= $view == 'rooms' ? ' checked' : '' ?> onchange="search()"> Rooms
+                                <i class="fas fa-th-large"></i> <input type="radio" name="view" value="rooms"<?= $view == 'rooms' ? ' checked' : '' ?> onchange="search()" id="rooms-view"> Rooms
                             </label>
                             <label class="btn btn-secondary<?= $view == 'per_city' ? ' active' : '' ?>">
-                                <i class="fas fa-map-marker"></i> <input type="radio" name="view" value="per_city"<?= $view == 'per_city' ? ' checked' : '' ?> onchange="search()"> Per city
+                                <i class="fas fa-map-marker"></i> <input type="radio" name="view" value="per_city"<?= $view == 'per_city' ? ' checked' : '' ?> onchange="search()" id="per-city-view"> Per city
                             </label>
                         </div>
                         <div class="results-container">
@@ -69,10 +69,10 @@
                             <div class="row no-gutters">
                             <?php foreach($row as $i => $city) { ?>
                                 <div class="col col-6 <?= ($i == 0) ? 'pr-2 ' : 'pl-2 ' ?>py-2">
-                                    <div class="card h-100">
+                                    <div class="card h-100 city-link" data-city="<?= $city['city'] ?>">
                                         <img src="<?= 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
                                         <div class="card-body d-flex flex-column text-center">
-                                            <h3 class="card-title"><?= $city['city'] ?></span></h3>
+                                            <h3 class="card-title"><?= $city['city'] ?></h3>
                                             <h5>
                                                 <span class="badge badge-info"><?= $city['availableRoomsNum'] ?></span> rooms available
                                             </h5>
@@ -147,7 +147,8 @@
               clearGroupsBtn = document.getElementById("clearGroupsBtn"),
               hotelGroups = document.querySelectorAll("#hotel-group-filter input"),
               roomsRange = document.getElementById("rooms-range"),
-              roomsIn = [document.getElementById("rooms-min"), document.getElementById("rooms-max")]
+              roomsIn = [document.getElementById("rooms-min"), document.getElementById("rooms-max")],
+              cityLinks = document.querySelectorAll('.city-link')
         
         function search() {
             document.getElementById('search-form').submit()
@@ -257,6 +258,16 @@
             roomsRange.noUiSlider.set([null, this.value])
         })
         roomsRange.noUiSlider.on("change", search)
+
+        ;[...cityLinks].forEach(el => {
+            el.addEventListener('click', event => {
+                event.preventDefault()
+                input.value = el.getAttribute('data-city')
+                const roomsBtn = document.getElementById('rooms-view')
+                roomsBtn.checked = true
+                search()
+            })
+        })
 
         $().ready(function(){
             $("#datepicker").datepicker({
