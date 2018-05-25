@@ -80,11 +80,12 @@ class reservationController {
             $first_name = $_GET['first_name'] ?? '';
             $last_name = $_GET['last_name'] ?? '';
             $query = [];
-            $employees = Employee::ofHotel($hotel->id);
             if(strlen($first_name) && strlen($last_name)) {
                 $query = compact('first_name', 'last_name');
-            /* FIND A WAY TO ONLY GET EMPLOYEES OF THE CURRENT HOTEL */
-                $employees = Employee::getMany($query);
+                $employees = Employee::getEmployee($query, $hotel->id);
+            }
+            else{
+                $employees = Employee::ofHotel($hotel->id);  
             }
             return compact('room', 'hotel', 'group', 'reservation', 'query', 'employees');
         } else {

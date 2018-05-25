@@ -42,6 +42,11 @@ class Employee extends Model {
         return $employee;
     }
 
+    public static function getEmployee($name, $hotel_id){
+        $query = DB::query('SELECT Employee.*, Works.Hotel_ID FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND Employee.First_Name = ' . $name['first_name'] . 'AND Employee.Last_Name = ' . $name['last_name']);
+        return DB::getCollection($query);
+    }
+
     public static function ofHotel($hotel_id) {
         $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND CURDATE() BETWEEN Works.Start_Date AND IFNULL(Works.Finish_Date, CURDATE())');
         return DB::getCollection($query);

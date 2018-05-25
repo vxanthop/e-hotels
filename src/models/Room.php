@@ -104,8 +104,25 @@ class Room extends Model {
      * @output: An associative array with keys customer, start_date, finish_date, status that represents the reservation
      * @todo: Implementation
      */
-    public function getReservation($customer_irs, $start_date) {
-
+    public static function getReservation($customer_irs, $start_date) {
+        $reservations = [];
+        $data = [];
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.* FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = ' . $this->start_date . ' ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
+        while($row = $query->fetch_assoc()) {
+            $reservations[] = [
+                'start_date' => $row['Start_Date'],
+                'finish_date' => $row['Finish_Date'],
+                'rent_id' => $row['Rent_ID'],
+                'amount' => $row['Payment_Amount'],
+                'method' => $row['Payment_Method'],
+            ];
+        }
+        if(isset($reservations['rent_id'])){
+            $data[] = ['status' => 'Rented'];
+            return compact($reservations, $data);
+        }
+        $data[] = ['status' => 'Not Implemented'];
+        return compact($reservations, $data);
     }
 
     /*
