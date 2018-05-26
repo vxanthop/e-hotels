@@ -69,13 +69,11 @@ class Room extends Model {
         $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
         $sql .= ' GROUP BY Hotel.Address_City';
         $query = DB::query($sql);
-        $datum = [];
+        $result = [];
         while ($row = $query->fetch_assoc()) {
-            $datum[] = $row;
+            $result[] = $row;
         }
-        // var_dump($datum);
-        // die();
-        return $datum;
+        return $result;
     }
 
     public static function availableInCityNum($city) {
@@ -100,29 +98,25 @@ class Room extends Model {
     }
 
     /*
-     * @input: IRS number of the customer that made the reservation and the start date
-     * @output: An associative array with keys customer, start_date, finish_date, status that represents the reservation
-     * @todo: Implementation
+     * @input: Start date of the reservation (remember that a reservation is uniquely identified by the room and the start date)
+     * @output: An associative array with keys customer, start_date, finish_date, status, payment_method, payment_amount and rent_id that represents the reservation
+     * @todo: Fix status
      */
-    public static function getReservation($customer_irs, $start_date) {
-        $reservations = [];
-        $data = [];
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.* FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = ' . $this->start_date . ' ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
-        while($row = $query->fetch_assoc()) {
-            $reservations[] = [
-                'start_date' => $row['Start_Date'],
-                'finish_date' => $row['Finish_Date'],
-                'rent_id' => $row['Rent_ID'],
-                'amount' => $row['Payment_Amount'],
-                'method' => $row['Payment_Method'],
-            ];
-        }
-        if(isset($reservations['rent_id'])){
-            $data[] = ['status' => 'Rented'];
-            return compact($reservations, $data);
-        }
-        $data[] = ['status' => 'Not Implemented'];
-        return compact($reservations, $data);
+    public function getReservation($start_date) {
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = DATE(\'' . $start_date . '\') ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
+        $row = $query->fetch_assoc();
+        $reservation = [
+            'customer' => Customer::getOne([
+                'cust_IRS' => intval($row['Customer_IRS'])
+            ]),
+            'start_date' => $row['Start_Date'],
+            'finish_date' => $row['Finish_Date'],
+            'rent_id' => intval($row['Rent_ID']),
+            'payment_amount' => floatval($row['Payment_Amount']),
+            'payment_method' => $row['Payment_Method'],
+        ];
+        $reservation['status'] = is_null($row['Rent_ID']) ? 'Reserved' : 'Rented';
+        return $reservation;
     }
 
     /*
@@ -164,6 +158,16 @@ class Room extends Model {
             'more_beds' => 'Yes (more beds)'
         ];
         return $this->expandable_description = $arr[$this->expandable];
+    }
+
+    public function status_getter() {
+        $query = DB::query('SELECT COUNT(*) AS cnt FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
+        $res = $query->fetch_assoc();
+        if($res['cnt'] == 0) {
+            return $this->status = 'Available';
+        } else {
+            return $this->status = 'Reserved';
+        }
     }
     
     public function reservations_getter() {

@@ -72,19 +72,15 @@ class reservationController {
         $group = HotelGroup::getOne([
             'id' => $hotel->hotel_group_id
         ]);
-        $reservation = $room->getReservation(
-            intval($vars['customer_irs']),
-            $vars['start_date']
-        );
+        $reservation = $room->getReservation($vars['start_date']);
         if(!isset($vars['employee_irs'])) {
             $first_name = $_GET['first_name'] ?? '';
             $last_name = $_GET['last_name'] ?? '';
             $query = [];
             if(strlen($first_name) && strlen($last_name)) {
                 $query = compact('first_name', 'last_name');
-                $employees = Employee::getEmployee($query, $hotel->id);
-            }
-            else{
+                $employees = Employee::searchInHotel($query, $hotel->id);
+            } else {
                 $employees = Employee::ofHotel($hotel->id);  
             }
             return compact('room', 'hotel', 'group', 'reservation', 'query', 'employees');
@@ -94,6 +90,12 @@ class reservationController {
             ]);
             return compact('room', 'hotel', 'group', 'reservation', 'employee');
         }
+    }
+    
+    public static function checkInSubmit($vars) {
+        $errors = [];
+        /* FILL ME PLEASE */
+        return $errors;
     }
     
 }

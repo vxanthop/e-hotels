@@ -54,7 +54,7 @@
                         ?>
                             <tbody>
                                 <tr>
-                                    <td>No matches were found for "<?= $query['first_name'] . ' ' . $query['last_name'] ?>".</td>
+                                    <td>No matches were found for "<?= $query['first_name'] . ' ' . $query['last_name'] ?>" in hotel "<?= $hotel->name ?>".</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -67,11 +67,10 @@
                         </table>
                     </form>
                 <?php } else { ?>
-                    <form action="/admin/reserve/rent?success=<?= urlencode('/customer/' . $reservation['customer']->cust_IRS) ?>&error=<?= urlencode('/reserve/check-in?room_id=' . $room->room_id . '&hotel_id=' . $hotel->id . '&start_date=' . $reservation['start_date'] . '&customer_irs=' . $reservation['customer']->cust_IRS . '&employee_irs=' . $employee->emp_IRS) ?>" method="POST">
+                    <form action="/admin/reserve/rent?success=<?= urlencode('/customer/' . $reservation['customer']->cust_IRS) ?>&error=<?= urlencode('/reserve/check-in?room_id=' . $room->room_id . '&hotel_id=' . $hotel->id . '&start_date=' . $reservation['start_date'] . '&employee_irs=' . $employee->emp_IRS) ?>" method="POST">
                         <input type="hidden" name="room_id" value="<?= $room->room_id ?>" />
                         <input type="hidden" name="hotel_id" value="<?= $hotel->id ?>" />
                         <input type="hidden" name="start_date" value="<?= $reservation['start_date'] ?>" />
-                        <input type="hidden" name="customer_irs" value="<?= $reservation['customer']->cust_IRS ?>" />
                         <input type="hidden" name="employee_irs" value="<?= $employee->emp_IRS ?>" />
                         <div class="row">
                             <div class="col col-2 text-center">
@@ -100,7 +99,7 @@
                                 </div>
                             <?php } ?>
                                 <h3 class="text-center">
-                                    <a href="/admin/reserve/check-in?room_id=<?= $room->room_id ?>&hotel_id=<?= $hotel->id ?>&start_date=<?= $reservation['start_date'] ?>&customer_irs=<?= $reservation['customer']->cust_IRS ?>&first_name=<?= urlencode($employee->first_name) ?>&last_name=<?= urlencode($employee->last_name) ?>" class="btn btn-secondary mr-2">
+                                    <a href="/admin/reserve/check-in?room_id=<?= $room->room_id ?>&hotel_id=<?= $hotel->id ?>&start_date=<?= $reservation['start_date'] ?>&first_name=<?= urlencode($employee->first_name) ?>&last_name=<?= urlencode($employee->last_name) ?>" class="btn btn-secondary mr-2">
                                         <i class="fas fa-chevron-left"></i> Back
                                     </a>
                                     You are about to check-in this reservation:
@@ -121,7 +120,7 @@
                                         </h6>
                                         <h6>
                                             from <strong><?= $reservation['start_date'] ?></strong>
-                                            to <strong><?= $reservation['end_date'] ?></strong>
+                                            to <strong><?= $reservation['finish_date'] ?></strong>
                                             for <?= number_format($room->price, 2) ?>€
                                         </h6>
                                         <ul class="list-unstyled mt-4 mb-0">

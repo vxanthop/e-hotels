@@ -55,7 +55,7 @@
                                         <?php } ?>
                                         </ul>
                                     </td>
-                                    <td><?= 'Not implemented' /*$room->current_customer ? 'Reserved by ' . $room->current_customer->first_name . ' ' . $room->current_customer->last_name : 'Available'*/ ?></td>
+                                    <td><?= $room->status ?></td>
                                     <td>
                                         <div class="btn-group-vertical">
                                             <a class="btn btn-sm btn-secondary" href="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>">View</a>
