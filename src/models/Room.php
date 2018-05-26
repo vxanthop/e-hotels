@@ -172,7 +172,7 @@ class Room extends Model {
     
     public function reservations_getter() {
         $this->reservations = [];
-        $query = DB::query('SELECT * FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' ORDER BY IFNULL(Finish_Date, DATE(\'9999-12-31\'))');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Room_ID = Reserves.Room_ID AND Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\')) DESC');
         while($row = $query->fetch_assoc()) {
             $this->reservations[] = [
                 'customer' => Customer::getOne([
@@ -180,7 +180,7 @@ class Room extends Model {
                 ]),
                 'start_date' => $row['Start_Date'],
                 'finish_date' => $row['Finish_Date'],
-                'status' => 'Not implemented',
+                'status' => is_null($row['Rent_ID']) ? 'Reserved' : 'Rented',
             ];
         }
         return $this->reservations;

@@ -2,7 +2,8 @@
             <div class="container">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active">Customer: <?= $customer->fullname ?></li>
+                        <li class="breadcrumb-item"><a href="/admin?view=customers">Customers</a></li>
+                        <li class="breadcrumb-item active"><?= $customer->fullname ?></li>
                     </ol>
                 </nav>
                 <div class="container-fluid">
@@ -43,7 +44,14 @@
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
                                         <td><?= $reservation['status'] ?></td>
-                                        <td></td>
+                                        <td>
+                                        <?php if(
+                                                (is_null($reservation['finish_date'])
+                                                    || $reservation['finish_date'] >= date('Y-m-d'))
+                                            &&  $reservation['status'] != 'Rented') { ?>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/reserve/check-in?room_id=<?= $reservation['room_id'] ?>&hotel_id=<?= $reservation['hotel']->id ?>&start_date=<?= $reservation['start_date'] ?>">Check-in</a>
+                                        <?php } ?>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
