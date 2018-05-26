@@ -119,6 +119,7 @@
                                             <?= $hotel->address['city'] ?>
                                         </h6>
                                         <h6>
+                                            Reserved by <strong><?= $reservation['customer']->first_name . ' ' . $reservation['customer']->last_name ?></strong>
                                             from <strong><?= $reservation['start_date'] ?></strong>
                                             to <strong><?= $reservation['finish_date'] ?></strong>
                                             for <?= number_format($room->price, 2) ?>€
