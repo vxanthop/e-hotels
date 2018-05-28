@@ -28,29 +28,33 @@ class Room extends Model {
     }
 
     public static function search($data) {
-        $sql = 'SELECT Hotel_Room.* FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_min'] . ' AND ' . $data['rooms_max'] . ')';
+        $search_sql = 'SELECT Hotel_Room.*, Hotel.Address_City FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel_Room.Price BETWEEN ' . $data['price_min'] . ' AND ' . $data['price_max'] . ')';
         if($data['city']) {
-            $sql .= ' AND Hotel.Address_City = "' . $data['city'] . '"';
+            $search_sql .= ' AND Hotel.Address_City = "' . $data['city'] . '"';
         }
         if($data['capacity'] > 0) {
-            $sql .= ' AND Hotel_Room.Capacity = ' . $data['capacity'];
+            $search_sql .= ' AND Hotel_Room.Capacity = ' . $data['capacity'];
         }
         if($data['stars'] > 0) {
-            $sql .= ' AND Hotel.Stars = ' . $data['stars'];
+            $search_sql .= ' AND Hotel.Stars = ' . $data['stars'];
         }
         if(count($data['amenities'])) {
-            $sql .= ' AND (SELECT COUNT(amenity) FROM Room_Amenities WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND amenity IN (\'' . join('\', \'', $data['amenities']) . '\')) >= ' . count($data['amenities']);
+            $search_sql .= ' AND (SELECT COUNT(amenity) FROM Room_Amenities WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND amenity IN (\'' . join('\', \'', $data['amenities']) . '\')) >= ' . count($data['amenities']);
         }
         if(count($data['hotel_groups'])) {
-            $sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
+            $search_sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
         }
-        $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $search_sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $sql = 'WITH search_res AS (' . $search_sql . ') SELECT search_res.*, total_in_city FROM search_res LEFT JOIN (SELECT Address_City, COUNT(1) AS total_in_city FROM search_res GROUP BY Address_City) AS n ON n.Address_City = search_res.Address_City WHERE total_in_city >= ' . $data['rooms_num'];
         $query = DB::query($sql);
         return DB::getCollection($query);
     }
 
+    /*
+     * @todo: Include check for $data['rooms_num']
+     */
     public static function searchPerCity($data) {
-        $sql = 'SELECT COUNT(*) AS availableRoomsNum, Hotel.Address_City AS city FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel.Number_of_rooms BETWEEN ' . $data['rooms_min'] . ' AND ' . $data['rooms_max'] . ')';
+        $sql = 'SELECT COUNT(1) AS availableRoomsNum, Hotel.Address_City AS city FROM Hotel_Room INNER JOIN Hotel ON Hotel_Room.Hotel_ID = Hotel.Hotel_ID INNER JOIN Hotel_group ON Hotel_group.Hotel_group_ID = Hotel.Hotel_group_ID WHERE (Hotel_Room.Price BETWEEN ' . $data['price_min'] . ' AND ' . $data['price_max'] . ')';
         if($data['city']) {
             $sql .=  ' AND Hotel.Address_City = "' . $data['city'] . '"';
         }
@@ -67,7 +71,7 @@ class Room extends Model {
             $sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
         }
         $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
-        $sql .= ' GROUP BY Hotel.Address_City';
+        $sql .= ' GROUP BY Hotel.Address_City HAVING COUNT(1) >= ' . $data['rooms_num'];
         $query = DB::query($sql);
         $result = [];
         while ($row = $query->fetch_assoc()) {
