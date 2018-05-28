@@ -154,7 +154,7 @@ CREATE TABLE Rents (
 CREATE TABLE Payment_Transaction (
     Rent_ID int(10) UNSIGNED NOT NULL,
     Payment_Amount decimal(7, 2) UNSIGNED NOT NULL,
-    Payment_Method varchar(6) NOT NULL,
+    Payment_Method varchar(12) NOT NULL,
     PRIMARY KEY (Rent_ID),
     FOREIGN KEY (Rent_ID) REFERENCES Rents(Rent_ID) ON UPDATE CASCADE ON DELETE RESTRICT
 );

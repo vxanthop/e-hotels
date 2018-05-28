@@ -563,6 +563,21 @@ $app->get('/admin/reserve/check-in', function () use ($app) {
 });
 
 
+
+$app->get('/admin/reservation', function () use ($app) {
+
+	$data = reservationController::view($_GET);
+	if(is_null($data)) {
+		return $app->Redirect('/admin');
+	}
+	return $app->Response('/reservation/view.php', array_merge(
+		$data,
+		['_layout' => 'main.php']
+	));
+
+});
+
+
 # Seeder routes
 
 $app->get('/seed/hotel-group/:num', function ($num) use ($app) {

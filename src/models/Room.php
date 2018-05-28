@@ -107,11 +107,17 @@ class Room extends Model {
      * @todo: Fix status
      */
     public function getReservation($start_date) {
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = DATE(\'' . $start_date . '\') ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Rents.Employee_IRS, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = DATE(\'' . $start_date . '\') ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
         $row = $query->fetch_assoc();
+        if(is_null($row)) {
+            return NULL;
+        }
         $reservation = [
             'customer' => Customer::getOne([
                 'cust_IRS' => intval($row['Customer_IRS'])
+            ]),
+            'employee' => is_null($row['Rent_ID']) ? NULL : Employee::getOne([
+                'emp_IRS' => intval($row['Employee_IRS'])
             ]),
             'start_date' => $row['Start_Date'],
             'finish_date' => $row['Finish_Date'],

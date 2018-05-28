@@ -61,11 +61,13 @@ class reservationController {
     }
 
     public static function checkIn($vars) {
-        /* CHECKS IF ROOM IS AVAILABLE ETC. */
         $room = Room::getOne([
             'room_id' => intval($vars['room_id']),
             'hotel_id' => intval($vars['hotel_id'])
         ]);
+        if(is_null($room)) {
+            return NULL;
+        }
         $hotel = Hotel::getOne([
             'id' => intval($vars['hotel_id'])
         ]);
@@ -73,6 +75,9 @@ class reservationController {
             'id' => $hotel->hotel_group_id
         ]);
         $reservation = $room->getReservation($vars['start_date']);
+        if(is_null($reservation)) {
+            return NULL;
+        }
         if(!isset($vars['employee_irs'])) {
             $first_name = $_GET['first_name'] ?? '';
             $last_name = $_GET['last_name'] ?? '';
@@ -96,6 +101,27 @@ class reservationController {
         $errors = [];
         /* FILL ME PLEASE */
         return $errors;
+    }
+
+    public static function view($vars) {
+        $room = Room::getOne([
+            'room_id' => intval($vars['room_id']),
+            'hotel_id' => intval($vars['hotel_id'])
+        ]);
+        if(is_null($room)) {
+            return NULL;
+        }
+        $hotel = Hotel::getOne([
+            'id' => intval($vars['hotel_id'])
+        ]);
+        $group = HotelGroup::getOne([
+            'id' => $hotel->hotel_group_id
+        ]);
+        $reservation = $room->getReservation($vars['start_date']);
+        if(is_null($reservation)) {
+            return NULL;
+        }
+        return compact('room', 'hotel', 'group', 'reservation');
     }
     
 }
