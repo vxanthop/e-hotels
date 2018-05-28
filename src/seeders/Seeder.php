@@ -21,8 +21,8 @@ class Seeder {
             $name = substr($name, $i + 2);
         }
         $name = Text::toGreeklish($name);
-        [$first_name, $last_name] = explode(' ', $name);
-        [$street, $number, $postal_code, $city] = explode(', ', $address);
+        list($first_name, $last_name) = explode(' ', $name);
+        list($street, $number, $postal_code, $city) = explode(', ', $address);
         $street = Text::toGreeklish(str_replace(['Όδος ', 'Λεωφόρος '], '', $street));
         $number = intval($number);
         $postal_code = intval(str_pad(str_replace(' ', '', $postal_code), 5, '0'));

@@ -10,6 +10,7 @@ use \models\Text as Text;
 class HotelSeeder extends Seeder {
 
     public static function run($num) {
+        header('Content-type: text/plain');
         $suffixes = ['', ' Hotel', ' Resort', ' Suites', ' Apartments', ' Villa', ' B&B', ' Hostel', ' Motel', ' Budget', ' Estate', ' Airport'];
         $groups = HotelGroup::all();
         if(isset($_GET['withMax'])) {
@@ -40,15 +41,23 @@ class HotelSeeder extends Seeder {
                     'id' => DB::insert_id()                
                 ]);
                 $slug = Text::slugify($group->name);
-                $hotel->addEmail('info@' . $slug . '.com');
+                $add = $hotel->addEmail('info@' . $slug . '.com');
+                if(!$add) {
+                    echo DB::error(), "\n";
+                }
                 if(rand(0, 1) == 0) $hotel->addEmail(Text::slugify($data['address']['city']) . '@' . $slug . '.com');
                 $area = strval(rand(1, 999));
                 $phone = intval('2' . $area . '0' . sprintf('%0' . strval(8 - strlen($area)) . 'd', rand(0, 10 ** (8 - strlen($area)) - 4)));
                 $phones = range($phone, $phone + $extras[rand(0, count($extras) - 1)]);
                 foreach($phones as $p) {
-                    $hotel->addPhone($p);
+                    $add = $hotel->addPhone($p);
+                    if(!$add) {
+                        echo DB::error(), "\n";
+                    }
                 }
                 ++$i;
+            } else {
+                echo DB::error(), "\n";
             }
         }
     }

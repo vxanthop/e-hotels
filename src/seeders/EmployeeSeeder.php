@@ -9,6 +9,7 @@ use \models\DB as DB;
 class EmployeeSeeder extends Seeder {
 
     public static function run($num) {
+        header('Content-type: text/plain');
         // Set default timezone to UTC for proper time calculations
         $tz = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -47,8 +48,12 @@ class EmployeeSeeder extends Seeder {
                     if($query) {
                         /* Start from next day */
                         $start = (intdiv($start + $duration, 86400) + 1) * 86400;
+                    } else {
+                        echo DB::error(), "\n";
                     }
                 }
+            } else {
+                echo DB::error(), "\n";
             }
         }
         date_default_timezone_set($tz);

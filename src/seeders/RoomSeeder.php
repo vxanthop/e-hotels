@@ -10,6 +10,7 @@ use \models\Text as Text;
 class RoomSeeder extends Seeder {
 
     public static function run($num) {
+        header('Content-type: text/plain');
         $amenities = ['A/C', 'Wi-Fi', 'Parking', 'Pets allowed', 'Swimming pool', 'Spa', 'Gym', 'Accessibility', 'No-smoking areas', 'Bathtub', 'Balcony', 'Washing machine', 'Coffee machine', 'Flat TV', 'Kitchen', 'Soundproofing', 'Hairdryer', 'Clothes iron', 'Microwave', 'Safe', 'Fridge'];
         $pool = Hotel::all();
         if(isset($_GET['withMax'])) {
@@ -46,9 +47,13 @@ class RoomSeeder extends Seeder {
                     $add = $room->addAmenity($amenities[$j]);
                     if($add) {
                         ++$j;
+                    } else {
+                        echo DB::error(), "\n";
                     }
                 }
                 ++$i;
+            } else {
+                echo DB::error(), "\n";
             }
         }
     }

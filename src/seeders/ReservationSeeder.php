@@ -2,12 +2,14 @@
 
 namespace seeders;
 
+use \models\DB as DB;
 use \models\Room as Room;
 use \models\Customer as Customer;
 
 class ReservationSeeder extends Seeder {
 
     public static function run($num) {
+        header('Content-type: text/plain');
         // Set default timezone to UTC for proper time calculations
         $tz = date_default_timezone_get();
         date_default_timezone_set('UTC');
@@ -43,6 +45,8 @@ class ReservationSeeder extends Seeder {
                 if($query) {
                     ++$reserv_i;
                     --$rem_reservations;
+                } else {
+                    echo DB::error(), "\n";
                 }
                 /* No reservation period for room between 0 and 1 year */
                 $skip = rand(0, 31536000);
