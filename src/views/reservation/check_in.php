@@ -146,7 +146,7 @@
                                         <div class="form-group">
                                             <label for="transaction_amount">Transaction amount</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control" min="1.00" max="10000.00" step="0.01" name="transaction_amount" id="transaction_amount" required />
+                                                <input type="number" class="form-control" min="1.00" max="10000.00" step="0.01" name="transaction_amount" id="transaction_amount" value="<?= number_format($room->price, 2) ?>" readonly />
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>

@@ -125,7 +125,7 @@ class Room extends Model {
             'payment_amount' => floatval($row['Payment_Amount']),
             'payment_method' => $row['Payment_Method'],
         ];
-        if(is_null($reservation['customer']) || is_null($reservation['employee'])) {
+        if(is_null($reservation['customer'])) {
             return NULL;
         }
         $reservation['status'] = is_null($row['Rent_ID']) ? 'Reserved' : 'Rented';
