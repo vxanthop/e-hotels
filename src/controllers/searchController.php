@@ -32,8 +32,9 @@ class searchController {
             'view' => $view,
             'hotel_groups' => $vars['hotel_groups'] ?? [],
             'stars' => $vars['stars'] ?? 0,
-            'rooms_min' => $vars['rooms_min'] ?? 1,
-            'rooms_max' => $vars['rooms_max'] ?? 100,
+            'price_min' => $vars['price_min'] ?? 1,
+            'price_max' => $vars['price_max'] ?? 300,
+            'rooms_num' => $vars['rooms_num'] ?? 1,
             'amenities' => $vars['amenities'] ?? [],
             'all_hotel_groups' => HotelGroup::all(),
             'all_amenities' => Amenity::all()

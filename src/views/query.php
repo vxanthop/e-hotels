@@ -123,11 +123,22 @@
                                     </div>
                                 </div>
 
-                                <h6 class="filter-title">Total rooms in hotel</h6>
+                                <h6 class="filter-title">Price €/night</h6>
+                                <div id="price-range" class="nouislider-container two-handles"></div>
+                                <div class="input-group mt-2">
+                                    <input id="price-min" name="price_min" type="number" class="form-control" value="<?= $price_min ?>" min="1" max="300" />
+                                    <input id="price-max" name="price_max" type="number" class="form-control" value="<?= $price_max ?>" min="1" max="300" />
+                                </div>
+
+                                <h6 class="filter-title">
+                                    Number of rooms
+                                <?php if($rooms_num > 1) { ?>
+                                    <i data-toggle="tooltip" data-placement="top" title="Reservation of multiple rooms needs to be done manually for each room." class="fas fa-question-circle"></i>
+                                <?php } ?>
+                                </h6>
                                 <div id="rooms-range" class="nouislider-container"></div>
                                 <div class="input-group mt-2">
-                                    <input id="rooms-min" name="rooms_min" type="number" class="form-control" value="<?= $rooms_min ?>" min="1" max="100" onblur="search()" />
-                                    <input id="rooms-max" name="rooms_max" type="number" class="form-control" value="<?= $rooms_max ?>" min="1" max="100" onblur="search()" />
+                                    <input id="rooms-num" name="rooms_num" type="number" class="form-control" value="<?= $rooms_num ?>" min="1" max="100" onblur="search()" />
                                 </div>
 
                                 <h6 class="filter-title">
@@ -158,8 +169,10 @@
               allGroupsBtn = document.getElementById("allGroupsBtn"),
               clearGroupsBtn = document.getElementById("clearGroupsBtn"),
               hotelGroups = document.querySelectorAll("#hotel-group-filter input"),
+              priceRange = document.getElementById("price-range"),
+              priceIn = [document.getElementById("price-min"), document.getElementById("price-max")],
               roomsRange = document.getElementById("rooms-range"),
-              roomsIn = [document.getElementById("rooms-min"), document.getElementById("rooms-max")],
+              roomsIn = document.getElementById("rooms-num"),
               cityLinks = document.querySelectorAll('.city-link')
         
         function search() {
@@ -250,10 +263,31 @@
             [...hotelGroups].forEach(el => {el.checked = false})
         })
 
-        noUiSlider.create(roomsRange, {
-            start: [<?= $rooms_min ?>, <?= $rooms_max ?>],
+        noUiSlider.create(priceRange, {
+            start: [<?= $price_min ?>, <?= $price_max ?>],
             step: 1,
             connect: true,
+            range: {
+                min: [1],
+                "80%": [100],
+                max: [300]
+            }
+        })
+        priceRange.noUiSlider.on("update", function( values, handle ) {
+            priceIn[handle].value = Math.round(values[handle])
+        })
+        priceIn[0].addEventListener("change", function(){
+            priceRange.noUiSlider.set([this.value, null])
+        })
+        priceIn[1].addEventListener("change", function(){
+            priceRange.noUiSlider.set([null, this.value])
+        })
+        priceRange.noUiSlider.on("set", search)
+
+        noUiSlider.create(roomsRange, {
+            start: [<?= $rooms_num ?>],
+            step: 1,
+            connect: [true, false],
             range: {
                 min: [1],
                 "70%": [20],
@@ -261,15 +295,12 @@
             }
         })
         roomsRange.noUiSlider.on("update", function( values, handle ) {
-            roomsIn[handle].value = Math.round(values[handle])
+            roomsIn.value = Math.round(values[handle])
         })
-        roomsIn[0].addEventListener("change", function(){
-            roomsRange.noUiSlider.set([this.value, null])
+        roomsIn.addEventListener("change", function(){
+            roomsRange.noUiSlider.set([this.value])
         })
-        roomsIn[1].addEventListener("change", function(){
-            roomsRange.noUiSlider.set([null, this.value])
-        })
-        roomsRange.noUiSlider.on("change", search)
+        roomsRange.noUiSlider.on("set", search)
 
         $().ready(function(){
             $("#datepicker").datepicker({
@@ -279,6 +310,7 @@
                 todayHighlight: true
             });
             $("#datepicker input").on("changeDate", () => search())
+            $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
 <?php

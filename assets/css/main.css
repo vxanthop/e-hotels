@@ -11,14 +11,14 @@ html, body {
 }
 
 /* noUISlider range container */
-.nouislider-container {
+.two-handles.nouislider-container {
     padding: 0 5px;
 }
 
 html:not([dir=rtl]) .noUi-horizontal .noUi-handle {
+    cursor: ew-resize;
     width: 10px;
     right: -5px;
-    cursor: ew-resize;
 }
 
 .noUi-base {
