@@ -14,9 +14,11 @@ class employeeController {
         if(!$hotel_id) {
             return [];
         } else {
-            return [
-                'hotel' => Hotel::getOne(['id' => $hotel_id]),
-            ];
+            $hotel = Hotel::getOne(['id' => $hotel_id]);
+            if(is_null($hotel)) {
+                return NULL;
+            }
+            return compact('hotel');
         }
     }
 
@@ -58,6 +60,9 @@ class employeeController {
 
     public static function update($irs) {
         $emp = Employee::getOne(['emp_IRS' => $irs]);
+        if(is_null($emp)) {
+            return NULL;
+        }
         return ['employee' => $emp];
     }
 
@@ -88,10 +93,16 @@ class employeeController {
         $employee = Employee::getOne([
             'emp_IRS' => $irs
         ]);
+        if(is_null($employee)) {
+            return NULL;
+        }
         if(isset($_GET['hotel_group_id'])) {
             $group = HotelGroup::getOne([
                 'id' => intval($_GET['hotel_group_id'])
             ]);
+            if(is_null($group)) {
+                return NULL;
+            }
             return [
                 'employee' => $employee,
                 'group' => $group,
@@ -142,6 +153,9 @@ class employeeController {
         $employee = Employee::getOne([
             'emp_IRS' => $irs
         ]);
+        if(is_null($employee)) {
+            return NULL;
+        }
         return ['employee' => $employee];
     }
 

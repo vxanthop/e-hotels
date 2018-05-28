@@ -59,8 +59,8 @@
                                     <td>
                                         <div class="btn-group-vertical">
                                             <a class="btn btn-sm btn-secondary" href="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>">View</a>
-                                            <a class="btn btn-sm btn-secondary" href="/admin/room/update/<?= $room->room_id ?>">Edit</a>
-                                            <a class="btn btn-sm btn-danger" href="/admin/room/delete/<?= $room->room_id ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/hotel/' . $hotel->id) ?>">Delete</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>/update">Edit</a>
+                                            <a class="btn btn-sm btn-danger" href="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>/delete?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/hotel/' . $hotel->id) ?>">Delete</a>
                                         </div>
                                     </td>
                                 </tr>

@@ -53,17 +53,21 @@ class hotelGroupController {
     }
 
     public static function view($id) {
-        $data = [
-            'group' => HotelGroup::getOne(['id' => $id]),
-            'hotels' => Hotel::ofHotelGroup($id),
-        ];
-        return $data;
+        $group = HotelGroup::getOne(['id' => $id]);
+        if(is_null($group)) {
+            return NULL;
+        }
+        $hotels = Hotel::ofHotelGroup($id);
+        return compact('group', 'hotels');
     }
 
     public static function update($id) {
         $data = [
             'group' => HotelGroup::getOne(['id' => $id]),
         ];
+        if(is_null($data['group'])) {
+            return NULL;
+        }
         return $data;
     }
 

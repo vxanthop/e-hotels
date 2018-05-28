@@ -125,6 +125,9 @@ class Room extends Model {
             'payment_amount' => floatval($row['Payment_Amount']),
             'payment_method' => $row['Payment_Method'],
         ];
+        if(is_null($reservation['customer']) || is_null($reservation['employee'])) {
+            return NULL;
+        }
         $reservation['status'] = is_null($row['Rent_ID']) ? 'Reserved' : 'Rented';
         return $reservation;
     }
@@ -172,6 +175,9 @@ class Room extends Model {
 
     public function status_getter() {
         $query = DB::query('SELECT COUNT(*) AS cnt FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
+        if(!$query) {
+            return $this->status = 'Not found';
+        }
         $res = $query->fetch_assoc();
         if($res['cnt'] == 0) {
             return $this->status = 'Available';

@@ -13,11 +13,13 @@ use \models\City as City;
 class reservationController {
 
     public static function prepare($vars) {
-        /* CHECKS IF ROOM IS AVAILABLE ETC. */
         $room = Room::getOne([
             'room_id' => intval($vars['room_id']),
             'hotel_id' => intval($vars['hotel_id'])
         ]);
+        if(is_null($room)) {
+            return NULL;
+        }
         $hotel = Hotel::getOne([
             'id' => intval($vars['hotel_id'])
         ]);
@@ -35,6 +37,9 @@ class reservationController {
             $customer = Customer::getOne([
                 'cust_IRS' => intval($vars['irs'])
             ]);
+            if(is_null($customer)) {
+                return NULL;
+            }
             return compact('room', 'hotel', 'customer');
         }
     }
@@ -93,6 +98,9 @@ class reservationController {
             $employee = Employee::getOne([
                 'emp_IRS' => intval($vars['employee_irs'])
             ]);
+            if(is_null($employee)) {
+                return NULL;
+            }
             return compact('room', 'hotel', 'group', 'reservation', 'employee');
         }
     }

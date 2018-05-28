@@ -36,6 +36,9 @@ class customerController {
 
     public static function update($irs) {
         $cust = Customer::getOne(['cust_IRS' => $irs]);
+        if(is_null($cust)) {
+            return NULL;
+        }
         return ['customer' => $cust];
     }
 
@@ -65,6 +68,9 @@ class customerController {
         $customer = Customer::getOne([
             'cust_IRS' => $irs
         ]);
+        if(is_null($customer)) {
+            return NULL;
+        }
         return ['customer' => $customer];
     }
 }

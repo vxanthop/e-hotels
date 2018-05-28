@@ -12,10 +12,11 @@ class hotelController {
 
     public static function create($hotel_group_id) {
         $data = [
-            'group' => HotelGroup::getOne([
-                'id' => $hotel_group_id
-            ]),
+            'group' => HotelGroup::getOne(['id' => $hotel_group_id]),
         ];
+        if(is_null($data['group'])) {
+            return NULL;
+        }
         return $data;
     }
 
@@ -65,6 +66,9 @@ class hotelController {
         $hotel = Hotel::getOne([
             'id' => $id
         ]);
+        if(is_null($hotel)) {
+            return NULL;
+        }
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         $rooms = Room::ofHotel($id);
         $employees = Employee::ofHotel($id);
@@ -75,6 +79,9 @@ class hotelController {
         $hotel = Hotel::getOne([
             'id' => $id,
         ]);
+        if(is_null($hotel)) {
+            return NULL;
+        }
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         return compact('hotel', 'group');
     }

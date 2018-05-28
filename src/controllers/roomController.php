@@ -13,6 +13,9 @@ class roomController {
         $hotel = Hotel::getOne([
             'id' => $hotel_id
         ]);
+        if(is_null($hotel)) {
+            return NULL;
+        }
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         return compact('hotel', 'group');
     }
@@ -47,11 +50,15 @@ class roomController {
         return $errors;
     }
 
-    public static function update($room_id) {
+    public static function update($hotel_id, $room_id) {
         $room = Room::getOne([
+            'hotel_id' => $hotel_id,
             'room_id' => $room_id
         ]);
-        $hotel = Hotel::getOne(['id' => $room->hotel_id]);
+        if(is_null($room)) {
+            return NULL;
+        }
+        $hotel = Hotel::getOne(['id' => $hotel_id]);
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         return compact('room', 'hotel', 'group');
     }
@@ -67,10 +74,12 @@ class roomController {
 
         $errors = [];
         $query = Room::update([
+            'hotel_id' => $vars['hotel_id'],
             'room_id' => $vars['room_id']
         ], $update);
         if($query) {
             $room = Room::getOne([
+                'hotel_id' => $vars['hotel_id'],
                 'room_id' => $vars['room_id']
             ]);
             $room->deleteAmenities();
@@ -89,8 +98,11 @@ class roomController {
         return $errors;
     }
 
-    public static function delete($id) {
-        $delete = Room::delete(['room_id' => $id]);
+    public static function delete($hotel_id, $room_id) {
+        $delete = Room::delete([
+            'hotel_id' => $hotel_id,
+            'room_id' => $room_id
+        ]);
         $errors = [];
         if(!$delete) {
             $errors[] = 'Could not delete Room. Please try again.';
@@ -103,6 +115,9 @@ class roomController {
             'hotel_id' => $hotel_id,
             'room_id' => $room_id
         ]);
+        if(is_null($room)) {
+            return NULL;
+        }
         $hotel = Hotel::getOne([
             'id' => $hotel_id
         ]);

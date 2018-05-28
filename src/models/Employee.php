@@ -30,6 +30,9 @@ class Employee extends Model {
     public static function getOne($find) {
         $employee = parent::getOne($find);
         $query = DB::query('SELECT Hotel_ID, Start_Date, Finish_Date, Position FROM Works WHERE Employee_IRS = ' . $employee->emp_IRS . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
+        if(!$query) {
+            return NULL;
+        }
         $job = $query->fetch_assoc();
         if($job) {
             $employee->current_job = [

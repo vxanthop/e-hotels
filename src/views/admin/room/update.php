@@ -18,7 +18,7 @@
                         </ul>
                     </div>
                 <?php } ?>
-                    <form action="/admin/room/update/<?= $room->room_id ?>?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/room/update/' . $room->room_id) ?>" method="POST">
+                    <form action="/admin/hotel/<?= $hotel->id ?>/room/<?= $room->room_id ?>/update?success=<?= urlencode('/admin/hotel/' . $hotel->id) ?>&error=<?= urlencode('/admin/hotel/' . $hotel->id . '/room/' . $room->room_id . '/update') ?>" method="POST">
                         <div class="form-group">
                             <label for="capacity">Capacity:</label>
                             <select class="form-control" name="capacity">
