@@ -112,7 +112,7 @@ class BaseModel {
     }
 
     private static function toDBValue($value, $type) {
-        if($value == null) {
+        if(is_null($value)) {
             return 'NULL';
         }
         if($type == 'auto') {
