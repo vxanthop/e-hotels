@@ -133,13 +133,35 @@ class Room extends Model {
     }
 
     /*
-     * @input: None
+     * @input: The employee that will be responsible for the reservation, the start date and the end date of the reservation,
+     *         the payment amount and the payment method for the transaction.  
      * @output: None
-     * @todo: Implementation
      * Marks the room as rented.
      */
-    public function check_in() {
-
+    public function check_in($employee_irs, $start_date, $payment_amount, $payment_method) {
+        $reservation = $this->getReservation($start_date);
+        $ret = DB::query('INSERT INTO Rents (Room_ID, Hotel_ID, Customer_IRS, Employee_IRS, Start_Date, Finish_Date) VALUES (' . join(', ', [
+            $this->room_id,
+            $this->hotel_id,
+            $reservation['customer']->cust_IRS,
+            $employee_irs,
+            'DATE(\'' . $start_date . '\')',
+            'DATE(\'' . $reservation['finish_date'] . '\')',
+        ]) . ')');
+        if(!$ret) {
+            return false;
+        }
+        $rent_id = DB::insert_id();
+        $payment_amount = ((strtotime($reservation['finish_date']) - strtotime($reservation['start_date'])) / 86400 + 1) * $payment_amount;
+        $ret = DB::query('INSERT INTO Payment_Transaction (Rent_ID, Payment_Amount, Payment_Method) VALUES (' . join(', ', [
+            $rent_id,
+            $payment_amount,
+            '"' . $payment_method . '"',
+        ]) . ')');
+        if(!$ret) {
+            return false;
+        }
+        return true;
     }
 
     public function amenities_getter() {

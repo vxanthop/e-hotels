@@ -107,7 +107,24 @@ class reservationController {
     
     public static function checkInSubmit($vars) {
         $errors = [];
-        /* FILL ME PLEASE */
+
+        if(isset($vars['room_id'])) {
+            $room = Room::getOne([
+                'room_id' => intval($vars['room_id'])
+            ]); 
+            $assign = $room->check_in(
+                $vars['employee_irs'],
+                $vars['start_date'],
+                intval($vars['transaction_amount']),
+                $vars['transaction_method']
+            );
+            if(!$assign) {
+                $errors[] = 'Could not complete the payment transaction for the Room. Please try again.';
+            }
+        } else {
+            $errors[] = 'Could not check-in to Room. Please try again.';
+        }
+
         return $errors;
     }
 
