@@ -47,6 +47,7 @@
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Status</th>
+                                    <th>Transaction</th>
                                     <th>Actions</th>
                                 </thead>
                                 <tbody>
@@ -65,6 +66,13 @@
                                               } else {
                                         ?>
                                             (Future)
+                                        <?php } ?>
+                                        </td>
+                                        <td>
+                                        <?php if($reservation['rent_id'] > 0) { ?>
+                                            <?= ucfirst($reservation['payment_method']) ?> (<?= number_format($reservation['payment_amount'], 2) ?>€)
+                                        <?php } else { ?>
+                                            -
                                         <?php } ?>
                                         </td>
                                         <td>

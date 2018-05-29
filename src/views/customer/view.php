@@ -33,6 +33,7 @@
                                     <th>Start Date</th>
                                     <th>End Date</th>
                                     <th>Status</th>
+                                    <th>Transaction</th>
                                     <th>Actions</th>
                                 </thead>
                                 <tbody>
@@ -56,9 +57,16 @@
                                         <?php } ?>
                                         </td>
                                         <td>
+                                        <?php if($reservation['rent_id'] > 0) { ?>
+                                            <?= ucfirst($reservation['payment_method']) ?> (<?= number_format($reservation['payment_amount'], 2) ?>€)
+                                        <?php } else { ?>
+                                            -
+                                        <?php } ?>
+                                        </td>
+                                        <td>
                                         <?php if(
                                                 $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d')
-                                            &&  $reservation['status'] != 'Rented') { ?>
+                                            &&  $reservation['rent_id'] == 0) { ?>
                                             <a class="btn btn-sm btn-secondary" href="/admin/reserve/check-in?room_id=<?= $reservation['room_id'] ?>&hotel_id=<?= $reservation['hotel']->id ?>&start_date=<?= $reservation['start_date'] ?>">Check-in</a>
                                         <?php } ?>
                                         </td>
