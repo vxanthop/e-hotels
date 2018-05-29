@@ -28,7 +28,6 @@
                             <table class="table table-striped mt-3">
                                 <thead>
                                     <th>Hotel</th>
-                                    <th>City</th>
                                     <th>Room</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -39,8 +38,7 @@
                                 <tbody>
                                 <?php foreach($customer->reservations as $reservation) { ?>
                                     <tr<?= $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d') ? ' class="table-info"' : '' ?>>
-                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>"><?= $reservation['hotel']->name ?></a></td>
-                                        <td><?= $reservation['hotel']->address['city'] ?></td>
+                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>"><?= $reservation['hotel']->name ?></a>, <?= $reservation['hotel']->address['city'] ?></td>
                                         <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>/room/<?= $reservation['room_id'] ?>">#<?= $reservation['room_id'] ?></a></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
