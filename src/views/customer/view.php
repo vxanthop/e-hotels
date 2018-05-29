@@ -43,11 +43,21 @@
                                         <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>/room/<?= $reservation['room_id'] ?>">#<?= $reservation['room_id'] ?></a></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
-                                        <td><?= $reservation['status'] ?></td>
+                                        <td>
+                                            <?= $reservation['status'] ?>
+                                        <?php if($reservation['start_date'] <= date('Y-m-d')) {
+                                                if($reservation['finish_date'] <= date('Y-m-d')) {
+                                        ?>
+                                            (Past)
+                                        <?php   }
+                                              } else {
+                                        ?>
+                                            (Future)
+                                        <?php } ?>
+                                        </td>
                                         <td>
                                         <?php if(
-                                                (is_null($reservation['finish_date'])
-                                                    || $reservation['finish_date'] >= date('Y-m-d'))
+                                                $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d')
                                             &&  $reservation['status'] != 'Rented') { ?>
                                             <a class="btn btn-sm btn-secondary" href="/admin/reserve/check-in?room_id=<?= $reservation['room_id'] ?>&hotel_id=<?= $reservation['hotel']->id ?>&start_date=<?= $reservation['start_date'] ?>">Check-in</a>
                                         <?php } ?>

@@ -59,7 +59,7 @@ class Hotel extends Model {
     public function manager_getter() {
         $query = DB::query('SELECT Employee_IRS FROM Works WHERE
             Hotel_ID = ' . $this->id .'
-            AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())
+            AND CURDATE() BETWEEN Start_Date AND Finish_Date
             AND Position = "manager"');
         
         $managers = [];

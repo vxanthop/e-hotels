@@ -76,7 +76,7 @@ CREATE TABLE Works (
     Employee_IRS int(9) UNSIGNED NOT NULL,
     Hotel_ID int(10) UNSIGNED NOT NULL,
     Start_Date date NOT NULL,
-    Finish_Date date,
+    Finish_Date date NOT NULL,
     Position varchar(42) NOT NULL,
     FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -124,7 +124,7 @@ CREATE TABLE Reserves (
     Hotel_ID int(10) UNSIGNED,
     Customer_IRS int(9) UNSIGNED NOT NULL,
     Start_Date date NOT NULL,
-    Finish_Date date,
+    Finish_Date date NOT NULL,
     Paid boolean DEFAULT 0,
     UNIQUE (Room_ID, Hotel_ID, Start_Date),
     FOREIGN KEY (Room_ID) REFERENCES Hotel_Room(Room_ID) ON UPDATE CASCADE ON DELETE SET NULL,
@@ -138,7 +138,7 @@ CREATE TABLE Rents (
     Customer_IRS int(9) UNSIGNED NOT NULL,
     Employee_IRS int(9) UNSIGNED NOT NULL,
     Start_Date date NOT NULL,
-    Finish_Date date,
+    Finish_Date date NOT NULL,
     Rent_ID int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
     UNIQUE (Room_ID, Hotel_ID, Start_Date),
     FOREIGN KEY (Room_ID) REFERENCES Hotel_Room(Room_ID) ON UPDATE CASCADE ON DELETE SET NULL,
@@ -195,7 +195,7 @@ CREATE TRIGGER update_employee BEFORE UPDATE ON Works
         IF NEW.Position <> 'manager' AND
             (SELECT COUNT(Employee_IRS) FROM Works WHERE
                 Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
-                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+                Start_Date <= NEW.Finish_Date AND NEW.Start_Date <= Finish_Date
             ) >= 1 THEN
             SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Can''t update this employee since the hotel will be left without a manager.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
@@ -210,7 +210,7 @@ CREATE TRIGGER delete_employee BEFORE DELETE ON Works
     FOR EACH ROW BEGIN
         IF (SELECT COUNT(Employee_IRS) FROM Works WHERE
                 Hotel_ID = OLD.Hotel_ID AND Position = 'manager' AND
-                Start_Date <= IFNULL(OLD.Finish_Date, Start_Date) AND OLD.Start_Date <= IFNULL(Finish_Date, OLD.Start_Date)
+                Start_Date <= OLD.Finish_Date AND OLD.Start_Date <= Finish_Date
             ) >= 1 THEN
             SET @message_text = CONCAT('Error for employee #', OLD.Employee_IRS, ': Can''t delete this employee since the hotel will be left without a manager.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
@@ -223,12 +223,12 @@ DROP TRIGGER IF EXISTS assign_employee;
 DELIMITER $$
 CREATE TRIGGER assign_employee BEFORE INSERT ON Works
     FOR EACH ROW BEGIN
-        IF NEW.Finish_Date IS NOT NULL AND NEW.Finish_Date < NEW.Start_Date THEN
+        IF NEW.Finish_Date < NEW.Start_Date THEN
             SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': Finish date can''t be earlier than start date');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
         END IF;
         IF (SELECT COUNT(Employee_IRS) FROM Works WHERE Employee_IRS = NEW.Employee_IRS AND
-            Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+            Start_Date <= NEW.Finish_Date AND NEW.Start_Date <= Finish_Date
         ) >= 1 THEN
             SET @message_text = CONCAT('Error for employee #', NEW.Employee_IRS, ': The given working period conflicts with an existent one.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;
@@ -250,8 +250,8 @@ CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
             WHERE
                 Room_ID = NEW.Room_ID AND 
                 Hotel_ID = NEW.Hotel_ID AND
-                Start_Date <= IFNULL(NEW.Finish_Date, Start_Date) AND 
-                NEW.Start_Date <= IFNULL(Finish_Date, NEW.Start_Date)
+                Start_Date <= NEW.Finish_Date AND 
+                NEW.Start_Date <= Finish_Date
             ) >= 1 THEN
             SET @message_text = CONCAT('Error for reserve (', NEW.Room_ID, ', ', NEW.Hotel_ID, ', ', NEW.Start_Date , ') : Reserve period conflicts with an existent one.');
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = @message_text;

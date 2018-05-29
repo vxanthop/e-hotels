@@ -55,13 +55,23 @@
                                         <td><a href="/customer/<?= $reservation['customer']->cust_IRS ?>"><?= $reservation['customer']->first_name . ' ' . $reservation['customer']->last_name ?></a></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
-                                        <td><?= $reservation['status'] ?></td>
+                                        <td>
+                                            <?= $reservation['status'] ?>
+                                        <?php if($reservation['start_date'] <= date('Y-m-d')) {
+                                                if($reservation['finish_date'] <= date('Y-m-d')) {
+                                        ?>
+                                            (Past)
+                                        <?php   }
+                                              } else {
+                                        ?>
+                                            (Future)
+                                        <?php } ?>
+                                        </td>
                                         <td>
                                             <div class="btn-group-vertical">
                                                 <a class="btn btn-sm btn-secondary" href="/admin/reservation?room_id=<?= $room->room_id ?>&hotel_id=<?= $hotel->id ?>&start_date=<?= $reservation['start_date'] ?>">View</a>
                                             <?php if(
-                                                    (is_null($reservation['finish_date'])
-                                                        || $reservation['finish_date'] >= date('Y-m-d'))
+                                                    $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d')
                                                 &&  $reservation['status'] != 'Rented') { ?>
                                                 <a class="btn btn-sm btn-warning" href="/admin/reserve/check-in?room_id=<?= $room->room_id ?>&hotel_id=<?= $hotel->id ?>&start_date=<?= $reservation['start_date'] ?>">Check-in</a>
                                             <?php } ?>

@@ -44,7 +44,7 @@ class Room extends Model {
         if(count($data['hotel_groups'])) {
             $search_sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
         }
-        $search_sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $search_sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= Finish_Date) = 0';
         $sql = 'WITH search_res AS (' . $search_sql . ') SELECT search_res.*, total_in_city FROM search_res LEFT JOIN (SELECT Address_City, COUNT(1) AS total_in_city FROM search_res GROUP BY Address_City) AS n ON n.Address_City = search_res.Address_City WHERE total_in_city >= ' . $data['rooms_num'];
         $query = DB::query($sql);
         return DB::getCollection($query);
@@ -70,7 +70,7 @@ class Room extends Model {
         if(count($data['hotel_groups'])) {
             $sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
         }
-        $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= IFNULL(Finish_Date, DATE(\'' . $data['start_date'] . '\'))) = 0';
+        $sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= Finish_Date) = 0';
         $sql .= ' GROUP BY Hotel.Address_City HAVING COUNT(1) >= ' . $data['rooms_num'];
         $query = DB::query($sql);
         $result = [];
@@ -81,7 +81,7 @@ class Room extends Model {
     }
 
     public static function availableInCityNum($city) {
-        $query = DB::query('SELECT COUNT(*) AS total FROM Hotel_Room INNER JOIN Hotel ON Hotel.Hotel_ID = Hotel_Room.Hotel_ID WHERE Hotel.Address_City = "' . $city . '" AND (SELECT COUNT(*) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())) = 0');
+        $query = DB::query('SELECT COUNT(*) AS total FROM Hotel_Room INNER JOIN Hotel ON Hotel.Hotel_ID = Hotel_Room.Hotel_ID WHERE Hotel.Address_City = "' . $city . '" AND (SELECT COUNT(*) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND CURDATE() BETWEEN Start_Date AND Finish_Date) = 0');
         $res = $query->fetch_assoc();
         return $res['total'];
     }
@@ -107,7 +107,7 @@ class Room extends Model {
      * @todo: Fix status
      */
     public function getReservation($start_date) {
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Rents.Employee_IRS, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = DATE(\'' . $start_date . '\') ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\'))');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Rents.Employee_IRS, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Reserves.Room_ID = Rents.Room_ID AND Reserves.Hotel_ID = Rents.Hotel_ID AND Reserves.Start_Date = Rents.Start_Date LEFT JOIN Payment_Transaction ON Rents.Rent_ID = Payment_Transaction.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' AND Reserves.Start_Date = DATE(\'' . $start_date . '\') ORDER BY Reserves.Start_Date DESC');
         $row = $query->fetch_assoc();
         if(is_null($row)) {
             return NULL;
@@ -174,7 +174,7 @@ class Room extends Model {
     }
 
     public function status_getter() {
-        $query = DB::query('SELECT COUNT(*) AS cnt FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' AND CURDATE() BETWEEN Start_Date AND IFNULL(Finish_Date, CURDATE())');
+        $query = DB::query('SELECT COUNT(*) AS cnt FROM Reserves WHERE Room_ID = ' . $this->room_id . ' AND Hotel_ID = ' . $this->hotel_id . ' AND CURDATE() BETWEEN Start_Date AND Finish_Date');
         if(!$query) {
             return $this->status = 'Not found';
         }
@@ -188,7 +188,7 @@ class Room extends Model {
     
     public function reservations_getter() {
         $this->reservations = [];
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Room_ID = Reserves.Room_ID AND Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\')) DESC');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Room_ID = Reserves.Room_ID AND Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' ORDER BY Reserves.Start_Date DESC');
         while($row = $query->fetch_assoc()) {
             $this->reservations[] = [
                 'customer' => Customer::getOne([

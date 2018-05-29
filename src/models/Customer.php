@@ -30,7 +30,7 @@ class Customer extends Model {
     
     public function reservations_getter() {
         $this->reservations = [];
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Room_ID = Reserves.Room_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Customer_IRS = ' . intval($this->cust_IRS) . ' ORDER BY IFNULL(Reserves.Finish_Date, DATE(\'9999-12-31\')) DESC');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Room_ID = Reserves.Room_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Customer_IRS = ' . intval($this->cust_IRS) . ' ORDER BY Reserves.Start_Date DESC');
         while($row = $query->fetch_assoc()) {
             $this->reservations[] = [
                 'hotel' => Hotel::getOne([
