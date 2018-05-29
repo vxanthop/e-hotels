@@ -15,9 +15,9 @@ class ReservationSeeder extends Seeder {
         date_default_timezone_set('UTC');
         $rooms = Room::all();
         if(isset($_GET['withMax'])) {
-            $rooms = array_filter($rooms, function ($room) {
+            $rooms = array_values(array_filter($rooms, function ($room) {
                 return count($room->reservations) <= intval($_GET['withMax']);
-            });
+            }));
         }
         shuffle($rooms);
         $customers = Customer::all();

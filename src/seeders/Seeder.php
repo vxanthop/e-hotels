@@ -7,35 +7,48 @@ use \models\Text as Text;
 class Seeder {
 
     private static $positions = ['manager', 'accountant', 'receptionist', 'chef', 'gardener', 'maid', 'waiter', 'technician', 'marketing manager'];
+    private static $names;
+    private static $surnames;
+    private static $addresses;
+    private static $cities;
+
+    private static function initDatasets() {
+        if(!self::$names) {
+            self::$names = json_decode(file_get_contents(__DIR__ . "/data/names.json"), true);
+        }
+        if(!self::$surnames) {
+            self::$surnames = json_decode(file_get_contents(__DIR__ . "/data/surnames.json"), true);
+        }
+        if(!self::$addresses) {
+            self::$addresses = json_decode(file_get_contents(__DIR__ . "/data/addresses.json"), true);
+        }
+        if(!self::$cities) {
+            self::$cities = json_decode(file_get_contents(__DIR__ . "/data/cities.json"), true);
+        }
+    }
+
+    protected static function generateName() {
+        self::initDatasets();
+        $gender = rand(0, 1) ? "males" : "females";
+        $names = self::$names[$gender];
+        $surnames = self::$surnames[$gender];
+        $first_name = Text::toGreeklish($names[rand(0, count($names) - 1)]);
+        $last_name = Text::toGreeklish($surnames[rand(0, count($surnames) - 1)]);
+        return compact('last_name', 'first_name');
+    }
+
+    protected static function generateAddress() {
+        self::initDatasets();
+        $street = Text::toGreeklish(self::$addresses[rand(0, count(self::$addresses) - 1)]);
+        $number = rand(1, 242);
+        $city_tuple = self::$cities[rand(0, count(self::$cities) - 1)];
+        $city = Text::toGreeklish($city_tuple["city"]);
+        $postal_code = $city_tuple["zip"];
+        return ['address' => compact('street', 'number', 'city', 'postal_code')];
+    }
 
     protected static function generatePerson() {
-        $generator = file_get_contents('http://fakenametool.com/generator/random/el_GR/greece');
-        $i = strpos($generator, '<h3><b>') + strlen('<h3><b>');
-        $j = strpos($generator, '<', $i);
-        $name = substr($generator, $i, $j - $i);
-        $i = strpos($generator, '<p class="lead" >', $j) + strlen('<p class="lead" >');
-        $j = strpos($generator, '</p>', $i);
-        $address = substr($generator, $i, $j - $i);
-        $i = strpos($name, '. ');
-        if($i !== FALSE) {
-            $name = substr($name, $i + 2);
-        }
-        $name = Text::toGreeklish($name);
-        list($first_name, $last_name) = explode(' ', $name);
-        list($street, $number, $postal_code, $city) = explode(', ', $address);
-        $street = Text::toGreeklish(str_replace(['Όδος ', 'Λεωφόρος '], '', $street));
-        $number = intval($number);
-        $postal_code = intval(str_pad(str_replace(' ', '', $postal_code), 5, '0'));
-        if($postal_code < 10000) {
-            $postal_code += rand(1, 9) * 10000;
-        }
-        $hyphen = strpos($city, '-');
-        if($hyphen !== FALSE) {
-            $city = substr($city, 0, $hyphen);
-        }
-        $city = Text::toGreeklish($city);
-        $address = compact('street', 'number', 'postal_code', 'city');
-        return compact('last_name', 'first_name', 'address');
+        return array_merge(self::generateName(), self::generateAddress());
     }
 
     protected static function generateCity() {

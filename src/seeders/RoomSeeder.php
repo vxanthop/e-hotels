@@ -14,9 +14,9 @@ class RoomSeeder extends Seeder {
         $amenities = ['A/C', 'Wi-Fi', 'Parking', 'Pets allowed', 'Swimming pool', 'Spa', 'Gym', 'Accessibility', 'No-smoking areas', 'Bathtub', 'Balcony', 'Washing machine', 'Coffee machine', 'Flat TV', 'Kitchen', 'Soundproofing', 'Hairdryer', 'Clothes iron', 'Microwave', 'Safe', 'Fridge'];
         $pool = Hotel::all();
         if(isset($_GET['withMax'])) {
-            $pool = array_filter($pool, function($hotel) {
+            $pool = array_values(array_filter($pool, function($hotel) {
                 return $hotel->number_of_rooms <= intval($_GET['withMax']);
-            });
+            }));
         }
         $expandable_values = ['', 'more_beds', 'connecting_room'];
         $hotels = [];

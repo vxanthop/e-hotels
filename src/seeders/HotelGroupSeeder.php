@@ -22,11 +22,7 @@ class HotelGroupSeeder extends Seeder {
             ]);
             if(!is_null($checkName)) continue;
 
-            $gen = self::generatePerson();
-            $data = [
-                'name' => $name,
-                'address' => $gen['address']
-            ];
+            $data = array_merge(['name' => $name], self::generateAddress());
             $query = HotelGroup::create($data);
             if($query) {
                 $group = HotelGroup::getOne([
