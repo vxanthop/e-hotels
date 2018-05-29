@@ -589,6 +589,17 @@ $app->get('/admin/reserve/check-in', function () use ($app) {
 
 });
 
+$app->post('/admin/reserve/rent', function() use ($app) {
+
+	$errors = reservationController::checkInSubmit($_POST);
+	if(empty($errors)) {
+		$url = $_GET['success'];
+	} else {
+		$url = URL::addQuery($_GET['error'], ['errors' => $errors]);
+	}
+	$app->Redirect($url);
+
+});
 
 
 $app->get('/admin/reservation', function () use ($app) {
