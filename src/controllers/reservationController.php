@@ -111,15 +111,15 @@ class reservationController {
 
         if(isset($vars['room_id'])) {
             $room = Room::getOne([
-                'room_id' => intval($vars['room_id'])
+                'room_id' => intval($vars['room_id']),
+                'hotel_id' => intval($vars['hotel_id'])
             ]); 
-            $assign = $room->check_in(
-                $vars['employee_irs'],
+            $checkin = $room->check_in(
+                intval($vars['employee_irs']),
                 $vars['start_date'],
-                intval($vars['transaction_amount']),
                 $vars['transaction_method']
             );
-            if(!$assign) {
+            if(!$checkin) {
                 $errors[] = 'Could not complete the payment transaction for the Room. Please try again.';
             }
         } else {
