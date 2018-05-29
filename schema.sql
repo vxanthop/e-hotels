@@ -160,7 +160,7 @@ CREATE TABLE Payment_Transaction (
 DROP TRIGGER IF EXISTS first_registration;
 DELIMITER $$
 CREATE TRIGGER first_registration BEFORE INSERT ON Customer
-    FOR EACH ROW
+    FOR EACH ROW BEGIN
         IF (NEW.First_Registration IS NULL) THEN
             SET NEW.First_Registration = CURDATE();
         END IF;
