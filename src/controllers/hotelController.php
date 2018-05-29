@@ -72,7 +72,8 @@ class hotelController {
         $group = HotelGroup::getOne(['id' => $hotel->hotel_group_id]);
         $rooms = Room::ofHotel($id);
         $employees = Employee::ofHotel($id);
-        return compact('hotel', 'group', 'rooms', 'employees');
+        $managers = Employee::managersOfHotel($id);
+        return compact('hotel', 'group', 'rooms', 'employees', 'managers');
     }
 
     public static function update($id) {

@@ -55,6 +55,11 @@ class Employee extends Model {
         return DB::getCollection($query);
     }
 
+    public static function managersOfHotel($hotel_id) {
+        $query = DB::query('SELECT Employee.*, Works.* FROM Employee INNER JOIN Works ON Works.Employee_IRS = Employee.Employee_IRS WHERE Works.Hotel_ID = ' . $hotel_id . ' AND Position = \'manager\' ORDER BY Works.Start_Date');
+        return DB::getCollection($query);
+    }
+
     public function quit() {
         return DB::query('UPDATE Works SET Finish_Date = DATE(\'' . date('Y-m-d', strtotime('-1 day')) . '\') WHERE Employee_IRS = ' . $this->emp_IRS . ' AND Finish_Date >= DATE(\'' . date('Y-m-d') . '\') LIMIT 1');
     }

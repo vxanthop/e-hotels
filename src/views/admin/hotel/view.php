@@ -23,6 +23,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#employees">Employees</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#managers">Manager history</a>
+                    </li>
                 </ul>
                 <div class="tab-content p-3">
                     <div class="tab-pane show active" id="rooms">
@@ -95,6 +98,39 @@
                                         <div class="btn-group-vertical">
                                             <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $employee->emp_IRS ?>">Manage</a>
                                             <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit info</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="managers">
+                        <table class="table table-striped">
+                            <thead>
+                                <th>IRS</th>
+                                <th>Full name</th>
+                                <th>Address</th>
+                                <th>City</th>
+                                <th>Position</th>
+                                <th>Start date</th>
+                                <th>Finish date</th>
+                                <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach($managers as $manager) { ?>
+                                <tr<?= $manager->current_job['start_date'] <= date('Y-m-d') && $manager->current_job['finish_date'] >= date('Y-m-d') ? ' class="table-info"' : '' ?>>
+                                    <td><?= $manager->emp_IRS ?></td>
+                                    <td><?= $manager->fullname ?></td>
+                                    <td><?= $manager->address['street'] . ' ' . $manager->address['number'] ?></td>
+                                    <td><?= $manager->address['city'] . ', ' . $manager->address['postal_code'] ?></td>
+                                    <td><?= $manager->current_job['position'] ?></td>
+                                    <td><?= $manager->current_job['start_date'] ?></td>
+                                    <td><?= $manager->current_job['finish_date'] ?? '-' ?></td>
+                                    <td>
+                                        <div class="btn-group-vertical">
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/<?= $manager->emp_IRS ?>">Manage</a>
+                                            <a class="btn btn-sm btn-secondary" href="/admin/employee/update/<?= $manager->emp_IRS ?>">Edit info</a>
                                         </div>
                                     </td>
                                 </tr>
