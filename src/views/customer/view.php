@@ -38,14 +38,14 @@
                                 <tbody>
                                 <?php foreach($customer->reservations as $reservation) { ?>
                                     <tr<?= $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d') ? ' class="table-info"' : '' ?>>
-                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>"><?= $reservation['hotel']->name ?></a>, <?= $reservation['hotel']->address['city'] ?></td>
-                                        <td><a href="/admin/hotel/<?= $reservation['hotel']->id ?>/room/<?= $reservation['room_id'] ?>">#<?= $reservation['room_id'] ?></a></td>
+                                        <td><?php if($reservation['room_id'] > 0) { ?><a href="/admin/hotel/<?= $reservation['hotel']->id ?>"><?= $reservation['hotel']->name ?></a>, <?= $reservation['hotel']->address['city'] ?><?php } else { ?>-<?php } ?></td>
+                                        <td><?php if($reservation['room_id'] > 0) { ?><a href="/admin/hotel/<?= $reservation['hotel']->id ?>/room/<?= $reservation['room_id'] ?>">#<?= $reservation['room_id'] ?></a><?php } else { ?>-<?php } ?></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
                                         <td>
                                             <?= $reservation['status'] ?>
                                         <?php if($reservation['start_date'] <= date('Y-m-d')) {
-                                                if($reservation['finish_date'] <= date('Y-m-d')) {
+                                                if($reservation['finish_date'] < date('Y-m-d')) {
                                         ?>
                                             (Past)
                                         <?php   }
@@ -64,7 +64,7 @@
                                         <td>
                                         <?php if(
                                                 $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d')
-                                            &&  $reservation['rent_id'] == 0) { ?>
+                                            &&  $reservation['room_id'] > 0 && $reservation['rent_id'] == 0) { ?>
                                             <a class="btn btn-sm btn-secondary" href="/admin/reserve/check-in?room_id=<?= $reservation['room_id'] ?>&hotel_id=<?= $reservation['hotel']->id ?>&start_date=<?= $reservation['start_date'] ?>">Check-in</a>
                                         <?php } ?>
                                         </td>
