@@ -80,7 +80,7 @@ CREATE TABLE Works (
     Position varchar(42) NOT NULL,
     FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (Employee_IRS, Hotel_ID, Start_Date, Position)
+    PRIMARY KEY (Employee_IRS, Start_Date)
 );
 
 CREATE TABLE Hotel_Room (
