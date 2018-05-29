@@ -65,7 +65,7 @@
                                                     </ul>
                                                 </div>
                                                 <div class="d-flex flex-column">
-                                                    <a class="btn btn-sm btn-secondary mt-auto" href="/reserve/prepare?room_id=<?= $room->room_id ?>&hotel_id=<?= $room->hotel_id ?>&start_date=<?= $start_date ?>&end_date=<?= $end_date ?>">Book now<br>for <strong>€<?= number_format($room->price, 2) ?></strong>!</a>
+                                                    <a class="btn btn-sm btn-secondary mt-auto" href="/reserve/prepare?room_id=<?= $room->room_id ?>&hotel_id=<?= $room->hotel_id ?>&start_date=<?= $start_date ?>&end_date=<?= $end_date ?>">Book now<br>for <strong>€<?= number_format($room->price, 2) ?></strong>/night!</a>
                                                 </div>
                                             </div>
                                         </div>

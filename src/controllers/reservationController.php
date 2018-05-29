@@ -37,10 +37,11 @@ class reservationController {
             $customer = Customer::getOne([
                 'cust_IRS' => intval($vars['irs'])
             ]);
+            $date_diff = (strtotime($_GET['end_date']) - strtotime($_GET['start_date'])) / 86400 + 1;
             if(is_null($customer)) {
                 return NULL;
             }
-            return compact('room', 'hotel', 'customer');
+            return compact('room', 'hotel', 'customer', 'date_diff');
         }
     }
 

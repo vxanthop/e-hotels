@@ -47,7 +47,7 @@
                                         <?= $reservation['status'] ?> by <strong><?= $reservation['customer']->fullname ?></strong>
                                         from <strong><?= $reservation['start_date'] ?></strong>
                                         to <strong><?= $reservation['finish_date'] ?></strong>
-                                        for <?= number_format($room->price, 2) ?>€
+                                        for <?= number_format($room->price * $reservation['date_diff'], 2) ?>€
                                     </h6>
                                 <?php if($reservation['rent_id'] > 0) { ?>
                                     <h6 class="mb-4">
