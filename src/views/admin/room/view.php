@@ -52,7 +52,7 @@
                                 <tbody>
                                 <?php foreach($room->reservations as $reservation) { ?>
                                     <tr<?= $reservation['start_date'] <= date('Y-m-d') && $reservation['finish_date'] >= date('Y-m-d') ? ' class="table-info"' : '' ?>>
-                                        <td><a href="/customer/<?= $reservation['customer']->cust_IRS ?>"><?= $reservation['customer']->first_name . ' ' . $reservation['customer']->last_name ?></a></td>
+                                        <td><a href="/customer/<?= $reservation['customer']->cust_IRS ?>"><?= $reservation['customer']->fullname ?></a></td>
                                         <td><?= $reservation['start_date'] ?></td>
                                         <td><?= $reservation['finish_date'] ?></td>
                                         <td>

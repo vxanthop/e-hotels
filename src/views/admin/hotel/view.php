@@ -85,7 +85,7 @@
                             <?php foreach($employees as $employee) { ?>
                                 <tr>
                                     <td><?= $employee->emp_IRS ?></td>
-                                    <td><?= $employee->last_name . ', ' . $employee->first_name ?></td>
+                                    <td><?= $employee->fullname ?></td>
                                     <td><?= $employee->address['street'] . ' ' . $employee->address['number'] ?></td>
                                     <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
                                     <td><?= $employee->current_job['position'] ?></td>

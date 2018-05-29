@@ -3,7 +3,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Update Customer: <?= $customer->first_name . ' ' . $customer->last_name ?></li>
+                        <li class="breadcrumb-item active">Update Customer: <?= $customer->fullname ?></li>
                     </ol>
                 </nav>
                 <div class="container w-50 mt-5 mx-auto">

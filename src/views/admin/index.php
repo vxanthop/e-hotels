@@ -75,7 +75,7 @@
                             <?php foreach($employees as $employee) { ?>
                                 <tr>
                                     <td><?= $employee->emp_IRS ?></td>
-                                    <td><?= $employee->last_name . ', ' . $employee->first_name ?></td>
+                                    <td><?= $employee->fullname ?></td>
                                     <td><?= $employee->address['street'] . ' ' . $employee->address['number'] ?></td>
                                     <td><?= $employee->address['city'] . ', ' . $employee->address['postal_code'] ?></td>
                                     <td>
@@ -104,7 +104,7 @@
                             <?php foreach($customers as $customer) { ?>
                                 <tr>
                                     <td><?= $customer->cust_IRS ?></td>
-                                    <td><?= $customer->last_name . ', ' . $customer->first_name ?></td>
+                                    <td><?= $customer->fullname ?></td>
                                     <td><?= $customer->address['street'] . ' ' . $customer->address['number'] ?></td>
                                     <td><?= $customer->address['city'] . ', ' . $customer->address['postal_code'] ?></td>
                                     <td><?= $customer->first_registration ?></td>
