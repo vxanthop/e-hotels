@@ -47,7 +47,7 @@
                                         <?= $reservation['status'] ?> by <strong><?= $reservation['customer']->fullname ?></strong>
                                         from <strong><?= $reservation['start_date'] ?></strong>
                                         to <strong><?= $reservation['finish_date'] ?></strong>
-                                        for <?= number_format($room->price * $reservation['date_diff'], 2) ?>€
+                                        for <?= number_format($room->price * $reservation['date_diff'], 2, '.', '') ?>€
                                     </h6>
                                 <?php if($reservation['rent_id'] > 0) { ?>
                                     <h6 class="mb-4">
@@ -68,7 +68,7 @@
                                     <h6 class="font-weight-bold">Transaction method</h6>
                                     <?= $reservation['payment_method'] ?>
                                     <h6 class="font-weight-bold mt-3">Transaction amount</h6>
-                                    <?= number_format($reservation['payment_amount'], 2) ?>€
+                                    <?= number_format($reservation['payment_amount'], 2, '.', '') ?>€
                                 </div>
                             <?php } else if(is_null($reservation['finish_date']) || $reservation['finish_date'] >= date('Y-m-d')) { ?>
                                 <div class="card-footer d-flex flex-column">

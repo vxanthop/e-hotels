@@ -26,7 +26,7 @@
                                         <?= $hotel->address['city'] ?>
                                     </h6>
                                     <h6>
-                                        <strong>Price:</strong> <?= number_format($room->price, 2) ?>€
+                                        <strong>Price:</strong> <?= number_format($room->price, 2, '.', '') ?>€
                                     </h6>
                                     <ul class="list-unstyled mt-4">
                                         <li><strong>Capacity: <?= $room->capacity ?></strong></li>
@@ -70,7 +70,7 @@
                                         </td>
                                         <td>
                                         <?php if($reservation['rent_id'] > 0) { ?>
-                                            <?= ucfirst(str_replace('_', ' ', $reservation['payment_method'])) ?> (<?= number_format($reservation['payment_amount'], 2) ?>€)
+                                            <?= ucfirst(str_replace('_', ' ', $reservation['payment_method'])) ?> (<?= number_format($reservation['payment_amount'], 2, '.', '') ?>€)
                                         <?php } else { ?>
                                             -
                                         <?php } ?>

@@ -56,7 +56,7 @@
                                         </td>
                                         <td>
                                         <?php if($reservation['rent_id'] > 0) { ?>
-                                            <?= ucfirst(str_replace('_', ' ', $reservation['payment_method'])) ?> (<?= number_format($reservation['payment_amount'], 2) ?>€)
+                                            <?= ucfirst(str_replace('_', ' ', $reservation['payment_method'])) ?> (<?= number_format($reservation['payment_amount'], 2, '.', '') ?>€)
                                         <?php } else { ?>
                                             -
                                         <?php } ?>
