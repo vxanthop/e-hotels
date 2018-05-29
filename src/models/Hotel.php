@@ -4,7 +4,7 @@ namespace models;
 
 class Hotel extends Model {
 
-    public $id, $name, $address, $hotel_group_id, $stars, $number_of_rooms, $img_src;
+    public $id, $name, $address, $hotel_group_id, $stars, $number_of_rooms;
 
     protected static $table = 'Hotel';
     protected static $mapper = [

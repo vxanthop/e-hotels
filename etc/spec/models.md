@@ -46,7 +46,6 @@ Each Hotel Group contains one or more Hotels.
 * `hotel_group_id`: The primary key of the Hotel Group.
 * `number_of_hotels`: A number describing how many hotels are contained in the Hotel Group.
 * `address`: An array containing all information about the physical address of the Hotel Group (`street`, `number`, `postal_code`, `city`).
-* `img_src`: Path to a picture of the Hotel Group.
 * `email_addresses`: The email addresses of the Hotel Group. (computed)
 * `phone_numbers`: The phone numbers of the Hotel Group. (computed)
 
@@ -68,7 +67,6 @@ Each Hotel contains Rooms and Employees that work in it.
 * `stars`: A number in the range [1, 5] describing the rating of the Hotel.
 * `number_of_rooms`: A number describing how many hotels rooms are contained in the Hotel.
 * `address`: An array containing all information about the physical address of the Hotel (`street`, `number`, `postal_code`, `city`).
-* `img_src`: Path to a picture of the Hotel.
 * `email_addresses`: The email addresses of the Hotel. (computed)
 * `phone_numbers`: The phone numbers of the Hotel. (computed)
 * `manager`: An Employee serving as manager of the Hotel. (computed)

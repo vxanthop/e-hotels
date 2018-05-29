@@ -12,7 +12,6 @@ CREATE TABLE Hotel_group (
     Address_City varchar(42) NOT NULL,
     Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
     Hotel_group_Name varchar(42) NOT NULL,
-    img_src varchar(255),
     PRIMARY KEY (Hotel_group_ID)
 );
 
@@ -39,7 +38,6 @@ CREATE TABLE Hotel (
     Address_City varchar(42) NOT NULL,
     Address_Postal_Code mediumint(6) UNSIGNED NOT NULL,
     Number_of_rooms smallint(4) UNSIGNED DEFAULT 0,
-    img_src varchar(255),
     Hotel_Name varchar(42) NOT NULL,
     FOREIGN KEY (Hotel_group_ID) REFERENCES Hotel_group(Hotel_group_ID) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (Hotel_ID)

@@ -12,7 +12,7 @@
                     <div class="row">
                         <div class="col col-3">
                             <div class="card text-center">
-                                <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
+                                <img src="<?= 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
                                 <div class="card-body d-flex flex-column">
                                     <h4 class="card-title text-center mb-2">
                                         <?= $hotel->name ?>

@@ -105,7 +105,7 @@
                                     You are about to check-in this reservation:
                                 </h3>
                                 <div class="card w-50 mx-auto mt-3 text-center">
-                                    <img src="<?= $hotel->img_src ?? 'https://via.placeholder.com/400x100' ?>" alt="" class="card-img-top" />
+                                    <img src="<?= 'https://via.placeholder.com/400x100' ?>" alt="" class="card-img-top" />
                                     <div class="card-body d-flex flex-column">
                                         <h4 class="card-title text-center mb-2">
                                             <?= $hotel->name ?>

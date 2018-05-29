@@ -40,7 +40,7 @@
                             <?php foreach($row as $i => $room) { ?>
                                 <div class="col col-6 <?= ($i == 0) ? 'pr-2 ' : 'pl-2 ' ?>py-2">
                                     <div class="card h-100">
-                                        <img src="<?= $room->hotel->img_src ?? 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
+                                        <img src="<?= 'https://via.placeholder.com/400x200' ?>" alt="" class="card-img-top" />
                                         <div class="card-body d-flex flex-column">
                                             <h4 class="card-title text-center mb-2">
                                                 <?= $room->hotel->name ?>
