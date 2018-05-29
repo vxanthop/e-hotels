@@ -258,3 +258,17 @@ CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
         END IF;
     END$$
 DELIMITER ;   
+
+-- Payment for room rental
+DROP TRIGGER IF EXISTS pay_room_rent;
+DELIMITER $$
+CREATE TRIGGER pay_room_rent AFTER INSERT ON Payment_Transaction
+    FOR EACH ROW BEGIN
+        DECLARE s_date DATE;
+        DECLARE r_id, h_id INT;
+        SET s_date = (SELECT Start_Date FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        SET r_id = (SELECT Room_ID FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        SET h_id = (SELECT Hotel_ID FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        UPDATE Reserves SET Paid = 1 WHERE Start_Date = s_date AND Room_ID = r_id AND Hotel_ID = h_id;
+    END$$
+DELIMITER ;
