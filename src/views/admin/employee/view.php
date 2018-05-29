@@ -23,9 +23,6 @@
                             <a class="btn btn-secondary mt-3" href="/admin/employee/update/<?= $employee->emp_IRS ?>">Edit</a>
                         </div>
                         <div class="col col-10">
-                        <?php if(!$employee->current_job) { ?>
-                            <a class="btn btn-primary mb-3" href="/admin/employee/move/<?= $employee->emp_IRS ?>">Assign <i class="ml-1 fas fa-plus"></i></a>
-                        <?php } ?>
                         <?php if(isset($errors) && $errors) { ?>
                             <div class="alert alert-danger" role="alert">
                                 <ul>
@@ -35,7 +32,13 @@
                                 </ul>
                             </div>
                         <?php } ?>
-                            <table class="table table-striped">
+                            <h3>
+                                Employment history
+                            <?php if(!$employee->current_job) { ?>
+                                <a class="btn btn-primary ml-2" href="/admin/employee/move/<?= $employee->emp_IRS ?>">Assign <i class="ml-1 fas fa-plus"></i></a>
+                            <?php } ?>
+                            </h3>
+                            <table class="table table-striped mt-3">
                                 <thead>
                                     <th>Hotel</th>
                                     <th>City</th>
