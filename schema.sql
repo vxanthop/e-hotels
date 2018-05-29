@@ -43,6 +43,10 @@ CREATE TABLE Hotel (
     PRIMARY KEY (Hotel_ID)
 );
 
+-- For quick searches by city
+CREATE INDEX hotel_city
+ON Hotel (Address_City);
+
 CREATE TABLE Hotel_Phone_Number (
     Hotel_ID int(10) UNSIGNED NOT NULL,
     Phone_Number bigint(10) UNSIGNED NOT NULL,
