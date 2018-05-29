@@ -192,7 +192,7 @@ DROP TRIGGER IF EXISTS update_employee;
 DELIMITER $$
 CREATE TRIGGER update_employee BEFORE UPDATE ON Works
     FOR EACH ROW BEGIN
-        IF NEW.Position <> 'manager' AND
+        IF OLD.Position = 'manager' AND NEW.Position <> 'manager' AND
             (SELECT COUNT(Employee_IRS) FROM Works WHERE
                 Hotel_ID = NEW.Hotel_ID AND Position = 'manager' AND
                 Start_Date <= NEW.Finish_Date AND NEW.Start_Date <= Finish_Date
@@ -208,7 +208,7 @@ DROP TRIGGER IF EXISTS delete_employee;
 DELIMITER $$
 CREATE TRIGGER delete_employee BEFORE DELETE ON Works
     FOR EACH ROW BEGIN
-        IF (SELECT COUNT(Employee_IRS) FROM Works WHERE
+        IF OLD.Position = 'manager' AND (SELECT COUNT(Employee_IRS) FROM Works WHERE
                 Hotel_ID = OLD.Hotel_ID AND Position = 'manager' AND
                 Start_Date <= OLD.Finish_Date AND OLD.Start_Date <= Finish_Date
             ) >= 1 THEN
