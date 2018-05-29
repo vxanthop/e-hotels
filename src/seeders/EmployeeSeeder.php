@@ -14,6 +14,7 @@ class EmployeeSeeder extends Seeder {
         $tz = date_default_timezone_get();
         date_default_timezone_set('UTC');
         $hotels = Hotel::all();
+        $keys_works = ['Employee_IRS', 'Hotel_ID', 'Start_Date', 'Finish_Date', 'Position'];
         for($n = 0; $n < $num; ++$n) {
             $irs = self::generateIRS();
             $ssn = self::generateSSN();

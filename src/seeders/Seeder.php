@@ -6,7 +6,7 @@ use \models\Text as Text;
 
 class Seeder {
 
-    private static $positions = ['manager', 'accountant', 'receptionist', 'chef', 'gardener', 'maid', 'waiter', 'technician', 'marketing manager'];
+    private static $positions = ['accountant', 'receptionist', 'chef', 'gardener', 'maid', 'waiter', 'technician', 'marketing manager'];
     private static $names;
     private static $surnames;
     private static $addresses;
