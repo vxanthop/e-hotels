@@ -59,7 +59,7 @@
                                         <td>
                                             <?= $reservation['status'] ?>
                                         <?php if($reservation['start_date'] <= date('Y-m-d')) {
-                                                if($reservation['finish_date'] <= date('Y-m-d')) {
+                                                if($reservation['finish_date'] < date('Y-m-d')) {
                                         ?>
                                             (Past)
                                         <?php   }
