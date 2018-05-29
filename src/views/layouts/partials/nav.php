@@ -9,14 +9,14 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/destinations">Destinations</a>
+                        <a class="nav-link" href="#">Destinations</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="nav-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
                         <div class="dropdown-menu" aria-labelledby="nav-dropdown">
-                            <a class="dropdown-item" href="/about/groups">Hotel groups</a>
-                            <a class="dropdown-item" href="/about/faq">FAQ</a>
-                            <a class="dropdown-item" href="/about/terms">Terms & Conditions</a>
+                            <a class="dropdown-item" href="#">Hotel groups</a>
+                            <a class="dropdown-item" href="#">FAQ</a>
+                            <a class="dropdown-item" href="#">Terms & Conditions</a>
                         </div>
                     </li>
                     <li class="nav-item">

@@ -47,7 +47,7 @@
                                     <td><?= $room->view ? "Yes" : "No" ?></td>
                                     <td><?= $room->expandable_description ?></td>
                                     <td><?= $room->repairs_need ? "Yes" : "No" ?></td>
-                                    <td><?= number_format($room->price, 2) ?>€</td>
+                                    <td><?= number_format($room->price, 2, '.', '') ?>€</td>
                                     <td>
                                         <ul class="list-unstyled text-center">
                                         <?php foreach($room->amenities as $amenity) { ?>

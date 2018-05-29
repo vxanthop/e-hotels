@@ -42,9 +42,9 @@
                                 </p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Book now</button>
+                                        <a class="btn btn-sm btn-outline-secondary" href="/search?city=<?= $offer['city'] ?>&start_date=<?= date('Y-m-d') ?>&end_date=<?= date('Y-m-d') ?>&capacity=0">Book now</a>
                                     </div>
-                                    <span><?= $offer['price'] ?>€</span>
+                                    <span>from <?= $offer['price'] ?>€</span>
                                 </div>
                             </div>
                         </div>

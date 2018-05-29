@@ -30,7 +30,7 @@ class Customer extends Model {
     
     public function reservations_getter() {
         $this->reservations = [];
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Room_ID = Reserves.Room_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Customer_IRS = ' . intval($this->cust_IRS) . ' ORDER BY Reserves.Start_Date DESC');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Room_ID = Reserves.Room_ID AND Rents.Start_Date = Reserves.Start_Date LEFT JOIN Payment_Transaction ON Payment_Transaction.Rent_ID = Rents.Rent_ID WHERE Reserves.Customer_IRS = ' . intval($this->cust_IRS) . ' ORDER BY Reserves.Start_Date DESC');
         while($row = $query->fetch_assoc()) {
             $this->reservations[] = [
                 'hotel' => Hotel::getOne([
@@ -39,7 +39,11 @@ class Customer extends Model {
                 'room_id' => intval($row['Room_ID']),
                 'start_date' => $row['Start_Date'],
                 'finish_date' => $row['Finish_Date'],
+                'date_diff' => (strtotime($row['Finish_Date']) - strtotime($row['Start_Date'])) / 86400 + 1,
                 'status' => is_null($row['Rent_ID']) ? 'Reserved' : 'Rented',
+                'rent_id' => intval($row['Rent_ID']),
+                'payment_amount' => floatval($row['Payment_Amount']),
+                'payment_method' => $row['Payment_Method'],
             ];
         }
         return $this->reservations;

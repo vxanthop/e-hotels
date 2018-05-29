@@ -45,7 +45,7 @@ class Room extends Model {
             $search_sql .= ' AND Hotel_group.Hotel_group_ID IN (' . join(', ', $data['hotel_groups']) . ')';
         }
         $search_sql .= ' AND (SELECT COUNT(Customer_IRS) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel.Hotel_ID AND Start_Date <= DATE(\'' . $data['end_date'] . '\') AND DATE(\'' . $data['start_date'] . '\') <= Finish_Date) = 0';
-        $sql = 'WITH search_res AS (' . $search_sql . ') SELECT search_res.*, total_in_city FROM search_res LEFT JOIN (SELECT Address_City, COUNT(1) AS total_in_city FROM search_res GROUP BY Address_City) AS n ON n.Address_City = search_res.Address_City WHERE total_in_city >= ' . $data['rooms_num'];
+        $sql = 'WITH search_res AS (' . $search_sql . ') SELECT search_res.*, total_in_city FROM search_res LEFT JOIN (SELECT Address_City, COUNT(1) AS total_in_city FROM search_res GROUP BY Address_City) AS n ON n.Address_City = search_res.Address_City WHERE total_in_city >= ' . $data['rooms_num'] . ' ORDER BY Price';
         $query = DB::query($sql);
         return DB::getCollection($query);
     }
@@ -86,6 +86,18 @@ class Room extends Model {
         return $res['total'];
     }
 
+    public static function offers() {
+        $query = DB::query('SELECT MIN(Price) AS min_price, Hotel.Address_City FROM Hotel_Room INNER JOIN Hotel ON Hotel.Hotel_ID = Hotel_Room.Hotel_ID WHERE (SELECT COUNT(*) FROM Reserves WHERE Room_ID = Hotel_Room.Room_ID AND Hotel_ID = Hotel_Room.Hotel_ID AND CURDATE() BETWEEN Start_Date AND Finish_Date) = 0 GROUP BY Hotel.Address_City ORDER BY min_price LIMIT 6');
+        $offers = [];
+        while($row = $query->fetch_assoc()) {
+            $offers[] = [
+                'city' => $row['Address_City'],
+                'price' => $row['min_price'],
+            ];
+        }
+        return $offers;
+    }
+
     /*
      * @input: The customer that will reserve the room, the start date and the end date of the reservation.
      * @output: None
@@ -121,6 +133,7 @@ class Room extends Model {
             ]),
             'start_date' => $row['Start_Date'],
             'finish_date' => $row['Finish_Date'],
+            'date_diff' => (strtotime($row['Finish_Date']) - strtotime($row['Start_Date'])) / 86400 + 1,
             'rent_id' => intval($row['Rent_ID']),
             'payment_amount' => floatval($row['Payment_Amount']),
             'payment_method' => $row['Payment_Method'],
@@ -210,7 +223,7 @@ class Room extends Model {
     
     public function reservations_getter() {
         $this->reservations = [];
-        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID FROM Reserves LEFT JOIN Rents ON Rents.Room_ID = Reserves.Room_ID AND Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Start_Date = Reserves.Start_Date WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' ORDER BY Reserves.Start_Date DESC');
+        $query = DB::query('SELECT Reserves.*, Rents.Rent_ID, Payment_Transaction.Payment_Method, Payment_Transaction.Payment_Amount FROM Reserves LEFT JOIN Rents ON Rents.Room_ID = Reserves.Room_ID AND Rents.Hotel_ID = Reserves.Hotel_ID AND Rents.Start_Date = Reserves.Start_Date LEFT JOIN Payment_Transaction ON Payment_Transaction.Rent_ID = Rents.Rent_ID WHERE Reserves.Room_ID = ' . $this->room_id . ' AND Reserves.Hotel_ID = ' . $this->hotel_id . ' ORDER BY Reserves.Start_Date DESC');
         while($row = $query->fetch_assoc()) {
             $this->reservations[] = [
                 'customer' => Customer::getOne([
@@ -218,7 +231,11 @@ class Room extends Model {
                 ]),
                 'start_date' => $row['Start_Date'],
                 'finish_date' => $row['Finish_Date'],
+                'date_diff' => (strtotime($row['Finish_Date']) - strtotime($row['Start_Date'])) / 86400 + 1,
                 'status' => is_null($row['Rent_ID']) ? 'Reserved' : 'Rented',
+                'rent_id' => intval($row['Rent_ID']),
+                'payment_amount' => floatval($row['Payment_Amount']),
+                'payment_method' => $row['Payment_Method'],
             ];
         }
         return $this->reservations;

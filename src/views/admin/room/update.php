@@ -48,7 +48,7 @@
                         <div class="form-group">
                             <label for="price">Price: <span class="text-danger" title="This field is required">*</span></label>
                             <div class="input-group">
-                                <input type="number" class="form-control" min="1.00" max="300.00" step="0.01" name="price" id="price" value="<?= number_format($room->price, 2) ?>" required />
+                                <input type="number" class="form-control" min="1.00" max="300.00" step="0.01" name="price" id="price" value="<?= number_format($room->price, 2, '.', '') ?>" required />
                                 <div class="input-group-append">
                                     <span class="input-group-text">€</span>
                                 </div>

@@ -80,7 +80,7 @@ CREATE TABLE Works (
     Position varchar(42) NOT NULL,
     FOREIGN KEY (Employee_IRS) REFERENCES Employee(Employee_IRS) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (Hotel_ID) REFERENCES Hotel(Hotel_ID) ON UPDATE CASCADE ON DELETE CASCADE,
-    PRIMARY KEY (Employee_IRS, Hotel_ID, Start_Date, Position)
+    PRIMARY KEY (Employee_IRS, Start_Date)
 );
 
 CREATE TABLE Hotel_Room (
@@ -258,3 +258,17 @@ CREATE TRIGGER reserve_room BEFORE INSERT ON Reserves
         END IF;
     END$$
 DELIMITER ;   
+
+-- Payment for room rental
+DROP TRIGGER IF EXISTS pay_room_rent;
+DELIMITER $$
+CREATE TRIGGER pay_room_rent AFTER INSERT ON Payment_Transaction
+    FOR EACH ROW BEGIN
+        DECLARE s_date DATE;
+        DECLARE r_id, h_id INT;
+        SET s_date = (SELECT Start_Date FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        SET r_id = (SELECT Room_ID FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        SET h_id = (SELECT Hotel_ID FROM Rents WHERE Rent_ID = NEW.Rent_ID);
+        UPDATE Reserves SET Paid = 1 WHERE Start_Date = s_date AND Room_ID = r_id AND Hotel_ID = h_id;
+    END$$
+DELIMITER ;

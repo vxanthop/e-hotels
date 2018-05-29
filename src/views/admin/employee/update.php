@@ -3,6 +3,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="/admin?view=employees">Employees</a></li>
                         <li class="breadcrumb-item active">Update Employee: <?= $employee->fullname ?></li>
                     </ol>
                 </nav>

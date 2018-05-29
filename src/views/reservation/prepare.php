@@ -122,7 +122,7 @@
                                         <h6>
                                             from <strong><?= $_GET['start_date'] ?></strong>
                                             to <strong><?= $_GET['end_date'] ?></strong>
-                                            for <?= number_format($room->price, 2) ?>€
+                                            for <?= number_format($room->price * $date_diff, 2, '.', '') ?>€
                                         </h6>
                                         <ul class="list-unstyled mt-4">
                                             <li><strong>Capacity: <?= $room->capacity ?></strong></li>

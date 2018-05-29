@@ -122,7 +122,7 @@
                                             Reserved by <strong><?= $reservation['customer']->fullname ?></strong>
                                             from <strong><?= $reservation['start_date'] ?></strong>
                                             to <strong><?= $reservation['finish_date'] ?></strong>
-                                            for <?= number_format($room->price, 2) ?>€
+                                            for <?= number_format($room->price * $reservation['date_diff'], 2, '.', '') ?>€
                                         </h6>
                                         <ul class="list-unstyled mt-4 mb-0">
                                             <li><strong>Capacity: <?= $room->capacity ?></strong></li>
@@ -146,7 +146,7 @@
                                         <div class="form-group">
                                             <label for="transaction_amount">Transaction amount</label>
                                             <div class="input-group">
-                                                <input type="number" class="form-control" min="1.00" max="10000.00" step="0.01" name="transaction_amount" id="transaction_amount" value="<?= number_format($room->price, 2) ?>" readonly />
+                                                <input type="number" class="form-control" min="1.00" max="10000.00" step="0.01" name="transaction_amount" id="transaction_amount" value="<?= number_format($room->price * $reservation['date_diff'], 2, '.', '') ?>" readonly />
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">€</span>
                                                 </div>
