@@ -56,23 +56,6 @@ class Hotel extends Model {
         return $this->phone_numbers;
     }
 
-    public function manager_getter() {
-        $query = DB::query('SELECT Employee_IRS FROM Works WHERE
-            Hotel_ID = ' . $this->id .'
-            AND CURDATE() BETWEEN Start_Date AND Finish_Date
-            AND Position = "manager"');
-        
-        $managers = [];
-        while($row = $query->fetch_assoc()) {
-            $managers[] = $row['Position'];
-        }
-        if(count($managers) == 1) {
-            return $managers[0];
-        } else {
-            die('This Hotel has '.count($managers).' Managers instead of 1.');
-        }
-    }
-
     public function addEmail($email) {
         return DB::query('INSERT INTO Hotel_Email_Address(Hotel_ID, Email_Address) VALUES
         (' . $this->id . ', "' . $email . '")');
