@@ -1,3 +1,4 @@
 *.swp
 .fuse_hidden*
 .vscode/
+.~lock.*#
