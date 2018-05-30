@@ -10,10 +10,7 @@ use \models\City as City;
 class searchController {
 
     public static function query($vars) {
-        $citynames = [];
-		foreach(City::all() as $city) {
-			$citynames[] = $city['city'];
-        }
+        $citynames = City::all();
         $view = $vars['view'] ?? 'rooms';
         if(!isset($vars['view'])) {
             if(!$vars['city']) {

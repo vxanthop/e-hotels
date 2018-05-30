@@ -6,8 +6,7 @@ class City {
     
     /*
         @input: None
-        @output: Array of city names paired with the number of available rooms in them
-        @todo: Implement Room::availableInCityNum($city)
+        @output: Array of city name
     */
     public static function all() {
         $query = DB::query('SELECT DISTINCT Address_City FROM Hotel');
@@ -16,10 +15,7 @@ class City {
             like ['amenity' => value]
         */
         while($row = $query->fetch_assoc()) {
-            $cities[] = [
-                'city' => $row['Address_City'],
-                'availableRoomsNum' => Room::availableInCityNum($row['Address_City'])
-            ];
+            $cities[] = $row['Address_City'];
         }
         return $cities;
     }
